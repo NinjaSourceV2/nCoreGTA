@@ -174,13 +174,15 @@ atms = {
   
 
 Citizen.CreateThread(function()
-    for _, item in pairs(atms) do
-      item.blip = AddBlipForCoord(item.x, item.y, item.z)
-      SetBlipSprite(item.blip, 277) --> Id du blip
-      SetBlipAsShortRange(item.blip, true)
-      SetBlipColour(item.blip, 25) --> Couleur du blip
-      BeginTextCommandSetBlipName("STRING")
-      AddTextComponentString("ATM") --> Nom du blip
-      EndTextCommandSetBlipName(item.blip)
+    if config.activeLesBlips == true then
+        for _, item in pairs(atms) do
+          item.blip = AddBlipForCoord(item.x, item.y, item.z)
+          SetBlipSprite(item.blip, 277) --> Id du blip
+          SetBlipAsShortRange(item.blip, true)
+          SetBlipColour(item.blip, 25) --> Couleur du blip
+          BeginTextCommandSetBlipName("STRING")
+          AddTextComponentString("ATM") --> Nom du blip
+          EndTextCommandSetBlipName(item.blip)
+        end
     end
 end)
