@@ -93,7 +93,6 @@ end)
 
 
 --- System de distance de voix : 
-local defaultkey = Keys["F1"] --> Touche par default pour changer votre distance de voix.
 local distance_voix = {}
 local currentdistancevoice = 0 -- Current distance to voice (0 to 2)
 distance_voix.Grande = 12.001
@@ -112,21 +111,20 @@ AddEventHandler('onClientMapStart', function()
 end)
 
 --------------------------------> GESTION DU SYSTEM DE DISTANCE DE VOIX :
-Citizen.CreateThread(function()
- 	while true do
- 		Citizen.Wait(0)
- 		if IsControlJustPressed(1, defaultkey) and GetLastInputMethod(0) then --> Compatibilité Manette.
- 			currentdistancevoice = (currentdistancevoice + 1) % 3
-			if currentdistancevoice == 0 then
-				NetworkSetTalkerProximity(distance_voix.Normal) -- 5 meters range
-			    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~normal")
-			elseif currentdistancevoice == 1 then
-				NetworkSetTalkerProximity(distance_voix.Grande) -- 12 meters range
-			    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~crier")
-			elseif currentdistancevoice == 2 then
-                NetworkSetTalkerProximity(distance_voix.Faible) -- 1 meters range
-			    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~chuchoter")
-			end
- 		end
- 	end
-end)
+
+RegisterCommand('+changevoice', function()
+        currentdistancevoice = (currentdistancevoice + 1) % 3
+	if currentdistancevoice == 0 then
+		NetworkSetTalkerProximity(distance_voix.Normal) -- 5 meters range
+	    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~normal")
+	elseif currentdistancevoice == 1 then
+		NetworkSetTalkerProximity(distance_voix.Grande) -- 12 meters range
+	    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~crier")
+	elseif currentdistancevoice == 2 then
+            NetworkSetTalkerProximity(distance_voix.Faible) -- 1 meters range
+	    exports.nCoreGTA:ShowNotification("~w~Niveau vocal : ~b~chuchoter")
+	end
+end, false)
+
+RegisterCommand('-changevoice', function() end, false)
+RegisterKeyMapping('+changevoice', 'Distance de voix', 'keyboard', 'F1')
