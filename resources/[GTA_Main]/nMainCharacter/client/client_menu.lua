@@ -13,6 +13,7 @@ local identity = RageUI.CreateSubMenu(mainMenu, "Éditeur de personnage", "~b~ID
 mainMenu.Controls.Back.Enabled = false
 
 local index_tenue = 1
+local waitMenuCreation = 1000
 
 --> Init camera : 
 CameraPosition('face')
@@ -28,7 +29,7 @@ end
 --> Thread :
 Citizen.CreateThread(function()
     while (true) do
-        Citizen.Wait(1.0)
+        Citizen.Wait(waitMenuCreation)
         RageUI.IsVisible(mainMenu, function()
             mainMenu.Controls.Back.Enabled = false
             RageUI.List('Sexe', config.Character.sex, config.Character.index_sex, "Déterminez le sexe de votre personnage.", {}, true,
@@ -208,9 +209,12 @@ Citizen.CreateThread(function()
             });   
         end, function() end)
 
-        if RageUI.Visible(mainMenu) or RageUI.Visible(heritage) or RageUI.Visible(apparence) or RageUI.Visible(vetements) or RageUI.Visible(identity) then 
+        if RageUI.Visible(mainMenu) or RageUI.Visible(heritage) or RageUI.Visible(apparence) or RageUI.Visible(vetements) or RageUI.Visible(identity) then
+	    waitMenuCreation = 1
             DisableControlAction(0, 140, true) --> DESACTIVER LA TOUCHE POUR PUNCH
             DisableControlAction(0, 172, true) --DESACTIVE CONTROLL HAUT  
+	else
+	    waitMenuCreation = 1000
         end
     end
 end)
