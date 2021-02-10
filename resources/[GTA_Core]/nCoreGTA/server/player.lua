@@ -49,11 +49,12 @@ AddEventHandler('playerDropped', function()
 end)
 
 function Player:GetLicense(source)
-	for _,v in ipairs(GetPlayerIdentifiers(source)) do
-		if string.sub(v, 1, string.len("license")) == "license" then
-			return v
-		end
-	end
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            return identifier
+        end
+    end
 end
 
 function Player:Find(source, callback)
@@ -61,11 +62,11 @@ function Player:Find(source, callback)
 	local pLicense = Player:GetLicense(src)
 
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @username',{['@username'] = pLicense}, function(res)
-		for _, v in pairs(res) do
-			if callback then
-				callback(v)
-			end
-		end
+	        if callback then
+	            for k, v in ipairs(res) do
+	               callback(v)
+	            end
+	        end
 	end)
 end
 
@@ -153,7 +154,7 @@ AddEventHandler('GTA:salaire', function()
 		if data then
 			MySQL.Async.fetchAll('SELECT salaire FROM gta_joueurs INNER JOIN gta_metiers ON gta_joueurs.job = gta_metiers.metiers WHERE license = @license',{['@license'] = license}, function(res)
 				local newValue = data.banque + res[1].salaire
-				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 				TriggerClientEvent('GTA:AfficherBanque', source, newValue)
 				TriggerClientEvent("nMenuNotif:showNotification", source, "~g~ Salaire reçu : + "..res[1].salaire.." ~g~$")
 			end)
@@ -167,7 +168,7 @@ AddEventHandler('GTA:AjoutArgentPropre', function(source, value)
 	Player:Find(src, function(data)
 		if data then
 			local newValue = data.argent_propre + value
-			MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+			MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			TriggerClientEvent('GTA:AfficherArgentPropre', src, newValue)
 		end
 	end)
@@ -180,7 +181,7 @@ AddEventHandler('GTA:AjoutArgentSale', function(source, value)
 	Player:Find(src, function(data)
 		if data then
 			local newValue = data.argent_sale + value
-			MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+			MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
 		end
 	end)
@@ -192,7 +193,7 @@ AddEventHandler('GTA:AjoutArgentBanque', function(source, value)
 	Player:Find(src, function(data)
 		if data then
 			local newValue = data.banque + value
-			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 		end
 	end)
@@ -206,7 +207,7 @@ AddEventHandler('GTA:RetirerArgentPropre', function(source, value)
 			local getArgentPropre = data.argent_propre
 			if getArgentPropre >= value then
 				local newCash = data.argent_propre - value
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newCash WHERE license = @license',{ ['license'] = tostring(data.license),['newCash'] = tostring(newCash)},function () end)
+				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newCash WHERE license = @license',{ ['@license'] = tostring(data.license),['@newCash'] = tostring(newCash)})
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, newCash)
 				TriggerClientEvent('GTA:AjoutSonPayer', src)
 			else
@@ -225,7 +226,7 @@ AddEventHandler('GTA:RetirerArgentSale', function(source, value)
 			local getArgentSale = data.argent_sale
 			if getArgentSale >= value then
 				local newValue = data.argent_sale - value
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+				MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 				--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
 				TriggerClientEvent('GTA:AjoutSonPayer', src)
 			else
@@ -241,7 +242,7 @@ AddEventHandler('GTA:RetirerArgentBanque', function(source, value)
 	Player:Find(src, function(data)
 		if data then
 			local newValue = data.banque - value
-			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
+			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 			TriggerClientEvent('GTA:AjoutSonPayer', src)
 		end
@@ -258,8 +259,8 @@ AddEventHandler('GTA:RetirerAtmBanque', function(source, value)
 				local newValue = data.banque - value
 				local newArgentPropre = data.argent_propre + value
 
-				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newArgentPropre WHERE license = @license',{ ['license'] = tostring(data.license),['newArgentPropre'] = tostring(newArgentPropre)},function () end)
+				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
+				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newArgentPropre WHERE license = @license',{ ['@license'] = tostring(data.license),['@newArgentPropre'] = tostring(newArgentPropre)})
 
 				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, newArgentPropre)
@@ -281,8 +282,8 @@ AddEventHandler('GTA:DeposerAtmBanque', function(source, value)
 				local argentPropre = data.argent_propre - value
 				local newValue = data.banque + value
 
-				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['license'] = tostring(data.license),['newValue'] = tostring(newValue)},function () end)
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@argentPropre WHERE license = @license',{ ['license'] = tostring(data.license),['argentPropre'] = tostring(argentPropre)},function () end)
+				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
+				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@argentPropre WHERE license = @license',{ ['@license'] = tostring(data.license),['@argentPropre'] = tostring(argentPropre)})
 				
 				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, argentPropre)
