@@ -1,3 +1,4 @@
+local waitRenderCarte = 1000
 active = nil
 RegisterNetEvent("GTA_Interaction:UpdateInfoPlayers")
 AddEventHandler("GTA_Interaction:UpdateInfoPlayers", function(newName, newSecondName)
@@ -254,9 +255,12 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1.0)
+		Citizen.Wait(waitRenderCarte)
 		if active then
+			waitRenderCarte = 1
 			RenderCarte()
+		else
+			waitRenderCarte = 1000
 		end
 	end
 end)
@@ -264,7 +268,7 @@ end)
 --> Check si la carte d'identié est ouvert, on la ferme aprés 10 seconde :
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1.0)
+		Citizen.Wait(waitRenderCarte)
 		if active then
 			RenderCarte()
 			Wait(10000) --Permet l'affichage pendant 10 secondes
