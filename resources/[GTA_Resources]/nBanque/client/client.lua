@@ -1,4 +1,5 @@
---||@SuperCoolNinja.||--
+ --||@SuperCoolNinja. && RamexDeltaXOO||--
+local waitBanque = 1000
 activeSolde = false
 something, CashAmount = StatGetInt("MP0_WALLET_BALANCE",-1)
 something2, BankAmount = StatGetInt("BANK_BALANCE",-1)
@@ -54,16 +55,19 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1.0)
+		Citizen.Wait(waitBanque)
 		if activeSolde then
+	                waitBanque = 1
 			RenderSolde()
+		else
+		        waitBanque = 1000
 		end
 	end
 end)
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1.0)
+		Citizen.Wait(waitBanque)
 		if activeSolde then
 			Wait(10000)
 			activeSolde = false
