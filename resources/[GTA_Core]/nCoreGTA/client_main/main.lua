@@ -1,4 +1,4 @@
---@Super.Cool.Ninja
+ --||@SuperCoolNinja. && RamexDeltaXOO||--
 local Keys = {
 	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
 	["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
@@ -96,8 +96,8 @@ end)
 local distance_voix = {}
 local currentdistancevoice = 0 -- Current distance to voice (0 to 2)
 distance_voix.Grande = 12.001
-distance_voix.Normal = 5.001
-distance_voix.Faible = 1.001
+distance_voix.Normal = 8.001
+distance_voix.Faible = 2.001
 
 
 AddEventHandler('onClientMapStart', function()
