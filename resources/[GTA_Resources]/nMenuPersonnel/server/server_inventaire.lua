@@ -6,7 +6,7 @@ AddEventHandler("item:getItems", function()
 	local source = source	
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -27,7 +27,7 @@ AddEventHandler("item:setItem", function(item, quantity)
 	local source = source	
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -61,7 +61,7 @@ AddEventHandler("item:updateQuantity", function(qty, id)
 	local source = source	
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -75,7 +75,7 @@ AddEventHandler("item:sell", function(id, quantity, price)
 	local source = source	
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
