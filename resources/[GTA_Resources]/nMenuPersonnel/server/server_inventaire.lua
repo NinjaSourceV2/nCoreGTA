@@ -4,7 +4,13 @@ RegisterServerEvent("item:getItems")
 AddEventHandler("item:getItems", function()
 	items = {}
 	local source = source	
-	local player = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for i,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	MySQL.Async.fetchAll("SELECT * FROM user_inventory JOIN items ON `user_inventory`.`item_name` = `items`.`libelle` WHERE license=@username", { ['@username'] = player}, function(result)
 		if (result) then
 			for _,v in ipairs(result) do
@@ -19,7 +25,13 @@ end)
 RegisterServerEvent("item:setItem")
 AddEventHandler("item:setItem", function(item, quantity)
 	local source = source	
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for i,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	MySQL.Async.fetchAll("SELECT * FROM user_inventory WHERE license = @username AND item_name = @item", {['@username'] = license, ['@item'] = item}, function(result)
 		--print(json.encode(result[1]))
 		if(result[1] ~= nil) then
@@ -34,14 +46,26 @@ end)
 RegisterServerEvent("item:reset")
 AddEventHandler("item:reset", function()
 	local source = source	
-	local player = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for i,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	MySQL.Async.execute("UPDATE user_inventory SET quantity=@quantity WHERE license=@username", {['@username'] = player, ['@quantity'] = 0})
 end)
 
 RegisterServerEvent("item:updateQuantity")
 AddEventHandler("item:updateQuantity", function(qty, id)
 	local source = source	
-	local player = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for i,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = qty}, {['license'] = player}, {['item_name'] = id}})
 end)
 
@@ -49,7 +73,13 @@ end)
 RegisterServerEvent("item:sell")
 AddEventHandler("item:sell", function(id, quantity, price)
 	local source = source	
-	local player = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for i,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	MySQL.Async.execute("UPDATE user_inventory SET quantity=@quantity WHERE license=@username AND item_name=@id", {['@username'] = player, ['@quantity'] = tonumber(quantity), ['@id'] = tostring(id)})
 	player.addMoney(tonumber(price))
 end)
