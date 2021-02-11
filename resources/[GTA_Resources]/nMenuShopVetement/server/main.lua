@@ -2,7 +2,13 @@ RegisterServerEvent("GTA_Vetement:NouveauTshirt")
 AddEventHandler("GTA_Vetement:NouveauTshirt", function(drawID, couleurID, prix, torsosID, undershirtID)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
@@ -25,7 +31,13 @@ RegisterServerEvent("GTA_Vetement:NouveauPull")
 AddEventHandler("GTA_Vetement:NouveauPull", function(drawID, couleurID, prix, torsosID, undershirtID)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
@@ -48,7 +60,13 @@ RegisterServerEvent("GTA_Vetement:NouvelVeste")
 AddEventHandler("GTA_Vetement:NouvelVeste", function(drawID, couleurID, prix, torsosID, undershirtID)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
@@ -71,7 +89,13 @@ RegisterServerEvent("GTA_Vetement:NouveauPantalon")
 AddEventHandler("GTA_Vetement:NouveauPantalon", function(drawID, couleurID, prix)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
@@ -113,7 +137,13 @@ RegisterServerEvent("GTA_Vetement:NouveauBonnet")
 AddEventHandler("GTA_Vetement:NouveauBonnet", function(drawID, prix)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
@@ -133,7 +163,13 @@ RegisterServerEvent("GTA_Vetement:NouveauAccessoire")
 AddEventHandler("GTA_Vetement:NouveauAccessoire", function(drawID, prix)
     prix = prix or 0
     local source = source	
-    local player = GetPlayerIdentifiers(source)[1]
+    local player = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            player = identifier
+        end
+    end
     TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
         if (data.argent_propre >= prix) then 
             TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
