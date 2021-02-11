@@ -19,7 +19,7 @@ end
 function getPlayerID(source)
     local license = ""
     local Identifiers = GetPlayerIdentifiers(source)
-    for i,identifier in ipairs(Identifiers) do
+    for _,identifier in ipairs(Identifiers) do
         if string.find(identifier, "license:") then
             return identifier
         end
