@@ -27,7 +27,7 @@ AddEventHandler("GTA:CreationPersonnage", function()
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -78,7 +78,7 @@ AddEventHandler("GTA:UpdateSexPersonnage",function(sex)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -99,7 +99,7 @@ AddEventHandler("GTA:UpdateVisage", function(visage)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -113,7 +113,7 @@ AddEventHandler("GTA:UpdateCouleurPeau",function(peauID)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -127,7 +127,7 @@ AddEventHandler("GTA:UpdateYeux",function(yeux)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -141,7 +141,7 @@ AddEventHandler("GTA:UpdateDad",function(dad)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -155,7 +155,7 @@ AddEventHandler("GTA:UpdateMom",function(mom)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -169,7 +169,7 @@ AddEventHandler("GTA:UpdateCheveux",function(cheveuxID)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -184,7 +184,7 @@ AddEventHandler("GTA:UpdateCouleurCheveux",function(couleurID)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -199,7 +199,7 @@ AddEventHandler("GTA:TenueHomme", function(TenueHomme)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -230,7 +230,13 @@ end)
 RegisterServerEvent("GTA:TenueFemme")
 AddEventHandler("GTA:TenueFemme", function(TenueFemme)
 	local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = ""
+        local Identifiers = GetPlayerIdentifiers(source)
+        for _,identifier in ipairs(Identifiers) do
+            if string.find(identifier, "license:") then
+                license = identifier
+            end
+        end
 	
 	MySQL.Async.execute(
 	"UPDATE gta_joueurs_vetement SET topsID=@topsid, topsDraw=@topdraw, topsCouleur=@topscouleur, undershirtsID=@undershirtsid, undershirtsDraw=@undershirtsdraw, undershirtsCouleur=@undershirtscouleur, shoesID=@shoesid, shoesDraw=@shoesdraw, shoesCouleur=@shoescouleur, legsID=@legsid, legsDraw=@legsdraw, legsCouleur=@legscouleur, torsosID=@torsosid, torsosDraw=@torsosdraw, AccessoiresID=@accessoiresid, AccessoiresDraw=@Accessoiresdraw, AccessoiresCouleur=@Accessoirescouleur WHERE license=@license", {
@@ -259,7 +265,7 @@ AddEventHandler("GTA:LoadVetement",function()
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -276,7 +282,7 @@ AddEventHandler("GTA:UpdateNom", function(nameInput)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -295,7 +301,7 @@ AddEventHandler("GTA:UpdatePrenom", function(prenomInput)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -313,7 +319,7 @@ AddEventHandler("GTA:UpdateAge", function(ageInput)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -331,7 +337,7 @@ AddEventHandler("GTA:UpdateTaille", function(tailleInput)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
@@ -349,7 +355,7 @@ AddEventHandler("GTA:UpdateOrigin", function(oriInput)
 	local source = source
 	local license = ""
         local Identifiers = GetPlayerIdentifiers(source)
-        for i,identifier in ipairs(Identifiers) do
+        for _,identifier in ipairs(Identifiers) do
             if string.find(identifier, "license:") then
                 license = identifier
             end
