@@ -16,6 +16,16 @@ function getSourceFromIdentifier(identifier, cb)
     cb(nil)
 end
 
+function getPlayerID(source)
+    local license = ""
+    local Identifiers = GetPlayerIdentifiers(source)
+    for i,identifier in ipairs(Identifiers) do
+        if string.find(identifier, "license:") then
+            return identifier
+        end
+    end
+end
+
 function addContact(source, identifier, number, display)
     MySQL.Async.execute("INSERT INTO phone_users_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)", {
         ['@identifier'] = identifier,
@@ -62,21 +72,21 @@ end
 RegisterServerEvent('gcPhone:addContact')
 AddEventHandler('gcPhone:addContact', function(display, phoneNumber)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     addContact(source, license, phoneNumber, display)
 end)
 
 RegisterServerEvent('gcPhone:updateContact')
 AddEventHandler('gcPhone:updateContact', function(id, display, phoneNumber)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     updateContact(source, license, id, phoneNumber, display)
 end)
 
 RegisterServerEvent('gcPhone:deleteContact')
 AddEventHandler('gcPhone:deleteContact', function(id)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     deleteContact(source, license, id)
 end)
 
@@ -156,7 +166,7 @@ end
 RegisterServerEvent('gcPhone:sendMessage')
 AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     addMessage(source, license, phoneNumber, message)
 end)
 
@@ -168,28 +178,28 @@ end)
 RegisterServerEvent('gcPhone:deleteMessageNumber')
 AddEventHandler('gcPhone:deleteMessageNumber', function(number)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     deleteAllMessageFromPhoneNumber(source,license, number)
 end)
 
 RegisterServerEvent('gcPhone:deleteAllMessage')
 AddEventHandler('gcPhone:deleteAllMessage', function()
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     deleteAllMessage(license)
 end)
 
 RegisterServerEvent('gcPhone:setReadMessageNumber')
 AddEventHandler('gcPhone:setReadMessageNumber', function(num)
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     setReadMessageNumber(license, num)
 end)
 
 RegisterServerEvent('gcPhone:deleteALL')
 AddEventHandler('gcPhone:deleteALL', function()
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(source)
     deleteAllMessage(license)
     deleteAllContact(license)
     appelsDeleteAllHistorique(license)
@@ -248,7 +258,7 @@ RegisterServerEvent('gcPhone:getHistoriqueCall')
 AddEventHandler('gcPhone:getHistoriqueCall', function()
     local _source = source
     local sourcePlayer = tonumber(_source)
-    local license = GetPlayerIdentifiers(_source)[1]
+    local license = getPlayerID(_source)
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = license})
     sendHistoriqueCall(getNumberPhone, num)
 end)
@@ -281,7 +291,7 @@ AddEventHandler('gcPhone:internal_startCall', function(source, phone_number, rtc
     lastIndexCall = lastIndexCall + 1
 
     local sourcePlayer = tonumber(source)
-    local identifier = GetPlayerIdentifiers(source)[1]
+    local identifier = getPlayerID(source)
 
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = identifier})
     local res = MySQL.Sync.fetchScalar("SELECT license FROM gta_joueurs WHERE phone_number = @phone_number", {['@phone_number'] = phone_number})
@@ -327,7 +337,7 @@ function onCallFixePhone (source, phone_number, rtcOffer, extraData)
         phone_number = string.sub(phone_number, 2)
     end
     local sourcePlayer = tonumber(source)
-    local identifier = GetPlayerIdentifiers(source)[1]
+    local identifier = getPlayerID(source)
 
 
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = identifier})
@@ -418,7 +428,7 @@ RegisterServerEvent('gcPhone:appelsDeleteHistorique')
 AddEventHandler('gcPhone:appelsDeleteHistorique', function (numero)
     local _source = source
     local sourcePlayer = tonumber(_source)
-    local identifier = GetPlayerIdentifiers(_source)[1]
+    local identifier = getPlayerID(_source)
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = identifier})
     MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner AND `num` = @num", {
         ['@owner'] = getNumberPhone,
@@ -437,7 +447,7 @@ RegisterServerEvent('gcPhone:appelsDeleteAllHistorique')
 AddEventHandler('gcPhone:appelsDeleteAllHistorique', function ()
     local _source = source
     local sourcePlayer = tonumber(_source)
-    local identifier = GetPlayerIdentifiers(_source)[1]
+    local identifier = getPlayerID(_source)
     appelsDeleteAllHistorique(identifier)
 end)
 
@@ -447,7 +457,7 @@ end)
 RegisterServerEvent("GTA:TelephoneLoaded")
 AddEventHandler("GTA:TelephoneLoaded",function()
     local source = source
-	local license = GetPlayerIdentifiers(source)[1]
+	local license = getPlayerID(_source)
 
     local Myphone_number = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = license})
     if Myphone_number then
