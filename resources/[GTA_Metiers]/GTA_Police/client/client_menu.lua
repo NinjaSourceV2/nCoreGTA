@@ -176,6 +176,6 @@ Citizen.CreateThread(function()
                 end
             })
         end, function() end)
-    Citizen.Wait(1.0)
+    Citizen.Wait(waitMenuPoliceOpen)
     end
 end)
