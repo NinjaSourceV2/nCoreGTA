@@ -1,6 +1,8 @@
 DureeZone = 0
+waitMenuPoliceOpen = 1000
+waitMenotte = 1000
 local isMenuEnableCar = false
-local estJoueurMenotter = false
+local joueurEstMenotter = false
 local prevMaleVariation = 0
 local prevFemaleVariation = 0
 
@@ -116,7 +118,7 @@ end)
 
 RegisterNetEvent('GTA_Police:Menotter_Demenotter')
 AddEventHandler('GTA_Police:Menotter_Demenotter', function(estMenotter)
-    estJoueurMenotter = estMenotter
+    joueurEstMenotter = estMenotter
     local ped = PlayerPedId()
     local homme = GetHashKey("mp_m_freemode_01")
     local femme = GetHashKey("mp_f_freemode_01")
@@ -127,7 +129,7 @@ AddEventHandler('GTA_Police:Menotter_Demenotter', function(estMenotter)
         Citizen.Wait(0)
     end
 
-    if estJoueurMenotter == true then 
+    if joueurEstMenotter == true then 
         if GetEntityModel(ped) == femme then
             prevFemaleVariation = GetPedDrawableVariation(ped, 7)
             SetPedComponentVariation(ped, 7, 25, 0, 0)
@@ -351,23 +353,21 @@ end)
 ---> Core du menu Action LSPD :
 Citizen.CreateThread(function()
     while true do
-        if Config.Police.job ~= "LSPD" then
-            return
-        end
-
-        if IsControlJustReleased(0, 167) then
-            TriggerServerEvent("GTA:LoadJobsJoueur")
-            Wait(250)
-            RageUI.Visible(MenuAction, not RageUI.Visible(MenuAction))
-        end
-    
         if RageUI.Visible(vestiareMenu) or RageUI.Visible(ArmurerieMenu) or RageUI.Visible(GarageMenu) or RageUI.Visible(MenuAction) == true then
-            DureeZone = 0
+            waitMenuPoliceOpen = 0
             DisableControlAction(0, 140, true) --> DESACTIVER LA TOUCHE POUR PUNCH
             DisableControlAction(0, 172,true) --> DESACTIVE CONTROLL HAUT  
+	else
+	    waitMenuPoliceOpen = 1000
         end
+       Citizen.Wait(waitMenuPoliceOpen)
+   end
+end)
 
-        if estJoueurMenotter == true then
+Citizen.CreateThread(function()
+    while true do
+        if joueurEstMenotter == true then
+	    waitMenotte = 0
             DisableControlAction(0, 69, true) -- INPUT_VEH_ATTACK
             DisableControlAction(0, 92, true) -- INPUT_VEH_PASSENGER_ATTACK
             DisableControlAction(0, 114, true) -- INPUT_VEH_FLY_ATTACK
@@ -381,11 +381,24 @@ Citizen.CreateThread(function()
             DisableControlAction(0, 25, true) -- INPUT_AIM
             DisableControlAction(0, 23, true)
             DisableControlAction(0, 75,  true) -- Leave Vehicle
+        else
+	    waitMenotte = 1000
         end
 
-       Citizen.Wait(1.0)
+       Citizen.Wait(waitMenotte)
    end
 end)
+
+RegisterCommand('+menupolice', function()
+    if Config.Police.job ~= "LSPD" then
+    	TriggerServerEvent("GTA:LoadJobsJoueur")
+        Wait(250)
+        RageUI.Visible(MenuAction, not RageUI.Visible(MenuAction))	
+    end
+end, false)
+
+RegisterCommand('-menupolice', function() end, false)
+RegisterKeyMapping('+menupolice', 'Menu Police', 'keyboard', 'F6')
 
 Citizen.CreateThread(function()
     while true do
