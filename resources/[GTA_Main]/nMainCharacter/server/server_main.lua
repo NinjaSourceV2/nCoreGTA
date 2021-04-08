@@ -25,14 +25,8 @@ end
 RegisterServerEvent("GTA:CreationPersonnage") --> Check a chaque spawn, si vous avez un personnage ou non.
 AddEventHandler("GTA:CreationPersonnage", function()
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
-    
+	local license = GetPlayerIdentifiers(source)[1]
+
 	--> Si le joueurs n'a pas de perso on lui renvoi au menu de création sinon on charge le perso : 
 	local isFirstConnection = MySQL.Sync.fetchScalar("SELECT isFirstConnection FROM gta_joueurs WHERE license = @username", {['@username'] = license})
 	if isFirstConnection then
@@ -76,13 +70,8 @@ end)
 RegisterServerEvent("GTA:UpdateSexPersonnage")
 AddEventHandler("GTA:UpdateSexPersonnage",function(sex)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET sex=@sex WHERE license = @license',{ ['@license'] = license,['@sex'] = sex})
 
 	if sex == "mp_m_freemode_01" then
@@ -97,13 +86,8 @@ end)
 RegisterServerEvent("GTA:UpdateVisage")
 AddEventHandler("GTA:UpdateVisage", function(visage)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET visage=@visage WHERE license = @license',{ ['@license'] = license,['@visage'] = visage})
 	TriggerClientEvent("GTA:ChangerVisage", source, visage)
 end)
@@ -111,13 +95,8 @@ end)
 RegisterServerEvent("GTA:UpdateCouleurPeau")
 AddEventHandler("GTA:UpdateCouleurPeau",function(peauID)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET couleurPeau=@couleurPeau WHERE license = @license',{ ['@license'] = license,['@couleurPeau'] = peauID})
 	TriggerClientEvent("GTA:ChangerCouleurPeau", source, peauID)
 end)
@@ -125,13 +104,8 @@ end)
 RegisterServerEvent("GTA:UpdateYeux")
 AddEventHandler("GTA:UpdateYeux",function(yeux)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET couleurYeux=@couleurYeux WHERE license = @license',{ ['@license'] = license,['@couleurYeux'] = yeux})
 	TriggerClientEvent("GTA:ChangerCouleurYeux", source, yeux)
 end)
@@ -139,13 +113,8 @@ end)
 RegisterServerEvent("GTA:UpdateDad")
 AddEventHandler("GTA:UpdateDad",function(dad)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET pere=@pere WHERE license = @license',{ ['@license'] = license,['@pere'] = dad})
 	TriggerClientEvent("GTA:ChangerDad", source, dad)
 end)
@@ -153,13 +122,8 @@ end)
 RegisterServerEvent("GTA:UpdateMom")
 AddEventHandler("GTA:UpdateMom",function(mom)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET mere=@mere WHERE license = @license',{ ['@license'] = license,['@mere'] = mom})
 	TriggerClientEvent("GTA:ChangerMom", source, mom)
 end)
@@ -167,13 +131,8 @@ end)
 RegisterServerEvent("GTA:UpdateCheveux")
 AddEventHandler("GTA:UpdateCheveux",function(cheveuxID)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET cheveux=@cheveux WHERE license = @license',{ ['@license'] = license,['@cheveux'] = cheveuxID})
 	TriggerClientEvent("GTA:ChangerCoupeCheveux", source, cheveuxID)
 end)
@@ -182,13 +141,8 @@ end)
 RegisterServerEvent("GTA:UpdateCouleurCheveux")
 AddEventHandler("GTA:UpdateCouleurCheveux",function(couleurID)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	MySQL.Async.execute('UPDATE gta_joueurs_humain SET couleurCheveux=@couleurCheveux WHERE license = @license',{ ['@license'] = license,['@couleurCheveux'] = couleurID})
 	TriggerClientEvent("GTA:ChangerCouleurCheveux", source, couleurID)
 end)
@@ -197,13 +151,8 @@ end)
 RegisterServerEvent("GTA:TenueHomme") 
 AddEventHandler("GTA:TenueHomme", function(TenueHomme)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	
 	MySQL.Async.execute(
 	"UPDATE gta_joueurs_vetement SET topsID=@topsid, topsDraw=@topdraw, topsCouleur=@topscouleur, undershirtsID=@undershirtsid, undershirtsDraw=@undershirtsdraw, undershirtsCouleur=@undershirtscouleur, shoesID=@shoesid, shoesDraw=@shoesdraw, shoesCouleur=@shoescouleur, legsID=@legsid, legsDraw=@legsdraw, legsCouleur=@legscouleur, torsosID=@torsosid, torsosDraw=@torsosdraw, AccessoiresID=@accessoiresid, AccessoiresDraw=@Accessoiresdraw, AccessoiresCouleur=@Accessoirescouleur WHERE license=@license", {
@@ -230,13 +179,8 @@ end)
 RegisterServerEvent("GTA:TenueFemme")
 AddEventHandler("GTA:TenueFemme", function(TenueFemme)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	
 	MySQL.Async.execute(
 	"UPDATE gta_joueurs_vetement SET topsID=@topsid, topsDraw=@topdraw, topsCouleur=@topscouleur, undershirtsID=@undershirtsid, undershirtsDraw=@undershirtsdraw, undershirtsCouleur=@undershirtscouleur, shoesID=@shoesid, shoesDraw=@shoesdraw, shoesCouleur=@shoescouleur, legsID=@legsid, legsDraw=@legsdraw, legsCouleur=@legscouleur, torsosID=@torsosid, torsosDraw=@torsosdraw, AccessoiresID=@accessoiresid, AccessoiresDraw=@Accessoiresdraw, AccessoiresCouleur=@Accessoirescouleur WHERE license=@license", {
@@ -263,13 +207,8 @@ end)
 RegisterServerEvent("GTA:LoadVetement")
 AddEventHandler("GTA:LoadVetement",function()
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs_vetement WHERE license = @license',{['@license'] = license}, function(res1)
 		TriggerClientEvent("GTA:UpdateVetement", source,{res1[1].topsID, res1[1].topsDraw, res1[1].topsCouleur, res1[1].undershirtsID, res1[1].undershirtsDraw, res1[1].undershirtsCouleur, res1[1].torsosID, res1[1].torsosDraw, res1[1].legsID, res1[1].legsDraw, res1[1].legsCouleur, res1[1].shoesID, res1[1].shoesDraw, res1[1].shoesCouleur, res1[1].AccessoiresID, res1[1].AccessoiresDraw, res1[1].AccessoiresCouleur, res1[1].HatsID, res1[1].HatsDraw, res1[1].HatsCouleurs})
@@ -280,13 +219,8 @@ end)
 RegisterServerEvent("GTA:UpdateNom") --> Update votre nom de famille a la création d'identité.
 AddEventHandler("GTA:UpdateNom", function(nameInput)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local newName = nameInput
 	if tostring(newName) == nil then
 		return false
@@ -299,13 +233,8 @@ end)
 RegisterServerEvent("GTA:UpdatePrenom") --> Update votre prénom a la création d'identité.
 AddEventHandler("GTA:UpdatePrenom", function(prenomInput)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local newPrenom = prenomInput
 	if tostring(newPrenom) == nil then
 		return false
@@ -317,13 +246,8 @@ end)
 RegisterServerEvent("GTA:UpdateAge")  --> Update votre age a la création d'identité.
 AddEventHandler("GTA:UpdateAge", function(ageInput)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local newAge = ageInput
 	if tonumber(ageInput) == nil then
       return false
@@ -335,13 +259,8 @@ end)
 RegisterServerEvent("GTA:UpdateTaille") --> Update votre taille exemple 180 = 1.80 metre a la création d'identié.
 AddEventHandler("GTA:UpdateTaille", function(tailleInput)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local newTaille = tailleInput
 	if tonumber(tailleInput) == nil then
 		return false
@@ -353,13 +272,8 @@ end)
 RegisterServerEvent("GTA:UpdateOrigin") --> Update votre orgine a la création d'identité.
 AddEventHandler("GTA:UpdateOrigin", function(oriInput)
 	local source = source
-	local license = ""
-        local Identifiers = GetPlayerIdentifiers(source)
-        for _,identifier in ipairs(Identifiers) do
-            if string.find(identifier, "license:") then
-                license = identifier
-            end
-        end
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local newName = oriInput
 	if tostring(newName) == nil then
 		return false

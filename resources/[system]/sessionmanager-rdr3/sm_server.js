@@ -31,6 +31,9 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 	const QueueForSession_Seamless_Parameters = root.lookupType("rline.QueueForSession_Seamless_Parameters");
 	const QueueForSessionResult = root.lookupType("rline.QueueForSessionResult");
 	const QueueEntered_Parameters = root.lookupType("rline.QueueEntered_Parameters");
+	const TransitionReady_PlayerQueue_Parameters = root.lookupType("rline.TransitionReady_PlayerQueue_Parameters");
+	const TransitionToSession_Parameters = root.lookupType("rline.TransitionToSession_Parameters");
+	const TransitionToSessionResult = root.lookupType("rline.TransitionToSessionResult");
 	const scmds_Parameters = root.lookupType("rline.scmds_Parameters");
 
 	function toArrayBuffer(buf) {
@@ -172,13 +175,21 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 			return {};
 		},
 		
+		async TransitionToSession(source, data) {
+			const req = TransitionToSession_Parameters.decode(data);
+
+			return makeResponse(TransitionToSessionResult, {
+				code: 1 // in this message, 1 is success
+			});
+		},
+
 		async QueueForSession_Seamless(source, data) {
 			const req = QueueForSession_Seamless_Parameters.decode(data);
 			
 			playerDatas[source].req = req.requestId;
 			playerDatas[source].id = req.requestId.requestor;
 			playerDatas[source].slot = assignSlotId();
-			
+
 			setTimeout(() => {
 				emitMsg(source, RpcMessage.encode({
 					Header: {
@@ -194,25 +205,53 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 				if (hostIndex === -1) {
 					hostIndex = playerDatas[source].slot | 0;
 				}
-				
-				emitSessionCmds(source, 0, 'EnterSession', {
-					index: playerDatas[source].slot | 0,
-					hindex: hostIndex,
-					sessionFlags: 0,
-					mode: 0,
-					size: Object.entries(playerDatas).filter(a => a[1].id).length,
-					//size: 2,
-					//size: Object.entries(playerDatas).length,
-					teamIndex: 0,
-					transitionId: {
-						value: {
-							a: 0,//2,
-							b: 0
-						}
+
+				emitMsg(source, RpcMessage.encode({
+					Header: {
+						MethodName: 'TransitionReady_PlayerQueue'
 					},
-					sessionManagerType: 0,
-					slotCount: 32
-				});
+					Content: TransitionReady_PlayerQueue_Parameters.encode({
+						serverUri: {
+							url: ''
+						},
+						requestId: req.requestId,
+						id: {
+							value: {
+								a: 2,
+								b: 0
+							}
+						},
+						serverSandbox: 0xD656C677,
+						sessionType: 3,
+						transferId: {
+							value: {
+								a: 2,
+								b: 2
+							}
+						},
+					}).finish()
+				}).finish());
+
+				setTimeout(() => {
+					emitSessionCmds(source, 0, 'EnterSession', {
+						index: playerDatas[source].slot | 0,
+						hindex: hostIndex,
+						sessionFlags: 0,
+						mode: 0,
+						size: Object.entries(playerDatas).filter(a => a[1].id).length,
+						//size: 2,
+						//size: Object.entries(playerDatas).length,
+						teamIndex: 0,
+						transitionId: {
+							value: {
+								a: 2,
+								b: 0
+							}
+						},
+						sessionManagerType: 0,
+						slotCount: 32
+					});
+				}, 50);
 				
 				setTimeout(() => {
 					// tell player about everyone, and everyone about player
@@ -238,7 +277,7 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 						emitAddPlayer(id, aboutMe);
 					}
 				}, 150);
-			}, 50);
+			}, 250);
 			
 			return makeResponse(QueueForSessionResult, {
 				code: 1

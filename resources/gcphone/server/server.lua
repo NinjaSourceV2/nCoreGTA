@@ -17,13 +17,8 @@ function getSourceFromIdentifier(identifier, cb)
 end
 
 function getPlayerID(source)
-    local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            return identifier
-        end
-    end
+    local license = GetPlayerIdentifiers(source)[1]
+    return license
 end
 
 function addContact(source, identifier, number, display)
@@ -256,9 +251,9 @@ end
 
 RegisterServerEvent('gcPhone:getHistoriqueCall')
 AddEventHandler('gcPhone:getHistoriqueCall', function()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    local license = getPlayerID(_source)
+    local source = source
+    local sourcePlayer = tonumber(source)
+    local license = getPlayerID(source)
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = license})
     sendHistoriqueCall(getNumberPhone, num)
 end)
@@ -363,16 +358,16 @@ end
 
 RegisterServerEvent('gcPhone:startCall')
 AddEventHandler('gcPhone:startCall', function(phone_number, rtcOffer, extraData)
-    local _source = source
-    TriggerEvent('gcPhone:internal_startCall',_source, phone_number, rtcOffer, extraData)
+    local source = source
+    TriggerEvent('gcPhone:internal_startCall',source, phone_number, rtcOffer, extraData)
 end)
 
 RegisterServerEvent('gcPhone:candidates')
 AddEventHandler('gcPhone:candidates', function (callId, candidates)
     if AppelsEnCours[callId] ~= nil then
-        local _source = source
+        local source = source
         local to = AppelsEnCours[callId].transmitter_src
-        if _source == to then 
+        if source == to then 
             to = AppelsEnCours[callId].receiver_src
         end
         TriggerClientEvent('gcPhone:candidates', to, candidates)
@@ -402,7 +397,7 @@ end)
 
 RegisterServerEvent('gcPhone:rejectCall')
 AddEventHandler('gcPhone:rejectCall', function (infoCall)
-    local _source = source
+    local source = source
     local id = infoCall.id
     if AppelsEnCours[id] ~= nil then
         if PhoneFixeInfo[id] ~= nil then
@@ -426,9 +421,9 @@ end)
 
 RegisterServerEvent('gcPhone:appelsDeleteHistorique')
 AddEventHandler('gcPhone:appelsDeleteHistorique', function (numero)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    local identifier = getPlayerID(_source)
+    local source = source
+    local sourcePlayer = tonumber(source)
+    local identifier = getPlayerID(source)
     local getNumberPhone = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = identifier})
     MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner AND `num` = @num", {
         ['@owner'] = getNumberPhone,
@@ -445,9 +440,9 @@ end
 
 RegisterServerEvent('gcPhone:appelsDeleteAllHistorique')
 AddEventHandler('gcPhone:appelsDeleteAllHistorique', function ()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    local identifier = getPlayerID(_source)
+    local source = source
+    local sourcePlayer = tonumber(source)
+    local identifier = getPlayerID(source)
     appelsDeleteAllHistorique(identifier)
 end)
 
@@ -457,7 +452,7 @@ end)
 RegisterServerEvent("GTA:TelephoneLoaded")
 AddEventHandler("GTA:TelephoneLoaded",function()
     local source = source
-	local license = getPlayerID(_source)
+	local license = getPlayerID(source)
 
     local Myphone_number = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = license})
     if Myphone_number then

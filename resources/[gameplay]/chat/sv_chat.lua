@@ -226,7 +226,7 @@ AddEventHandler('playerJoining', function()
         return
     end
 
-    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' joined.')
+    --TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' vient de rejoindre.')
 end)
 
 AddEventHandler('playerDropped', function(reason)
@@ -234,7 +234,7 @@ AddEventHandler('playerDropped', function(reason)
         return
     end
 
-    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
+    --TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' vient de quitter.')
 end)
 
 RegisterCommand('say', function(source, args, rawCommand)

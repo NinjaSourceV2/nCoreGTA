@@ -234,6 +234,7 @@ export default Vue.extend({
       this.oldMessagesIndex = -1;
     },
     ON_SUGGESTION_ADD({ suggestion }: { suggestion: Suggestion }) {
+      this.removedSuggestions = this.removedSuggestions.filter(a => a !== suggestion.name);
       const duplicateSuggestion = this.backingSuggestions.find(
         a => a.name == suggestion.name
       );
@@ -397,6 +398,9 @@ export default Vue.extend({
             this.modeIdx = (this.modeIdx + 1) % this.modes.length;
           } while (this.modes[this.modeIdx].hidden);
         }
+
+        const buf = document.getElementsByClassName('chat-messages')[0];
+        setTimeout(() => buf.scrollTop = buf.scrollHeight, 0);
       }
 
       this.resize();

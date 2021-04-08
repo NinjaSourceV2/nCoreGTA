@@ -1,13 +1,7 @@
 RegisterServerEvent("GTA:CheckAdmin")
 AddEventHandler("GTA:CheckAdmin", function()
 	local source = source
-	local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            license = identifier
-        end
-    end
+	local license = GetPlayerIdentifiers(source)[1]
 
 	local res = MySQL.Sync.fetchScalar("SELECT isAdmin FROM gta_joueurs WHERE license = @username", {['@username'] = license})
 	if (res == true) then

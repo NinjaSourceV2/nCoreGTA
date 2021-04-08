@@ -4,13 +4,7 @@
 RegisterServerEvent("GTA:SAVEPOS")
 AddEventHandler("GTA:SAVEPOS", function( LastPosX , LastPosY , LastPosZ )
 	local source = source
-	local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            license = identifier
-        end
-    end
+	local license = GetPlayerIdentifiers(source)[1]
 	local lastPosition = "{" .. LastPosX .. ", " .. LastPosY .. ",  " .. LastPosZ.. "}"
 	MySQL.Async.execute("UPDATE gta_joueurs SET `lastpos`=@lastpos WHERE license = @username", {['@username'] = license, ['@lastpos'] = lastPosition})
 end)
@@ -18,14 +12,8 @@ end)
 RegisterServerEvent("GTA:SPAWNPLAYER")
 AddEventHandler("GTA:SPAWNPLAYER", function()
 	local source = source
-	local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            license = identifier
-        end
-	end
-	
+	local license = GetPlayerIdentifiers(source)[1]
+
 	local res = MySQL.Sync.fetchScalar("SELECT lastpos FROM gta_joueurs WHERE license = @username", {['@username'] = license})	
 	if (res ~= nil) then
 		local newPos = json.decode(res)
@@ -37,13 +25,7 @@ end)
 RegisterServerEvent("GTA:SetPositionPlayer")
 AddEventHandler("GTA:SetPositionPlayer", function()
 	local source = source
-	local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            license = identifier
-        end
-    end
+	local license = GetPlayerIdentifiers(source)[1]
 
 	local res = MySQL.Sync.fetchScalar("SELECT lastpos FROM gta_joueurs WHERE license = @username", {['@username'] = license})	
 	if (res ~= nil) then

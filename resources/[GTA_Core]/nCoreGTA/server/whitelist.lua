@@ -15,13 +15,7 @@ end
 RegisterServerEvent('playerConnecting')
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
 	local source = source
-	local license = ""
-    local Identifiers = GetPlayerIdentifiers(source)
-    for _,identifier in ipairs(Identifiers) do
-        if string.find(identifier, "license:") then
-            license = identifier
-        end
-    end
+    local license = GetPlayerIdentifiers(source)[1]
     local player = source
     local identifiers = GetPlayerIdentifiers(player)
     local identifiersNum = #GetPlayerIdentifiers(player)

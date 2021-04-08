@@ -29,42 +29,40 @@ end)
 
 RegisterNetEvent("GTA:NewPlayerPosition")
 AddEventHandler("GTA:NewPlayerPosition", function(PosX, PosY, PosZ)
-	--> On charge les donné du player : 
-	exports.rprogress:Custom({
-		Label = "Chargement de votre personnage",
-		Duration = 1700,
-		LabelPosition = "right",
-		Color = "rgba(255, 255, 255, 0.5)",
-		BGColor = "rgba(0, 0, 0, 0.8)"
-	})
-	
-	--> On charge les donné du player : 
-	TriggerServerEvent("GTA:CheckAdmin")
-	TriggerServerEvent("GTA_Notif:OnPlayerJoin")
-	TriggerServerEvent('GTA:LoadArgent')
-	TriggerEvent("GTA:LoadWeaponPlayer")
-
-	Citizen.Wait(1700)
-
-	spawnPlayerLastPos(PosX, PosY) 
-	NetworkResurrectLocalPlayer(tonumber(PosX), tonumber(PosY), tonumber(PosZ) + 0.0, 0, true, true, false)
-
 	if not IsPlayerSwitchInProgress() then
 		SetEntityVisible(PlayerPedId(), false, 0)
-		SwitchOutPlayer(PlayerPedId(), 32, 1)
+		SwitchOutPlayer(PlayerPedId(), 0, 1)
+
+		--> On charge les donné du player : 
+		TriggerServerEvent("GTA:CheckAdmin")
+		TriggerServerEvent("GTA_Notif:OnPlayerJoin")
+		TriggerServerEvent('GTA:LoadArgent')
+		TriggerEvent("GTA:LoadWeaponPlayer")
+
+		spawnPlayerLastPos(PosX, PosY) 
+		NetworkResurrectLocalPlayer(tonumber(PosX), tonumber(PosY), tonumber(PosZ) + 0.0, 0, true, true, false)
+
+		exports.rprogress:Custom({
+			Label = "Chargement de votre personnage",
+			Duration = 1000,
+			LabelPosition = "right",
+			Color = "rgba(255, 255, 255, 0.5)",
+			BGColor = "rgba(0, 0, 0, 0.8)"
+		})
+
 		Wait(3000)
 
 		showLoadingPromt("PCARD_JOIN_GAME", 8000)
 		
 		--> Rend controlable notre player :
-		FreezeEntityPosition(GetPlayerPed(-1), false)
+		TriggerServerEvent("GTA:CreationPersonnage")
+		FreezeEntityPosition(LocalPed(), false)
 		SetEntityVisible(PlayerPedId(), true, 0)
 		Wait(500)
 		RenderScriptCams(false, true, 500, true, true)
 		exports.spawnmanager:setAutoSpawn(false)
 	end
 
-	TriggerServerEvent("GTA:CreationPersonnage")
 
 	SwitchInPlayer(PlayerPedId())
 	SetEntityVisible(PlayerPedId(), true, 0)
@@ -123,7 +121,7 @@ Citizen.CreateThread(function ()
 	while true do
 		Citizen.Wait(config.savePosTime)
 		if isPlayerSpawn == true then 
-			LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
+			LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(LocalPed(), true))
 			TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
 			exports.nCoreGTA:ShowNotification("✅ ~g~Position synchronisée")
 		end
@@ -138,7 +136,7 @@ Citizen.CreateThread(function()
 			firstTick = true
 			exports.spawnmanager:setAutoSpawn(false)
 			isPlayerSpawn = true
-			break
+			return
 		end
 	end
 end)
