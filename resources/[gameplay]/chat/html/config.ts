@@ -8,7 +8,7 @@ export default {
     'example:important': '<h1>^2{0}</h1>'
   },
   fadeTimeout: 7000,
-  suggestionLimit: 5,
+  suggestionLimit: 10,
   style: {
     background: 'rgba(0, 0, 0, 0.7)',
     width: '38vw',

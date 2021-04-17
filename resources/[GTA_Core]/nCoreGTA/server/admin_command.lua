@@ -9,6 +9,20 @@ AddEventHandler("GTA:CheckAdmin", function()
 	end
 end)
 
+RegisterServerEvent("GTA_Admin:GiveItem")
+AddEventHandler("GTA_Admin:GiveItem", function(itemName, qty)
+	local source = source
+	local license = GetPlayerIdentifiers(source)[1]
+
+	MySQL.Async.fetchAll("SELECT * FROM items WHERE libelle = @libelle", { ['@libelle'] = itemName}, function(res)
+		if(res[1]) then
+			TriggerClientEvent("GTA:GivePlayerItem", source, itemName, qty)
+		else
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "L'item saisit : "..itemName.." est introuvable.", "error", "fa fa-exclamation-circle fa-2x")
+		end
+	end)
+end)
+
 RegisterServerEvent("GTA_Admin:AjoutArgentPropre")
 AddEventHandler("GTA_Admin:AjoutArgentPropre", function(qty)
 	local source = source

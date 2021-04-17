@@ -6,6 +6,10 @@ local indexInv = 1
 
 --[[INFO : TYPE 1 = SOIF, TYPE 2 = FOOD, TYPE 3 = OBJECT,  TYPE 4 = UTILISATION OBJET POUR TARGET]]
 
+
+
+
+
 RegisterNetEvent("item:reset")
 RegisterNetEvent("item:getItems")
 RegisterNetEvent("item:sell")
@@ -33,9 +37,20 @@ AddEventHandler("player:receiveItem", function(item_name, quantity)
 		else
 			add({ item_name, quantity })
 		end
-		exports.nCoreGTA:ShowNotification("Vous avez reçu ~g~x"..tonumber(quantity).."~b~ "..item_name)
+
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Vous avez reçu x"..tonumber(quantity) ..item_name,
+			type = "success",
+			icon = "fa fa-check fa-2x",
+			position = "row-reverse"
+		})
 	else
-		exports.nCoreGTA:ShowNotification("~r~Quantité trop grande ou Inventaire rempli.")
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Quantité trop grande ou Inventaire rempli.",
+			type = "warning",
+			icon = "fa fa-exclamation-circle fa-2x",
+			position = "row-reverse"
+		})
 	end
 end)
 
@@ -121,7 +136,14 @@ function use(itemName, quantity)
 		TriggerEvent("nAddFaim", 25)  --> Nombre d'ajout au moment ou il mange
 	elseif ITEMS[tostring(itemName)].type == 3 then --> Armes.
 		TriggerEvent("GTA:LoadWeaponPlayer")
-		exports.nCoreGTA:ShowNotification("~g~Objet ajouté dans votre séléction d'armes.")
+
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Objet ajouté dans votre séléction d'armes.",
+			type = "success",
+			icon = "fa fa-check fa-2x",
+			position = "row-reverse"
+		})
+
 		return
 	elseif ITEMS[tostring(itemName)].type == 4 then --> Seringue d'adrenaline.
 		local target = GetPlayerServerId(GetClosestPlayer())
@@ -130,13 +152,30 @@ function use(itemName, quantity)
 			Citizen.Wait(8000)
 			ClearPedTasks(GetPlayerPed(-1));
 			TriggerServerEvent('GTA_Medic:ReanimerTarget', target)
-			exports.nCoreGTA:ShowNotification("~h~Vous avez soigné une personne.")
+
+			exports.GTA_Notif:GTA_NUI_ShowNotification({
+				text = "Vous avez soigné une personne.",
+				type = "success",
+				icon = "fa fa-check fa-2x",
+				position = "row-reverse"
+			})
+
 			TriggerEvent('player:looseItem',itemName,1)
 		else
-			exports.nCoreGTA:ShowNotification("~y~ Aucune personne devant vous !")
+			exports.GTA_Notif:GTA_NUI_ShowNotification({
+				text = "Aucune personne devant vous !",
+				type = "warning",
+				icon = "fa fa-exclamation-circle fa-2x",
+				position = "row-reverse"
+			})
 		end
 	else 
-		exports.nCoreGTA:ShowNotification("Objet non utilisable !")
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Objet non utilisable !",
+			type = "warning",
+			icon = "fa fa-exclamation-circle fa-2x",
+			position = "row-reverse"
+		})
 		return
 	end
 	TriggerEvent('player:looseItem', itemName, quantity)

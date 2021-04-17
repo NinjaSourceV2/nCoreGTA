@@ -13,9 +13,10 @@ AddEventHandler('GTA_Notif:OnPlayerJoin', function()
 		['@username'] = license
 	}, function(res)
 		if(res[1].nom == "Sans Nom" and res[1].prenom == "Sans Prenom") then
-			TriggerClientEvent('nMenuNotif:showNotification', -1,"~y~Un nouveau citoyen~g~ vient de rejoindre la ville.")
+
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "~y~Un nouveau citoyen~g~ vient de rejoindre la ville.", "success", "fa fa-user fa-2x")
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', -1,"~b~"..res[1].nom.. " "..res[1].prenom.."~g~ vient de rejoindre la ville.")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.." vient de rejoindre la ville.", "success", "fa fa-user fa-2x")
 		end
 	end)
 
@@ -28,9 +29,9 @@ AddEventHandler('playerDropped', function()
 
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @username',{['@username'] = license}, function(res)
 		if (res[1].nom == "Sans Nom" and res[1].prenom == "Sans Prenom") then
-			TriggerClientEvent('nMenuNotif:showNotification', -1,"~y~Un nouveau citoyen ~r~ vient de quitté la ville.")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "~y~Un nouveau citoyen ~r~ vient de quitté la ville.", "success", "fa fa-user fa-2x")
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', -1,"~b~"..res[1].nom.. " "..res[1].prenom.."~r~ vient de quitté la ville.")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.."~r~ vient de quitté la ville.", "success", "fa fa-user fa-2x")
 		end
 	end)
 
@@ -178,7 +179,7 @@ AddEventHandler('GTA:RetirerArgentPropre', function(source, value)
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, newCash)
 				TriggerClientEvent('GTA:AjoutSonPayer', src)
 			else
-				TriggerClientEvent("nMenuNotif:showNotification", source, "Vous n'avez cette somme d'argent sur vous.")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
 			end
 		end
 	end)
@@ -197,7 +198,7 @@ AddEventHandler('GTA:RetirerArgentSale', function(source, value)
 				--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
 				TriggerClientEvent('GTA:AjoutSonPayer', src)
 			else
-				TriggerClientEvent("nMenuNotif:showNotification", source, "Vous n'avez cette somme d'argent sur vous.")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
 			end
 		end
 	end)
@@ -232,7 +233,7 @@ AddEventHandler('GTA:RetirerAtmBanque', function(source, value)
 				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, newArgentPropre)
 			else
-				TriggerClientEvent("nMenuNotif:showNotification", source, "Vous n'êtes pas bénificaire au découvert bancaire.")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
 			end
 		end
 	end)
@@ -255,7 +256,7 @@ AddEventHandler('GTA:DeposerAtmBanque', function(source, value)
 				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 				TriggerClientEvent('GTA:AfficherArgentPropre', src, argentPropre)
 			else
-				TriggerClientEvent("nMenuNotif:showNotification", source, "Vous n'avez cette somme d'argent sur vous.")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
 			end
 		end
 	end)

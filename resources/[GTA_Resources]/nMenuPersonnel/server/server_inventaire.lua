@@ -71,11 +71,12 @@ AddEventHandler("player:giveItem", function(NearestPlayerSID, item, id, quantity
         if quantity < 101 then --Limit item max pour l'inventaire'
 			TriggerClientEvent("player:looseItem", source, item, quantity)
 			TriggerClientEvent("player:receiveItem", NearestPlayerSID, item, quantity)
-			TriggerClientEvent('nMenuNotif:showNotification', source, "Vous avez donné ~b~" .. quantity .. "~s~ ~g~" .. id)
-			TriggerClientEvent('nMenuNotif:showNotification', NearestPlayerSID, "Une personne vous a donner ~b~" .. quantity .. " " ..id)
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. quantity .. " : " .. id, "success", "fa fa-check fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Une personne vous a donner x" .. quantity .. " " ..id, "success", "fa fa-check fa-2x")
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', NearestPlayerSID, "Cette Personne ne peut pas transporter plus d'item.")
-			TriggerClientEvent('nMenuNotif:showNotification', NearestPlayerSID, "Vous ne pouvez pas porter plus d'item sur vous ! ~b~")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous ne pouvez pas porter plus d'item sur vous ! ~b~", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Cette Personne ne peut pas transporter plus d'item.", "warning", "fa fa-exclamation-circle fa-2x")
         end
     end)
 end)
+

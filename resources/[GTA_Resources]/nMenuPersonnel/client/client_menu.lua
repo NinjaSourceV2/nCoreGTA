@@ -7,6 +7,9 @@ local subOptions =  RageUI.CreateSubMenu(mainMenu, "Option menu", "options.")
 local isMouseEnable, hautMis, basMis, chaussureMis, ChapeauMis, isFoodHudEnable = true, true, true, true, false, true
 local index_Cash = 1
 
+
+
+
 Citizen.CreateThread(function()
     while (true) do
         Citizen.Wait(1.0)
@@ -57,7 +60,12 @@ Citizen.CreateThread(function()
                                         local result = InputNombre("Montant : ")
                         
                                         if tonumber(result) == nil then
-		                                    exports.nCoreGTA:ShowNotification("Veuillez inserer un nombre correct !")
+                                            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                                text = "Veuillez inserer un nombre correct !",
+                                                type = "warning",
+                                                icon = "fa fa-exclamation-circle fa-2x",
+                                                position = "row-reverse"
+                                            })
                                             return nil
                                         end
                         
@@ -65,10 +73,20 @@ Citizen.CreateThread(function()
                 	                        exports.rprogress:Start("Intéraction en cours", 1000)
                                             TriggerServerEvent('player:giveItem',ClosestPlayerSID,k,v.libelle,tonumber(result))
                                         else
-		                                    exports.nCoreGTA:ShowNotification("~r~Vous n'avez pas assez d'items.")
+                                            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                                text = "Vous n'avez pas assez d'items.",
+                                                type = "warning",
+                                                icon = "fa fa-exclamation-circle fa-2x",
+                                                position = "row-reverse"
+                                            })
                                         end
                                     else
-		                                exports.nCoreGTA:ShowNotification("~y~ Aucune personne devant vous !")
+                                        exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                            text = "Aucune personne devant vous !",
+                                            type = "warning",
+                                            icon = "fa fa-exclamation-circle fa-2x",
+                                            position = "row-reverse"
+                                        })
                                     end
                                     Wait(250)
                             		TriggerEvent("GTA:LoadWeaponPlayer")
@@ -76,7 +94,12 @@ Citizen.CreateThread(function()
                                     local result = InputNombre("Montant : ")
 
                                     if tonumber(result) == nil then
-		                                exports.nCoreGTA:ShowNotification("Veuillez inserer un nombre correct !")
+                                        exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                            text = "Veuillez inserer un nombre correct !",
+                                            type = "warning",
+                                            icon = "fa fa-exclamation-circle fa-2x",
+                                            position = "row-reverse"
+                                        })
                                         return nil
                                     end
                         
@@ -84,9 +107,20 @@ Citizen.CreateThread(function()
                                         exports.rprogress:Start("Intéraction en cours", 1000)
 
                                         TriggerEvent('player:looseItem',k,tonumber(result))
-		                                exports.nCoreGTA:ShowNotification("~h~Vous avez ~r~jeter ~b~ x".. tonumber(result) .. " "..v.libelle)
+                                      
+                                        exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                            text = "Vous avez jeter x".. tonumber(result) .. " "..v.libelle,
+                                            type = "success",
+                                            icon = "fa fa-check fa-2x",
+                                            position = "row-reverse"
+                                        })
                                     else
-		                                exports.nCoreGTA:ShowNotification("~r~Vous n'avez pas tout ça sur vous d'items.")
+                                        exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                            text = "Vous n'avez pas tout ça sur vous d'items.",
+                                            type = "warning",
+                                            icon = "fa fa-exclamation-circle fa-2x",
+                                            position = "row-reverse"
+                                        })
                                     end
                                     Wait(250)
                             		TriggerEvent("GTA:LoadWeaponPlayer")
@@ -111,14 +145,24 @@ Citizen.CreateThread(function()
                             local result = InputNombre("Montant : ")
 
                             if tonumber(result) == nil then
-                                exports.nCoreGTA:ShowNotification("Veuillez inserer un nombre correct !")
+                                exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                    text = "Veuillez inserer un nombre correct !",
+                                    type = "warning",
+                                    icon = "fa fa-exclamation-circle fa-2x",
+                                    position = "row-reverse"
+                                })
                                 return nil
                             end
 	                        exports.rprogress:Start("Intéraction en cours", 1000)
                             TriggerServerEvent("nArgent:DonnerArgentPropre", ClosestPlayerSID, tonumber(result))
                             RageUI.Visible(subPapiers, false)
                         else
-                            exports.nCoreGTA:ShowNotification("~y~ Aucune personne devant vous !")
+                            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                text = "Aucune personne devant vous !",
+                                type = "warning",
+                                icon = "fa fa-exclamation-circle fa-2x",
+                                position = "row-reverse"
+                            })
                         end
                     end
                 end,
@@ -136,14 +180,24 @@ Citizen.CreateThread(function()
                             local result = InputNombre("Montant : ")
             
                             if tonumber(result) == nil then
-                                exports.nCoreGTA:ShowNotification("Veuillez inserer un nombre correct !")
+                                exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                    text = "Veuillez inserer un nombre correct !",
+                                    type = "warning",
+                                    icon = "fa fa-exclamation-circle fa-2x",
+                                    position = "row-reverse"
+                                })
                                 return nil
                             end
 	                        exports.rprogress:Start("Intéraction en cours", 1000)
                             TriggerServerEvent("GTA:DonnerArgentSale", ClosestPlayerSID, tonumber(result))
                             RageUI.Visible(subPapiers, false)
                         else
-                            exports.nCoreGTA:ShowNotification("~y~ Aucune personne devant vous !")
+                            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                                text = "Aucune personne devant vous !",
+                                type = "warning",
+                                icon = "fa fa-exclamation-circle fa-2x",
+                                position = "row-reverse"
+                            })
                         end
                     end
                 end,
@@ -160,7 +214,12 @@ Citizen.CreateThread(function()
                     if ClosestPlayerSID ~= 0 then
                         TriggerServerEvent("GTA:MontrerSonIdentiter", ClosestPlayerSID)
                     else
-                        exports.nCoreGTA:ShowNotification("~y~ Aucune personne devant vous !")
+                        exports.GTA_Notif:GTA_NUI_ShowNotification({
+                            text = "Aucune personne devant vous !",
+                            type = "warning",
+                            icon = "fa fa-exclamation-circle fa-2x",
+                            position = "row-reverse"
+                        })
                     end
             end});
         end, function() end)

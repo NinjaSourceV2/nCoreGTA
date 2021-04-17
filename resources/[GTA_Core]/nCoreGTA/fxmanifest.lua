@@ -17,7 +17,6 @@ server_scripts {
 client_scripts {
     'config/config.lua',
     'utils/functionsExported.lua',
-    'client_main/notif_main.lua',
     'client_main/admin_main.lua',
     'client_main/main.lua',
     'client_main/spawn.lua',
@@ -26,17 +25,9 @@ client_scripts {
 }
 
 files {
-    'loadingscreen/index.html',
-    'loadingscreen/style.css',
-    'loadingscreen/background.png',
-    'loadingscreen/loading.gif',
     'progressBar/progressbar.html'
 }
 
-loadscreen 'loadingscreen/index.html'
-
-export 'ShowNotification'
-export 'ShowAdvancedNotification'
 export 'Ninja_Core_PedsText'
 export 'Ninja_Core_StartAnim'
 export 'Ninja_Core_nRequestAnimSet'

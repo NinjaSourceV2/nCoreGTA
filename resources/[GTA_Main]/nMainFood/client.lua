@@ -49,11 +49,13 @@ function RemoveCalories(calories)
 		pFaim = 0
 	end
 	if pFaim <= 50 and pFaim > 0 then
-		exports.GTA_NOTIF_EXPORT:nNotificationMain({
-			text = "Vous avez ~o~faim ~w~!",
-			type = 'basGauche',
-			nTimeNotif = 6000,
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Vous avez faim !",
+			type = "warning",
+			icon = "fa fa-cutlery fa-2x",
+			position = "row-reverse"
 		})
+
 		exports.GTA_NOTIF_EXPORT:Ninja_Core_nRequestAnimSet('move_m@buzzed', 'move_m@buzzed')
 	elseif pFaim == 0 then
 		SetEntityHealth(GetPlayerPed(-1), 0)
@@ -96,10 +98,12 @@ function RemoveWater(water)
 		pSoif = 0
 	end
 	if pSoif <= 50 and pSoif > 0 then
-	exports.GTA_NOTIF_EXPORT:nNotificationMain({
-		text = "Vous êtes ~b~assoiffé~s~ !",
-		type = 'basGauche',
-		nTimeNotif = 6000,
+
+	exports.GTA_Notif:GTA_NUI_ShowNotification({
+		text = "Vous êtes assoiffé !",
+		type = "warning",
+		icon = "fa fa-tint fa-2x",
+		position = "row-reverse"
 	})
 	elseif pSoif == 0 then
 		SetEntityHealth(GetPlayerPed(-1), 0)

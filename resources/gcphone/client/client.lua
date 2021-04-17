@@ -2,6 +2,10 @@
 -- #Author: Jonathan D @ Gannon
 -- Rework by Super.Cool.Ninja for the nCoreGTA.
 --====================================================================================
+
+
+
+
 local KeyOpenClose = 288 -- F1
 local KeyTakeCall = 38 -- E
 local USE_RTC, useMouse, hasFocus, takePhoto = false, false, false, false
@@ -31,7 +35,12 @@ end
 --  Que faire si le joueurs veut ouvrir sont téléphone n'est qu'il en a pas ?
 --====================================================================================
 function NoPhoneFound()
-  exports.nCoreGTA:ShowNotification("~r~Intéraction impossible, vous devez vous fournir d'un phone.")
+    exports.GTA_Notif:GTA_NUI_ShowNotification({
+      text = "Intéraction impossible, vous devez vous fournir d'un phone.",
+      type = "warning",
+      icon = "fa fa-exclamation-circle fa-2x",
+      position = "row-reverse"
+    })
 end
 
 Citizen.CreateThread(function()

@@ -1,58 +1,57 @@
-[
-    {
-      "libelleArme" : "Pistolet",
-      "libelleMunition" : "Munition 9mm",
-      "nomHash" : "WEAPON_PISTOL",
-      "typeMunitions" : "AMMO_PISTOL"
-    },
-    
-    {
-      "libelleArme" : "Marteau",
-      "nomHash" : "WEAPON_HAMMER"
+[{
+        "libelleArme": "Pistolet",
+        "libelleMunition": "9mm",
+        "nomHash": "WEAPON_PISTOL",
+        "typeMunitions": "AMMO_PISTOL"
     },
 
     {
-      "libelleArme" : "Batte de baseball",
-      "nomHash" : "WEAPON_BAT"
+        "libelleArme": "Marteau",
+        "nomHash": "WEAPON_HAMMER"
     },
 
     {
-      "libelleArme" : "Pied-de-biche",
-      "nomHash" : "WEAPON_CROWBAR"
-    },
-    
-    {
-      "libelleArme" : "Couteau",
-      "nomHash" : "WEAPON_KNIFE"
+        "libelleArme": "Batte",
+        "nomHash": "WEAPON_BAT"
     },
 
     {
-      "libelleArme" : "Menotte",
-      "nomHash" : "WEAPON_HANDCUFFS"
+        "libelleArme": "Pied-de-biche",
+        "nomHash": "WEAPON_CROWBAR"
     },
 
     {
-      "libelleArme" : "Hache",
-      "nomHash" : "WEAPON_HATCHET"
+        "libelleArme": "Couteau",
+        "nomHash": "WEAPON_KNIFE"
     },
 
     {
-      "libelleArme" : "Machette",
-      "nomHash" : "WEAPON_MACHETE"
+        "libelleArme": "Menotte",
+        "nomHash": "WEAPON_HANDCUFFS"
     },
 
     {
-      "libelleArme" : "Poing américain",
-      "nomHash" : "WEAPON_KNUCKLE"
-    },
-    
-    {
-      "libelleArme" : "Tazer",
-      "nomHash" : "WEAPON_STUNGUN"
+        "libelleArme": "Hache",
+        "nomHash": "WEAPON_HATCHET"
     },
 
     {
-      "libelleArme" : "Matraque",
-      "nomHash" : "WEAPON_NIGHTSTICK"
+        "libelleArme": "Machette",
+        "nomHash": "WEAPON_MACHETE"
+    },
+
+    {
+        "libelleArme": "Poing-américain",
+        "nomHash": "WEAPON_KNUCKLE"
+    },
+
+    {
+        "libelleArme": "Tazer",
+        "nomHash": "WEAPON_STUNGUN"
+    },
+
+    {
+        "libelleArme": "Matraque",
+        "nomHash": "WEAPON_NIGHTSTICK"
     }
 ]

@@ -1,140 +1,74 @@
------------------------------------------------> Variable :
-local isPlayerAdmin = false;
-local godmode = false;
-local qtyArgentPropre = 0;
-local isEnablePosition = false
-
------------------------------------------------> Function :
-local function SaisitNombre(max)
-    local text = ""
-    DisplayOnscreenKeyboard(1, "FMMC_KEY_TTTIP8", "", " ", "", "", "", max)
-    while (UpdateOnscreenKeyboard() == 0) do
-        DisableAllControlActions(0)
-        Wait(10)
-    end
-    if (GetOnscreenKeyboardResult()) then
-        text = GetOnscreenKeyboardResult()
-    end
-    return text
-end
-
-local function tptop()
-	local waypoint = GetFirstBlipInfoId(8)
-	if DoesBlipExist(waypoint) then
-		local waypointCoords = GetBlipInfoIdCoord(waypoint)
-
-		for height = 1, 1000 do
-			SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
-
-			local foundGround, zPos = GetGroundZFor_3dCoord(waypointCoords["x"], waypointCoords["y"], height + 0.0)
-
-			if foundGround then
-				SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
-				break
-			end
-			Citizen.Wait(1)
-        end
-    else
-        exports.nCoreGTA:nNotificationMain({
-            text = "~r~Veuillez positionner un marker.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-    end
-end
-
-local function toggleGodmode()
-    godmode = not godmode
-    SetEntityInvincible(GetPlayerPed(-1), godmode)
-    if (godmode == true) then
-        exports.nCoreGTA:nNotificationMain({
-		    text = "~g~ invincibilité activer.",
-		    type = 'basGauche',
-		    nTimeNotif = 6000,
-	    })
-    else
-        exports.nCoreGTA:nNotificationMain({
-            text = "~r~ invincibilité désactiver.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-    end
-end
+local isPlayerAdmin, godmode, isEnablePosition = false
+local qtyArgentPropre = 0
 
 
-local function toggleNoClip()
-    noclipActive = not noclipActive
-    local playerPed = PlayerPedId()
-    if(noclipActive == true)then
-        SetEntityCollision(playerPed, false, false)
-        SetEntityVisible(playerPed, 0, 0)
-        exports.nCoreGTA:nNotificationMain({
-            text = "~g~ noclip activer.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-    else
-        exports.nCoreGTA:nNotificationMain({
-            text = "~r~ noclip désactiver.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-        SetEntityCollision(playerPed, true, true)
-        SetEntityVisible(playerPed, 1, 1)
-    end
-end
 
-local function degToRad( degs )
-    return degs * 3.141592653589793 / 180
-end
-
-local function togglePosition()
-    isEnablePosition = not isEnablePosition
-    
-    if(isEnablePosition == true)then
-        exports.nCoreGTA:nNotificationMain({
-            text = "~g~ Position afficher.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-    else
-        exports.nCoreGTA:nNotificationMain({
-            text = "~r~ Position retirer.",
-            type = 'basGauche',
-            nTimeNotif = 6000,
-        })
-    end
-end
-
------------------------------------------------> EVENT :
+--> Executer uniquement au spawn et au restart du core pour refresh si le joueur est admin :
 RegisterNetEvent("GTA:UpdatePlayerAdmin")
 AddEventHandler("GTA:UpdatePlayerAdmin", function(admin)
     isPlayerAdmin = admin
 end)
 
 
+--> Executer une fois que le joueur se give un item :
+RegisterNetEvent("GTA:GivePlayerItem")
+AddEventHandler("GTA:GivePlayerItem", function(itemName, qty)
+    TriggerEvent("player:receiveItem", itemName, qty)
+end)
+
+
 --> Commande pour se tp sur un marker :
 --> /tpt 
 RegisterCommand("tpt", function()
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-    
     if (isPlayerAdmin == true) then 
-        tptop()
+        local waypoint = GetFirstBlipInfoId(8)
+        if DoesBlipExist(waypoint) then
+            local waypointCoords = GetBlipInfoIdCoord(waypoint)
+    
+            for height = 1, 1000 do
+                SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
+    
+                local foundGround, zPos = GetGroundZFor_3dCoord(waypointCoords["x"], waypointCoords["y"], height + 0.0)
+    
+                if foundGround then
+                    SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
+                    break
+                end
+                Citizen.Wait(1)
+            end
+        else
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez positionner un marker.",
+                type = "warning",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
+            })
+        end
     end
 end, false)
 
 
 --> Commande pour être invincible : 
---> /Invincible
-RegisterCommand("Invincible", function()
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-    
+--> /god
+RegisterCommand("god", function()
     if (isPlayerAdmin == true) then 
-        toggleGodmode()
+        godmode = not godmode
+        SetEntityInvincible(GetPlayerPed(-1), godmode)
+        if (godmode == true) then
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "God Mode activer.",
+                type = "success",
+                icon = "fa fa-check fa-2x",
+                position = "row-reverse"
+            })
+        else
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "God Mode désactiver.",
+                type = "success",
+                icon = "fa fa-check fa-2x",
+                position = "row-reverse"
+            })
+        end
     end
 end, false)
 
@@ -143,18 +77,15 @@ end, false)
 --> /gap montant 
 RegisterCommand("gap", function(source, args, rawCommand)
     qtyArgentPropre = args[1]
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-    
     if (isPlayerAdmin == true) then
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentPropre", tonumber(qtyArgentPropre))
         else
-            exports.nCoreGTA:nNotificationMain({
-                text = "~r~ Veuillez saisir un nombre correct.",
-                type = 'basGauche',
-                nTimeNotif = 6000,
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez saisir un nombre correct.",
+                type = "warning",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
             })
         end
     end
@@ -165,18 +96,15 @@ end, false)
 --> /gas montant
 RegisterCommand("gas", function(source, args, rawCommand)
     qtyArgentPropre = args[1]
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
     if (isPlayerAdmin == true) then
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentSale", tonumber(qtyArgentPropre))
         else
-            exports.nCoreGTA:nNotificationMain({
-                text = "~r~ Veuillez saisir un nombre correct.",
-                type = 'basGauche',
-                nTimeNotif = 6000,
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez saisir un nombre correct.",
+                type = "warning",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
             })
         end
     end
@@ -187,61 +115,40 @@ end, false)
 --> /gab montant
 RegisterCommand("gab", function(source, args, rawCommand)
     qtyArgentPropre = args[1]
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
     if (isPlayerAdmin == true) then
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentBanque", tonumber(qtyArgentPropre))
         else
-            exports.nCoreGTA:nNotificationMain({
-                text = "~r~ Veuillez saisir un nombre correct.",
-                type = 'basGauche',
-                nTimeNotif = 6000,
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez saisir un nombre correct.",
+                type = "warning",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
             })
         end
     end
 end, false)
 
 
---> Commande pour s'ajouté une arme
---> Pour vous give une arme faite /givepistol (nombre du munition avec)
-RegisterCommand("givepistol", function(source, args, rawCommand)
-    qtyAmmo = args[1]
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
-    if (isPlayerAdmin == true) then
-        if tonumber(qtyAmmo) == nil then
-            qtyAmmo = 1
-            TriggerEvent("player:receiveItem", "Pistolet", 1)
-            TriggerEvent("player:receiveItem", "Munition 9mm", tonumber(qtyAmmo))
-        else
-            TriggerEvent("player:receiveItem", "Pistolet", 1)
-            TriggerEvent("player:receiveItem", "Munition 9mm", tonumber(qtyAmmo))
-        end
-    end
-end, false)
-
-
-
 --> Commande pour s'ajouté des menottes
---> Pour vous give des menottes faite /givemenotte
-RegisterCommand("givemenotte", function(source, args, rawCommand)
-    qty = args[1]
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
+--> Pour vous give des menottes faite exemple : /give pistol 1. Il recherche au niveau de la bdd item "NAME".
+RegisterCommand("give", function(source, args, rawCommand)
+    local itemName = args[1]
+    local itemQty = args[2]
 
+    itemQty = args[2] or 1
     if (isPlayerAdmin == true) then
-        if tonumber(qty) == nil then
-            qty = 1
-            TriggerEvent("player:receiveItem", "Menotte", tonumber(qty))
-        else
-            TriggerEvent("player:receiveItem", "Menotte", tonumber(qty))
+        if (itemName == nil) then 
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez saisir un nom d'item correct exemple : /give Marteau 1.",
+                type = "error",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
+            })
+            return
         end
+
+        TriggerServerEvent("GTA_Admin:GiveItem", itemName, tonumber(itemQty))
     end
 end, false)
 
@@ -249,19 +156,25 @@ end, false)
 --> Commande pour supprimer un véhicule
 --> Pour supprimer un véhicule faite /pv
 RegisterCommand("pv", function(source, args, rawCommand)
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
     if (isPlayerAdmin == true) then
         local playerPed = GetPlayerPed(-1)
         local veh = GetVehiclePedIsIn(playerPed)
         if IsPedInVehicle(playerPed, veh, false) then
             SetEntityAsMissionEntity(veh, true, true )
             Citizen.InvokeNative(0xEA386986E786A54F, Citizen.PointerValueIntInitialized(veh))
-			exports.nCoreGTA:ShowNotification("~g~Véhicule supprimer.")
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Véhicule supprimer.",
+                type = "success",
+                icon = "fa fa-check fa-2x",
+                position = "row-reverse"
+            })
         else
-			exports.nCoreGTA:ShowNotification("~r~Veuillez monter dans un véhicule.")
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = "Veuillez monter dans un véhicule.",
+                type = "warning",
+                icon = "fa fa-exclamation-circle fa-2x",
+                position = "row-reverse"
+            })
         end
     end
 end, false)
@@ -270,25 +183,30 @@ end, false)
 --> Commande pour afficher votre position x,y,z,h
 --> Pour afficher votre position faite /pos
 RegisterCommand("pos", function(source, args, rawCommand)
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
     if (isPlayerAdmin == true) then
-        togglePosition()
+        isEnablePosition = not isEnablePosition
+
+        exports.GTA_Notif:GTA_NUI_ShowNotification({
+            text = "Position afficher.",
+            type = "success",
+            icon = "fa fa-check fa-2x",
+            position = "row-reverse"
+        })
     end
+
+    exports.GTA_Notif:GTA_NUI_ShowNotification({
+        text = "Position retirer.",
+        type = "success",
+        icon = "fa fa-check fa-2x",
+        position = "row-reverse"
+    })
 end, false)
 
 
 --> Commande pour vous give un véhicule
---> Pour vous give un véhicule faite /v
+--> Pour vous give un véhicule faite exemple: /v adder
 RegisterCommand('v', function(source, args, rawCommand)
-    TriggerServerEvent("GTA:CheckAdmin")
-    
-    Wait(50)
-
     if (isPlayerAdmin == true) then
-
         local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 8.0, 0.5))
         local veh = args[1]
         if veh == nil then exports.nCoreGTA:ShowNotification("~y~Veuillez saisir un nom d'un véhicule.") end
@@ -301,18 +219,27 @@ RegisterCommand('v', function(source, args, rawCommand)
                 waiting = waiting + 100
                 Citizen.Wait(100)
                 if waiting > 3000 then
-                    exports.nCoreGTA:ShowNotification("~r~Veuillez saisir un nom d'un véhicule correct !")
+                    exports.GTA_Notif:GTA_NUI_ShowNotification({
+                        text = "Veuillez saisir un nom d'un véhicule correct.",
+                        type = "error",
+                        icon = "fa fa-exclamation-circle fa-2x",
+                        position = "row-reverse"
+                    })
                     break
                 end
             end
             CreateVehicle(vehiclehash, x, y, z, GetEntityHeading(PlayerPedId())+90, 1, 0)
-            exports.nCoreGTA:ShowNotification(veh.. " spawn !")
+            exports.GTA_Notif:GTA_NUI_ShowNotification({
+                text = veh.. " spawn !",
+                type = "success",
+                icon = "fa fa-check fa-2x",
+                position = "row-reverse"
+            })
         end)
     end
 end)
 
-
-----------------------------------> AFFICHER POSITION X,Y,Z :
+-----> AFFICHER POSITION X,Y,Z :
 local waitEnablePostition = 1000
 Citizen.CreateThread(function () 
     while true do 
@@ -339,4 +266,18 @@ Citizen.CreateThread(function ()
 		   waitEnablePostition = 1000
         end
     end 
+end)
+
+--> Executer une fois la ressource restart : 
+AddEventHandler('onResourceStart', function(resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then
+        return
+	end
+
+    TriggerServerEvent("GTA:CheckAdmin")
+end)
+
+--> Executer au spawn du joueur :
+AddEventHandler('playerSpawned', function()
+	TriggerServerEvent("GTA:CheckAdmin")
 end)

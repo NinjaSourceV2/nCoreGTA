@@ -24,6 +24,8 @@ AddEventHandler("GTA:GetPlayerSexServer", function()
 	TriggerClientEvent("GTA:GetSexJoueur", source, sex)
 end)
 
+
+
 RegisterServerEvent('nArgent:DonnerArgentPropre')
 AddEventHandler('nArgent:DonnerArgentPropre', function(toPlayer, amount)
 	local source = source
@@ -33,10 +35,12 @@ AddEventHandler('nArgent:DonnerArgentPropre', function(toPlayer, amount)
 		amount = tonumber(amount)
 		TriggerClientEvent('bank:givecash', source, toPlayer, amount)
 	else
-		TriggerClientEvent('nMenuNotif:showNotification', source,"Veuillez entrer une valeur numérique !")
+		TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Veuillez entrer une valeur numérique !", "warning", "fa fa-exclamation-circle fa-2x")
 		return false
 	end
 end)
+
+
 
 RegisterServerEvent('bank:givecash')
 AddEventHandler('bank:givecash', function(toPlayer, amount)
@@ -51,11 +55,11 @@ AddEventHandler('bank:givecash', function(toPlayer, amount)
 			TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
 				TriggerEvent('GTA:AjoutArgentPropre', toPlayer, tonumber(amount))
 				TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentPropre, argentBanque, argentSale)
-				TriggerClientEvent('nMenuNotif:showNotification', source,"Vous avez donné: ~g~-$".. amount)
-				TriggerClientEvent('nMenuNotif:showNotification', toPlayer,"Une personne vous a donner de l'argent propre: ~g~$".. amount)
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. amount, "success", "fa fa-check fa-2x")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent propre: ~g~$".. amount, "success", "fa fa-check fa-2x")
 			end)
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', source, "Pas assez d'argent!")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent!", "warning", "fa fa-exclamation-circle fa-2x")
 			CancelEvent()
 		end
 	end)
@@ -71,7 +75,7 @@ AddEventHandler('GTA:DonnerArgentSale', function(toPlayer, amount)
 		amount = tonumber(amount)
 		TriggerClientEvent('bank:givesale', source, toPlayer, amount)
 	else
-		TriggerClientEvent('nMenuNotif:showNotification', source,"Veuillez entrer une valeur numérique !")
+		TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Veuillez entrer une valeur numérique !", "warning", "fa fa-exclamation-circle fa-2x")
 		return false
 	end
 end)
@@ -89,15 +93,18 @@ AddEventHandler('bank:givesale', function(toPlayer, amount)
 			TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
 				TriggerEvent('GTA:AjoutArgentSale', toPlayer, tonumber(amount))
 				TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentPropre, argentBanque, argentSale)
-				TriggerClientEvent('nMenuNotif:showNotification', source,"Vous avez donné: ~r~-$".. amount)
-				TriggerClientEvent('nMenuNotif:showNotification', toPlayer,"Une personne vous a donner de l'argent sale : ~r~$".. amount)
+
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné: -$".. amount, "success", "fa fa-check fa-2x")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent sale : ~r~$".. amount, "success", "fa fa-check fa-2x")
 			end)
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', source,"Pas assez d'argent dans le portefeuille !")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent dans le portefeuille !", "warning", "fa fa-exclamation-circle fa-2x")
 			CancelEvent()
 		end
 	end)
 end)
+
+
 
 RegisterServerEvent("GTA:GetHautJoueur")
 AddEventHandler('GTA:GetHautJoueur', function()
@@ -175,9 +182,9 @@ AddEventHandler('GTA:MontrerSonIdentiter', function(NearestPlayerSID)
 
 		if NearestPlayerSID ~= 0 then
 			TriggerClientEvent('GTA:RegarderIdentiter', NearestPlayerSID, tostring(nom), tostring(prenom), tostring(travail), tonumber(age), tostring(origine), tostring(grade))
-			TriggerClientEvent('nMenuNotif:showNotification', NearestPlayerSID, "Une personne vous montre son identité.")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Une personne vous montre son identité.", "success", "fa fa-check fa-2x")
 		else
-			TriggerClientEvent('nMenuNotif:showNotification', source, "Aucune personne devant vous")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Aucune personne devant vous", "warning", "fa fa-exclamation-circle fa-2x")
 		end
 	end)
 end)

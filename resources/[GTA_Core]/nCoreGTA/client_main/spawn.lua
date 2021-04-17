@@ -2,6 +2,8 @@
 local firstTick = false
 local isPlayerSpawn = false
 
+
+
 function LocalPed()
 	return GetPlayerPed(-1)
 end
@@ -123,7 +125,13 @@ Citizen.CreateThread(function ()
 		if isPlayerSpawn == true then 
 			LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(LocalPed(), true))
 			TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
-			exports.nCoreGTA:ShowNotification("✅ ~g~Position synchronisée")
+
+			exports.GTA_Notif:GTA_NUI_ShowNotification({
+				text = "Position synchronisée.",
+				type = "success",
+				icon = "fa fa-check fa-2x",
+				position = "row-reverse"
+			})
 		end
 	end
 end)
@@ -131,7 +139,6 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		if isPlayerSpawn == false then 
-			PlaySoundFrontend(-1, "Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet", 0)
 			TriggerServerEvent("GTA:SPAWNPLAYER")
 			firstTick = true
 			exports.spawnmanager:setAutoSpawn(false)

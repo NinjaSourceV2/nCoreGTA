@@ -27,7 +27,12 @@ AddEventHandler('bank:givesale', function(toPlayer, amount)
     if (playing ~= false) then
       TriggerServerEvent("bank:givesale", toPlayer, tonumber(amount))
     else
-		exports.nCoreGTA:ShowNotification("~r~ Aucune personne devant vous ~w~.")
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = " Aucune personne devant vous.",
+			type = "warning",
+			icon = "fa fa-exclamation-circle fa-2x",
+			position = "row-reverse"
+		})
     end
   end
 end)
@@ -176,10 +181,18 @@ function InputNombre(reason)
     return text
 end
 
+
+
 function RequestToSave()
 	local LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
 	TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
-	exports.nCoreGTA:ShowNotification("~g~ Position Sauvegarder ~w~.")
+
+	exports.GTA_Notif:GTA_NUI_ShowNotification({
+        text = "Position Sauvegarder.",
+        type = "success",
+        icon = "fa fa-check fa-2x",
+        position = "row-reverse"
+    })
 end
 
 function playAnimation(dict, anim, timer, move)
@@ -191,7 +204,7 @@ function playAnimation(dict, anim, timer, move)
 	end
 	
 	TaskPlayAnim(GetPlayerPed(-1), dict, anim, 8.0, 1.0, timer, move, 0.0, false, false, false)
-	exports.rprogress:Start("Changement de tenue", timer)
+	exports.rprogress:Start("Action en cours", timer)
 end
 
 function DrawAdvancedText2(x,y ,w,h,sc, text, r,g,b,a,font,jus)

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+#notification-area {
+    position: fixed;
+    top: -10vh;
+    right: 10px;
+    max-width: 800px;
+    min-height: 100px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.notification {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 10px 8px;
+    color: #f5f5f5;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.notification.success {
+    animation: show_slide 1s ease forwards;
+    border-left: 8px solid #015c0d;
+    background-color: rgba(46, 139, 86, 0.733);
+}
+
+.notification.warning {
+    animation: show_slide 1s ease forwards;
+    border-left: 8px solid #8d5700;
+    background-color: rgba(235, 114, 0, 0.733);
+}
+
+.notification.error {
+    animation: show_slide 1s ease forwards;
+    border-left: 8px solid #5c0101;
+    background-color: rgba(223, 6, 6, 0.733);
+}
+
+
+/*Animation : */
+
+@keyframes show_slide {
+    0% {
+        transform: translateX(100%);
+    }
+    40% {
+        transform: translateX(-10%);
+    }
+    80% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-10px);
+    }
+}
+
+.data_icon {
+    margin-right: 10px;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
