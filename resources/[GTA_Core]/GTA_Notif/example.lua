@@ -19,7 +19,8 @@ RegisterCommand("notif", function(source, args)
         text = "This is a notification using html/css/js and lua.",
         type = args[1],
         icon = "fab fa-angellist fa-2x", --> for the size i recommend you to use always x2 better resolution.
-        position = "row-reverse"
+        position = "row-reverse",
+        sound = "success"
     })
 end, false)
 

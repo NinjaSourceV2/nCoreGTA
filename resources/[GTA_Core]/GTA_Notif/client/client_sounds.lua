@@ -7,7 +7,7 @@
 -- a specific range from the entity to which the sound has been created.
 ------
 
-local standardVolumeOutput = 1.0;
+local standardVolumeOutput = 0.05;
 
 ------
 -- RegisterNetEvent LIFE_CL:Sound:PlayOnOne

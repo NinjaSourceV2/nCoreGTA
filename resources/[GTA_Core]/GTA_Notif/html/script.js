@@ -71,8 +71,9 @@ window.addEventListener('message', function(event) {
                 return
             }
 
-            //Allow player to have a sound when the notif pop pup :
-            fetch('http://GTA_Notif/main')
+            $.post("http://GTA_Notif/main", JSON.stringify({
+                sound: event.data.data_sound
+            }))
 
             //Start the notification :
             Notify(event);
