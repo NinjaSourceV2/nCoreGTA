@@ -1,9 +1,4 @@
 --@Super.Cool.Ninja
-local firstTick = false
-local isPlayerSpawn = false
-
-
-
 function LocalPed()
 	return GetPlayerPed(-1)
 end
@@ -78,73 +73,35 @@ AddEventHandler("GTA:NewPlayerPosition", function(PosX, PosY, PosZ)
 	PlaySoundFrontend(-1, "CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS", 1)
 end)
 
---> Executer une Une fois la ressource start : 
-AddEventHandler('onClientResourceStart', function (resourceName)
-	if(GetCurrentResourceName() ~= resourceName) then
-	  return
-	end
-  
-	Citizen.CreateThread(function()
-		if not firstTick then		
-			while not NetworkIsGameInProgress() and IsPlayerPlaying(PlayerId()) do
-				Wait(800)
-			end
-			
-			TriggerEvent('EnableDisableHUDFS', false)
-
-			DisplayHud(false)
-			DisplayRadar(false)
-	
-			if not IsPlayerSwitchInProgress() then
-				SetEntityVisible(PlayerPedId(), false, 0)
-				TriggerServerEvent('GTA:LoadArgent')
-			end
-		end
-	end)
-end)
 
 --> Executer une fois la ressource restart : 
 AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
         return
 	end
-	
-	isPlayerSpawn = false
-	TriggerEvent('EnableDisableHUDFS', true)
-	DisplayHud(true)
-	DisplayRadar(true)
-	SetEntityVisible(PlayerPedId(), true, 0)
-	TriggerServerEvent('GTA:LoadArgent')
+
 	PlaySoundFrontend(-1, "Whistle", "DLC_TG_Running_Back_Sounds", 0)
+	TriggerServerEvent('GTA:LoadArgent')
+	TriggerEvent('EnableDisableHUDFS', true)
+	TriggerServerEvent("GTA:SPAWNPLAYER")
+	local pos = GetEntityCoords(LocalPed())
+	NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, 0, true, true, false)
+	SetEntityVisible(PlayerPedId(), true, 0)
 	exports.spawnmanager:setAutoSpawn(false)
 end)
 
 Citizen.CreateThread(function ()
 	while true do
 		Citizen.Wait(config.savePosTime)
-		if isPlayerSpawn == true then 
-			LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(LocalPed(), true))
-			TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
+		LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(LocalPed(), true))
+		TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
 
-			exports.GTA_Notif:GTA_NUI_ShowNotification({
-				text = "Position synchronisée.",
-				type = "success",
-				icon = "fa fa-check fa-2x",
-				position = "row-reverse"
-			})
-		end
-	end
-end)
-
-Citizen.CreateThread(function()
-	while true do
-		if isPlayerSpawn == false then 
-			TriggerServerEvent("GTA:SPAWNPLAYER")
-			firstTick = true
-			exports.spawnmanager:setAutoSpawn(false)
-			isPlayerSpawn = true
-			return
-		end
+		exports.GTA_Notif:GTA_NUI_ShowNotification({
+			text = "Position synchronisée.",
+			type = "success",
+			icon = "fa fa-check fa-2x",
+			position = "row-reverse"
+		})
 	end
 end)
 

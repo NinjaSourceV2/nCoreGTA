@@ -6,7 +6,6 @@ RegisterServerEvent("GTA_Notif:OnPlayerJoin")
 AddEventHandler('GTA_Notif:OnPlayerJoin', function()
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
-
 	
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @username',  
 	{
