@@ -12,10 +12,9 @@ AddEventHandler('GTA_Notif:OnPlayerJoin', function()
 		['@username'] = license
 	}, function(res)
 		if(res[1].nom == "Sans Nom" and res[1].prenom == "Sans Prenom") then
-
-			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "Un nouveau citoyen vient de rejoindre la ville.", "success", "fa fa-user fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "Un nouveau citoyen vient de rejoindre la ville.", "success", "fa fa-user fa-2x", "row", "playerjoin")
 		else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.." vient de rejoindre la ville.", "success", "fa fa-user fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.." vient de rejoindre la ville.", "success", "fa fa-user fa-2x", "row", "playerjoin")
 		end
 	end)
 
@@ -28,9 +27,9 @@ AddEventHandler('playerDropped', function()
 
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @username',{['@username'] = license}, function(res)
 		if (res[1].nom == "Sans Nom" and res[1].prenom == "Sans Prenom") then
-			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "Un nouveau citoyen vient de quitté la ville.", "success", "fa fa-user fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, "Un nouveau citoyen vient de quitté la ville.", "success", "fa fa-user fa-2x", "row", "playerjoin")
 		else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.."vient de quitté la ville.", "success", "fa fa-user fa-2x")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  -1, res[1].nom.. " "..res[1].prenom.."vient de quitté la ville.", "success", "fa fa-user fa-2x", "row", "playerjoin")
 		end
 	end)
 
@@ -123,7 +122,8 @@ AddEventHandler('GTA:salaire', function()
 				local newValue = data.banque + res[1].salaire
 				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 				TriggerClientEvent('GTA:AfficherBanque', source, newValue)
-				TriggerClientEvent("nMenuNotif:showNotification", source, "~g~ Salaire reçu : + "..res[1].salaire.." ~g~$")
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  source, " Salaire reçu : + "..res[1].salaire.." $", "success", "fa fa-user fa-2x", "row")
+
 			end)
 		end
 	end)
