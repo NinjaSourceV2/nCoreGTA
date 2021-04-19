@@ -3,7 +3,6 @@
 --====================================================================================
 
 -- Configuration
--- Configuration
 local KeyToucheCloseEvent = {
   { code = 27, event = 'ArrowUp' },
   { code = 173, event = 'ArrowDown' },
@@ -162,27 +161,6 @@ end
 RegisterNetEvent('gcPhone:register_FixePhone')
 AddEventHandler('gcPhone:register_FixePhone', function(phone_number, data)
   Config.FixePhone[phone_number] = data
-end)
-
-local registeredPhones = {}
-Citizen.CreateThread(function()
-  if not Config.AutoFindFixePhones then return end
-  while true do
-    local playerPed = GetPlayerPed(-1)
-    local coords = GetEntityCoords(playerPed)
-    for _, key in pairs({'p_phonebox_01b_s', 'p_phonebox_02_s', 'prop_phonebox_01a', 'prop_phonebox_01b', 'prop_phonebox_01c', 'prop_phonebox_02', 'prop_phonebox_03', 'prop_phonebox_04'}) do
-      local closestPhone = GetClosestObjectOfType(coords.x, coords.y, coords.z, 25.0, key, false)
-      if closestPhone ~= 0 and not registeredPhones[closestPhone] then
-        local phoneCoords = GetEntityCoords(closestPhone)
-        number = ('0%.2s-%.2s%.2s'):format(math.abs(phoneCoords.x*100), math.abs(phoneCoords.y * 100), math.abs(phoneCoords.z *100))
-        if not Config.FixePhone[number] then
-          TriggerServerEvent('gcPhone:register_FixePhone', number, phoneCoords)
-        end
-        registeredPhones[closestPhone] = true
-      end
-    end
-    Citizen.Wait(1000)
-  end
 end)
 
 Citizen.CreateThread(function ()
