@@ -1,259 +1,365 @@
 {
-  "reseau": "Telephone",
-  "warningMessageCount": 250,
-  "themeColor": "#303f9f",
-  "colors": [
-    "#EF5350",
-    "#EC407A",
-    "#AB47BC",
-    "#7E57C2",
-    "#5C6BC0",
-    "#42A5F5",
-    "#29B6F6",
-    "#26C6DA",
-    "#26A69A",
-    "#66BB6A",
-    "#9CCC65",
-    "#D4E157",
-    "#FFCA28",
-    "#FFA726",
-    "#FF7043",
-    "#8D6E63",
-    "#78909C"
-  ],
-
-  "useFormatNumberFrance": true,
-
-  "useWebRTCVocal": false,
-  "RTCConfig": {
-    "iceServers": [{
-      "urls": ["turn:gannon.ovh"],
-      "username": "jojo",
-      "credential": "pass"
-    }]
-  },
-
-  "//": "REQUIRE https://github.com/citizenfx/screenshot-basic or set false",
-  "enableTakePhoto": true,
-  "fileUploadService_Url": "https://wew.wtf/upload.php",
-  "fileUploadService_Field": "files[]",
-
-  "background": {
-    "Calvin & Hobbes": "back001.jpg",
-    "Destiny": "back002.jpg",
-    "Stormtrooper": "back003.jpg",
-    "Custom URL": "URL"
-  },
-  "background_default": {
-    "label": "Stormtrooper",
-    "value": "back003.jpg"
-  },
-
-
-  "coque": {
-    "Sansumg S8": "s8.png",
-    "Iphone X": "iphonex.png"
-  },
-  "coque_default": {
-    "label": "Sansumg S8",
-    "value": "s8.png"
-  },
-
-
-  "serviceCall": [{
-      "display": "Police",
-      "icon": "/html/static/img/icons_app/police.png",
-      "subMenu": [{
-          "title": "Envoyer un message",
-          "eventName": "nAppelMobile:callPolice",
-          "type": {
-            "number": "police"
-          }
+    "currency": "FR",
+    "reseau": "nCoreGTA",
+    "warningMessageCount": 250,
+    "themeColor": "#007aff",
+    "themeColorTitle": "#f7f7f7",
+    "colors": [
+        "#EF5350",
+        "#EC407A",
+        "#AB47BC",
+        "#7E57C2",
+        "#5C6BC0",
+        "#42A5F5",
+        "#29B6F6",
+        "#26C6DA",
+        "#26A69A",
+        "#66BB6A",
+        "#9CCC65",
+        "#D4E157",
+        "#FFCA28",
+        "#FFA726",
+        "#FF7043",
+        "#8D6E63",
+        "#78909C"
+    ],
+    "useFormatNumberFrance": true,
+    "/Sentry/": "Enabling this option can help us to discover new bugs and solve them ASAP! (We beg you to keep this enabled, so we can help us each other as a community)",
+    "useSentryErroTracking": true,
+    "useWebRTCVocal": false,
+    "RTCConfig": {
+        "iceServers": [{
+            "urls": [
+                "turn:barrax.needrp.net"
+            ],
+            "username": "gcphone",
+            "credential": "gcphone"
+        }]
+    },
+    "//": "REQUIRE https://github.com/citizenfx/screenshot-basic or set false",
+    "enableTakePhoto": true,
+    "fileUploadService_Url": "https://api.imgur.com/3/upload",
+    "fileUploadService_Field": "imgur",
+    "background": {
+        "White desert": "back001.jpg",
+        "Palms": "back002.jpg",
+        "Santa Mónica Beach": "back003.jpg",
+        "Route 66": "color.jpg",
+        "Dark planet": "iluminacion.jpg",
+        "Illuminated planet": "oscuridad.jpg",
+        "Custom URL": "URL"
+    },
+    "background_default": {
+        "label": "Santa Mónica Beach",
+        "value": "back003.jpg"
+    },
+    "coque": {
+        "iPhone 12": "12.png"
+    },
+    "sonido": {
+        "Astronomia": "ring.ogg",
+        "Safaera": "safaera.ogg",
+        "Bella Ciao": "bella_ciao.ogg",
+        "Casa Papel": "casa_papel.ogg",
+        "Iphone 11": "iphone_11.ogg",
+        "Tusa": "tusa.ogg",
+        "XXXTentacion": "xtentacion.ogg"
+    },
+    "coque_default": {
+        "label": "iPhone 12",
+        "value": "12.png"
+    },
+    "sonido_default": {
+        "label": "Casa Papel",
+        "value": "casa_papel.ogg"
+    },
+    "serviceCall": [{
+            "display": "Police",
+            "icon": "/html/static/img/icons_app/police.png",
+            "subMenu": [{
+                    "title": "Envoyer un message",
+                    "eventName": "nAppelMobile:callPolice",
+                    "type": {
+                        "number": "police"
+                    }
+                },
+                {
+                    "title": "Appeler le standard",
+                    "eventName": "gcphone:autoCallNumber",
+                    "type": {
+                        "number": "911"
+                    }
+                }
+            ]
         },
         {
-          "title": "Appeler le standard",
-          "eventName": "gcphone:autoCallNumber",
-          "type": {
-            "number": "911"
-          }
+            "display": "Ambulance",
+            "backgroundColor": "red",
+            "subMenu": [{
+                "title": "Envoyer un message",
+                "eventName": "nAppelMobile:callMedic",
+                "type": {
+                    "number": "medic"
+                }
+            }]
         }
-      ]
-    },
-    {
-      "display": "Ambulance",
-      "backgroundColor": "red",
-      "subMenu": [{
-        "title": "Envoyer un message",
-        "eventName": "nAppelMobile:callMedic",
-        "type": {
-          "number": "medic"
+    ],
+    "defaultContacts": [{
+            "number": "ambulance",
+            "display": "Ambulance",
+            "backgroundColor": "red",
+            "icon": "/html/static/img/icons_app/lsfd.png"
+        },
+        {
+            "number": "police",
+            "display": "Police",
+            "backgroundColor": "blue",
+            "icon": "/html/static/img/icons_app/policia.png"
+        },
+        {
+            "number": "taxi",
+            "display": "Taxi",
+            "backgroundColor": "yellow"
         }
-      }]
+    ],
+    "apps": [{
+            "name": "Phone",
+            "fr_FR__name": "Téléphone",
+            "en_US__name": "Phone",
+            "icons": "/html/static/img/icons_app/call.png",
+            "routeName": "appels",
+            "inHomePage": true
+        },
+        {
+            "name": "Contacts",
+            "fr_FR__name": "Contacts",
+            "en_US__name": "Contacts",
+            "icons": "/html/static/img/icons_app/contacts.png",
+            "routeName": "contacts",
+            "inHomePage": false
+        },
+        {
+            "name": "Messages",
+            "fr_FR__name": "Messages",
+            "en_US__name": "Messages",
+            "icons": "/html/static/img/icons_app/sms.png",
+            "routeName": "messages",
+            "inHomePage": true,
+            "puceRef": "nbMessagesUnread"
+        },
+        {
+            "name": "Settings",
+            "fr_FR__name": "Paramètres",
+            "en_US__name": "System",
+            "icons": "/html/static/img/icons_app/settings.png",
+            "routeName": "parametre",
+            "inHomePage": false
+        },
+        {
+            "name": "Camera",
+            "fr_FR__name": "Photo",
+            "en_US__name": "Camera",
+            "icons": "/html/static/img/icons_app/photo.png",
+            "routeName": "photo"
+        },
+        {
+            "name": "Notes",
+            "fr_FR__name": "Notes ",
+            "en_US__name": "Notes ",
+            "routeName": "notes",
+            "icons": "/html/static/img/icons_app/notes.png"
+        }
+    ],
+    "defaultLanguage": "fr_FR",
+    "language": {
+        "fr_FR": {
+            "NAME": "Français",
+            "PHONE_WARNING_MESSAGE": "Saturation mémoires !",
+            "PHONE_WARNING_MESSAGE_MESS": "messages",
+            "CONFIRM": "Accepter",
+            "CANCEL": "Annuler",
+            "APP_CONFIG_TITLE": "Paramètres",
+            "APP_CONFIG_MY_MUNBER": "Mon numéro",
+            "APP_CONFIG_WALLPAPER": "Fond d'écran",
+            "APP_CONFIG_CASE": "Coque téléhone",
+            "APP_CONFIG_SOUND": "Téléphone",
+            "APP_CONFIG_ZOOM": "Zoom",
+            "APP_CONFIG_VOLUME": "Volume",
+            "APP_CONFIG_LANGUAGE": "Langue",
+            "APP_CONFIG_MOUSE_SUPPORT": "Controle souris",
+            "APP_CONFIG_RESET": "Formater",
+            "APP_CONFIG_RESET_CONFIRM": "TOUT SUPPRIMER",
+            "APP_PHONE_CALL": "Appeler",
+            "APP_PHONE_CALL_ANONYMOUS": "Appeler en anomyne",
+            "APP_PHONE_DELETE": "Effacer",
+            "APP_PHONE_DELETE_ALL": "Effacer TOUT.",
+            "APP_PHONE_TITLE": "Téléphone",
+            "APP_PHONE_MENU_FAVORITES": "Favoris",
+            "APP_PHONE_MENU_RECENTS": "Récents",
+            "APP_PHONE_MENU_CONTACTS": "Contacts",
+            "APP_PHONE_ENTER_NUMBER": "Entrer un numero",
+            "APP_PHONE_NUMBER_HIDDEN": "Munero masqué",
+            "APP_PHONE_NUMBER_UNKNOWN": "Inconnu",
+            "APP_PHONE_CALL_IGNORE": "Ignorée",
+            "APP_CONTACT_TITLE": "Contact",
+            "APP_CONTACT_NEW": "Nouveau Contact",
+            "APP_CONTACT_EDIT": "Modifier le contact",
+            "APP_CONTACT_SAVE": "Enregistrer",
+            "APP_CONTACT_CANCEL": "Annuler",
+            "APP_CONTACT_DELETE": "Supprimer",
+            "APP_CONTACT_LABEL_NAME": "Prénom - Nom",
+            "APP_CONTACT_LABEL_NUMBER": "Numéro",
+            "APP_MESSAGE_TITLE": "Messages",
+            "APP_MESSAGE_NEW_MESSAGE": "Nouveau Message",
+            "APP_MESSAGE_ERASE_CONVERSATION": "Effacer la conversation",
+            "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Effacer toutes les conv.",
+            "APP_MESSAGE_SEND_GPS": "Envoyer Coord GPS",
+            "APP_MESSAGE_SEND_PHOTO": "Envoyer une photo",
+            "APP_MESSAGE_SET_GPS": "Position GPS",
+            "APP_MESSAGE_ZOOM_IMG": "Zoom",
+            "APP_MESSAGE_DELETE": "Effacer",
+            "APP_MESSAGE_MESS_NUMBER": "Numero ",
+            "APP_MESSAGE_SAVE_CONTACT": "Enregistrer le contact",
+            "APP_MESSAGE_MESS_SMS": "SMS",
+            "APP_MESSAGE_MESS_CALL": "Appeler",
+            "APP_MESSAGE_MESS_COPY": "Copier",
+            "APP_MESSAGE_CONTACT_TITLE": "Contacts",
+            "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Enter un numero",
+            "APP_MESSAGE_PLACEHOLDER_ENTER_MESSAGE": "Envoyer un message",
+            "APP_DARKTCHAT_TITLE": "Dark Tchat",
+            "APP_DARKTCHAT_NEW_CHANNEL": "Ajouter un channel",
+            "APP_DARKTCHAT_DELETE_CHANNEL": "Effacer le channel",
+            "APP_DARKTCHAT_CANCEL": "Annuler",
+            "APP_DARKTCHAT_PLACEHOLDER_ENTER_MESSAGE": "Entrer un message",
+            "APP_NOTES": "Notes",
+            "APP_BANK_BUTTON_CANCEL": "Annuler",
+            "APP_DARKTCHAT_NEW_NOTE": "Ajouter une note",
+            "APP_DARKTCHAT_DELETE_NOTE": "Supprimer une note",
+            "TIMEAGO": [
+                "à l'instant", [
+                    "il y a %s seconde",
+                    "il y a %s secondes"
+                ],
+                [
+                    "il y a %s minute",
+                    "il y a %s minutes"
+                ],
+                [
+                    "il y a %s heure",
+                    "il y a %s heures"
+                ],
+                [
+                    "il y a %s jour",
+                    "il y a %s jours"
+                ],
+                [
+                    "il y a %s semaine",
+                    "il y a %s semaines"
+                ],
+                [
+                    "il y a %s mois",
+                    "il y a %s mois"
+                ],
+                [
+                    "il y a %s an",
+                    "il y a %s ans"
+                ]
+            ]
+        },
+        "en_US": {
+            "NAME": "English",
+            "PHONE_WARNING_MESSAGE": "Reminder",
+            "PHONE_WARNING_MESSAGE_MESS": "Messages",
+            "CONFIRM": "Accept",
+            "CANCEL": "Abort",
+            "APP_CONFIG_TITLE": "Settings",
+            "APP_MESSAGE_SAVE_CONTACT": "Save contact",
+            "APP_CONFIG_MY_MUNBER": "My number",
+            "APP_CONFIG_WALLPAPER": "Wallpaper",
+            "APP_CONFIG_CASE": "Telephone cover",
+            "APP_CONFIG_SOUND": "Ringtone",
+            "APP_CONFIG_ZOOM": "Zoom",
+            "APP_CONFIG_VOLUME": "Volume",
+            "APP_CONFIG_LANGUAGE": "Language",
+            "APP_CONFIG_MOUSE_SUPPORT": "Mouse control",
+            "APP_CONFIG_RESET": "Factory Reset",
+            "APP_CONFIG_RESET_CONFIRM": "DELETE ALL",
+            "APP_PHONE_CALL": "Call",
+            "APP_PHONE_CALL_ANONYMOUS": "Anonymous call",
+            "APP_PHONE_DELETE": "Delete",
+            "APP_PHONE_DELETE_ALL": "Delete all.",
+            "APP_PHONE_CANCEL": "Cancel",
+            "APP_PHONE_ADD": "Save as New Contact",
+            "APP_PHONE_TITLE": "Telephone number",
+            "APP_PHONE_MENU_FAVORITES": "Favourites",
+            "APP_PHONE_MENU_RECENTS": "Newest",
+            "APP_PHONE_MENU_CONTACTS": "Contacts",
+            "APP_PHONE_ENTER_NUMBER": "Enter a number",
+            "APP_PHONE_NUMBER_HIDDEN": "Private Number",
+            "APP_PHONE_NUMBER_UNKNOWN": "Unknown Caller",
+            "APP_CONTACT_TITLE": "Contact",
+            "APP_CONTACT_NEW": "New Contact",
+            "APP_CONTACT_EDIT": "Edit Contact",
+            "APP_CONTACT_SAVE": "Save Contact",
+            "APP_CONTACT_CANCEL": "Cancel",
+            "APP_CONTACT_DELETE": "Delete",
+            "APP_CONTACT_LABEL_NAME": "Contact Name",
+            "APP_CONTACT_LABEL_NUMBER": "Number",
+            "APP_MESSAGE_TITLE": "Messages",
+            "APP_MESSAGE_NEW_MESSAGE": "New Message",
+            "APP_MESSAGE_ERASE_CONVERSATION": "Delete Call",
+            "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Delete All Messages",
+            "APP_MESSAGE_SEND_GPS": "Send GPS Position",
+            "APP_MESSAGE_SET_GPS": "GPS Position",
+            "APP_MESSAGE_ZOOM_IMG": "Zoom In",
+            "APP_MESSAGE_DELETE": "Delete",
+            "APP_MESSAGE_SMS": "Text Message",
+            "APP_MESSAGE_CONTACT_TITLE": "Contacts",
+            "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Enter a number",
+            "APP_MESSAGE_PLACEHOLDER_ENTER_MESSAGE": "Send Message",
+            "APP_MESSAGE_MESS_SMS": "SMS",
+            "APP_MESSAGE_MESS_CALL": "Call",
+            "APP_MESSAGE_MESS_COPY": "Copy",
+            "APP_MESSAGE_SEND_PHOTO": "Send a photo",
+            "APP_DARKTCHAT_TITLE": "Dark Web",
+            "APP_DARKTCHAT_NEW_CHANNEL": "Add Channel",
+            "APP_DARKTCHAT_DELETE_CHANNEL": "Delete Channel",
+            "APP_DARKTCHAT_CANCEL": "Cancel",
+            "APP_DARKTCHAT_PLACEHOLDER_ENTER_MESSAGE": "Enter Message",
+            "APP_NOTES": "Notes",
+            "APP_DARKTCHAT_NEW_NOTE": "New note",
+            "APP_DARKTCHAT_DELETE_NOTE": "Delete note",
+
+            "TIMEAGO": [
+                "just now", [
+                    "%s second ago",
+                    "%s seconds ago"
+                ],
+                [
+                    "%s minute ago",
+                    "%s minutes ago"
+                ],
+                [
+                    "%s hour ago",
+                    "%s hours ago"
+                ],
+                [
+                    "%s day ago",
+                    "%s days ago"
+                ],
+                [
+                    "%s week ago",
+                    "%s weeks ago"
+                ],
+                [
+                    "%s month ago",
+                    "%s months ago"
+                ],
+                [
+                    "%s year ago",
+                    "%s years ago"
+                ]
+            ]
+        }
     }
-  ],
-
-  "apps": [{
-      "name": "Mobilphone",
-      "fr_FR__name": "Téléphone",
-      "en_US__name": "Phone",
-      "icons": "/html/static/img/icons_app/call.png",
-      "routeName": "appels",
-      "inHomePage": true
-    },
-    {
-      "name": "Messages",
-      "fr_FR__name": "Messages",
-      "en_US__name": "Messages",
-      "icons": "/html/static/img/icons_app/sms.png",
-      "routeName": "messages",
-      "inHomePage": true,
-      "puceRef": "nbMessagesUnread"
-    },
-    {
-      "name": "Contacts",
-      "fr_FR__name": "Contacts",
-      "en_US__name": "Contacts",
-      "icons": "/html/static/img/icons_app/contacts.png",
-      "routeName": "contacts",
-      "inHomePage": true
-    },
-    {
-      "name": "Settings",
-      "fr_FR__name": "Paramètres",
-      "en_US__name": "System",
-      "icons": "/html/static/img/icons_app/settings.png",
-      "routeName": "parametre",
-      "inHomePage": true
-    },
-    {
-      "name": "Camera",
-      "fr_FR__name": "Photo",
-      "en_US__name": "Camera",
-      "icons": "/html/static/img/icons_app/photo.png",
-      "routeName": "photo"
-    }
-  ],
-  "defaultLanguage": "fr_FR",
-  "language": {
-     "fr_FR": {
-      "NAME": "Français",
-      "PHONE_WARNING_MESSAGE": "Saturation mémoires !",
-      "PHONE_WARNING_MESSAGE_MESS": "messages",
-      "CONFIRM": "Accepter",
-      "CANCEL": "Annuler",
-      "APP_CONFIG_TITLE": "Paramètres",
-      "APP_CONFIG_MY_MUNBER": "Mon numéro",
-      "APP_CONFIG_WALLPAPER": "Fond d'écran",
-      "APP_CONFIG_CASE": "Coque téléhone",
-      "APP_CONFIG_ZOOM": "Zoom",
-      "APP_CONFIG_VOLUME": "Volume",
-      "APP_CONFIG_LANGUAGE": "Langue",
-      "APP_CONFIG_MOUSE_SUPPORT": "Controle souris",
-      "APP_CONFIG_RESET": "Formater",
-      "APP_CONFIG_RESET_CONFIRM": "TOUT SUPPRIMER",
-      "APP_PHONE_CALL": "Appeler",
-      "APP_PHONE_CALL_ANONYMOUS": "Appeler en anomyne",
-      "APP_PHONE_DELETE": "Effacer",
-      "APP_PHONE_DELETE_ALL": "Effacer TOUT.",
-      "APP_PHONE_TITLE": "Téléphone",
-      "APP_PHONE_MENU_FAVORITES": "Favoris",
-      "APP_PHONE_MENU_RECENTS": "Récents",
-      "APP_PHONE_MENU_CONTACTS": "Contacts",
-      "APP_PHONE_ENTER_NUMBER": "Entrer un numero",
-      "APP_PHONE_NUMBER_HIDDEN": "Munero masqué",
-      "APP_PHONE_NUMBER_UNKNOWN": "Inconnu",
-      "APP_PHONE_CALL_IGNORE": "Ignorée",
-      "APP_CONTACT_TITLE": "Contact",
-      "APP_CONTACT_NEW": "Nouveau Contact",
-      "APP_CONTACT_EDIT": "Modifier le contact",
-      "APP_CONTACT_SAVE": "Enregistrer",
-      "APP_CONTACT_CANCEL": "Annuler",
-      "APP_CONTACT_DELETE": "Supprimer",
-      "APP_CONTACT_LABEL_NAME": "Prénom - Nom",
-      "APP_CONTACT_LABEL_NUMBER": "Numéro",
-      "APP_MESSAGE_TITLE": "Messages",
-      "APP_MESSAGE_NEW_MESSAGE": "Nouveau Message",
-      "APP_MESSAGE_ERASE_CONVERSATION": "Effacer la conversation",
-      "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Effacer toutes les conv.",
-      "APP_MESSAGE_SEND_GPS": "Envoyer Coord GPS",
-      "APP_MESSAGE_SET_GPS": "Position GPS",
-      "APP_MESSAGE_ZOOM_IMG": "Zoom",
-      "APP_MESSAGE_DELETE": "Effacer",
-      "APP_MESSAGE_MESS_NUMBER": "Numero ",
-      "APP_MESSAGE_MESS_SMS": "SMS",
-      "APP_MESSAGE_MESS_CALL": "Appeler",
-      "APP_MESSAGE_MESS_COPY": "Copier",
-      "APP_MESSAGE_CONTACT_TITLE": "Contacts",
-      "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Saisir un numero",
-      "APP_MESSAGE_PLACEHOLDER_ENTER_MESSAGE": "Envoyer un message",
-
-      "TIMEAGO": [
-        "à l'instant",
-        ["il y a %s seconde", "il y a %s secondes"],
-        ["il y a %s minute", "il y a %s minutes"],
-        ["il y a %s heure", "il y a %s heures"],
-        ["il y a %s jour", "il y a %s jours"],
-        ["il y a %s semaine", "il y a %s semaines"],
-        ["il y a %s mois", "il y a %s mois"],
-        ["il y a %s an", "il y a %s ans"]
-      ]
-
-    },
-    "en_US": {
-      "NAME": "English",
-      "PHONE_WARNING_MESSAGE": "memento",
-      "PHONE_WARNING_MESSAGE_MESS": "news",
-      "CONFIRM": "Accept",
-      "CANCEL": "abort",
-      "APP_CONFIG_TITLE": "parameter",
-      "APP_CONFIG_MY_MUNBER": "My number",
-      "APP_CONFIG_WALLPAPER": "wallpaper",
-      "APP_CONFIG_CASE": "telephone cover",
-      "APP_CONFIG_ZOOM": "zoom",
-      "APP_CONFIG_VOLUME": "volume",
-      "APP_CONFIG_LANGUAGE": "Language",
-      "APP_CONFIG_MOUSE_SUPPORT": "Mouse control",
-      "APP_CONFIG_RESET": "format",
-      "APP_CONFIG_RESET_CONFIRM": "DELETE ALL",
-      "APP_PHONE_CALL": "call",
-      "APP_PHONE_DELETE": "Delete",
-      "APP_PHONE_DELETE_ALL": "Delete all.",
-      "APP_PHONE_TITLE": "Telephone number",
-      "APP_PHONE_MENU_FAVORITES": "favourites",
-      "APP_PHONE_MENU_RECENTS": "Newest",
-      "APP_PHONE_MENU_CONTACTS": "contacts",
-      "APP_PHONE_ENTER_NUMBER": "Enter a number",
-      "APP_CONTACT_TITLE": "contact details",
-      "APP_CONTACT_NEW": "New contact",
-      "APP_CONTACT_EDIT": "Change the contact",
-      "APP_CONTACT_SAVE": "registration",
-      "APP_CONTACT_CANCEL": "abort",
-      "APP_CONTACT_DELETE": "Delete",
-      "APP_CONTACT_LABEL_NAME": "First name - Last name",
-      "APP_CONTACT_LABEL_NUMBER": "number",
-      "APP_MESSAGE_TITLE": "news",
-      "APP_MESSAGE_NEW_MESSAGE": "New Message",
-      "APP_MESSAGE_ERASE_CONVERSATION": "Delete the call",
-      "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Delete all conv.",
-      "APP_MESSAGE_SEND_GPS": "Send GPS coupling",
-      "APP_MESSAGE_SET_GPS": "GPS position",
-      "APP_MESSAGE_ZOOM_IMG": "Enlarge",
-      "APP_MESSAGE_DELETE": "Delete",
-      "APP_MESSAGE_SMS": "text message",
-      "APP_MESSAGE_CONTACT_TITLE": "contacts",
-      "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Enter a number",
-      "APP_MESSAGE_PLACEHOLDER_ENTER_MESSAGE": "Send a message",
-
-      "TIMEAGO": [
-        "just now",
-        ["%s second ago", "%s seconds ago"],
-        ["%s minute ago", "%s minutes ago"],
-        ["%s hour ago", "%s hours ago"],
-        ["%s day ago", "%s days ago"],
-        ["%s week ago", "%s weeks ago"],
-        ["%s month ago", "%s months ago"],
-        ["%s year ago", "%s years ago"]
-      ]
-    }
-  }
 }
