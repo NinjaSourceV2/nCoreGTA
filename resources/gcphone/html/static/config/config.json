@@ -58,12 +58,8 @@
     },
     "sonido": {
         "Astronomia": "ring.ogg",
-        "Safaera": "safaera.ogg",
         "Bella Ciao": "bella_ciao.ogg",
-        "Casa Papel": "casa_papel.ogg",
-        "Iphone 11": "iphone_11.ogg",
-        "Tusa": "tusa.ogg",
-        "XXXTentacion": "xtentacion.ogg"
+        "Iphone 11": "iphone_11.ogg"
     },
     "coque_default": {
         "label": "iPhone 12",
