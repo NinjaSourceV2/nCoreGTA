@@ -1,0 +1,38 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+.progress-hunger,
+.progress-water {
+    position: relative;
+    top: 825px;
+    left: 15px;
+    width: 275px;
+    height: 15px;
+    border-radius: 2px;
+    margin: 2px;
+    overflow: hidden;
+}
+
+.progress-hunger {
+    background: #fec20f60;
+}
+
+.progress-water {
+    background: #0f7ffe65;
+}
+
+.progress-hunger .progressfill {
+    border-radius: 2px;
+    width: 0%;
+    height: 100%;
+    background: #FEC20F;
+}
+
+.progress-water .progressfill {
+    border-radius: 2px;
+    width: 0%;
+    height: 100%;
+    background: #0f7ffe;
+}

@@ -171,24 +171,21 @@ AddEventHandler('EnableDisableHUDFS', function(bool)
 end)
 
 -- FUNCTIONS
-local DrawRect = DrawRect
 local waitDisplayHud = 1000
-function drawStats(x,y,width,height,r,g,b,a)
-	DrawRect(x + width/2, y + height/2, width, height, r, g, b, a)
-end
-
-
 --Chargement en boucle pour actualisé vos status Faim/Soif
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(waitDisplayHud)
+
+		SendNUIMessage({
+			type = "hunger",
+			data_hudOn = enableHud,
+			data_faim = pFaim,
+			data_soif = pSoif
+		})
+
 		if enableHud == true then
 			waitDisplayHud = 1
-			drawStats(0.013, 0.757, 0.145, 0.0359999999999999, 0, 0, 0, 97) --Background 
-			drawStats(0.015, 0.778, 0.141, 0.0109999999999999, 117, 163, 209, 50) --Blackground Water
-			drawStats(0.015, 0.760, 0.141, 0.0109999999999999, 209, 163, 117, 50) --Blackground Food
-			drawStats(0.015, 0.760, pFaim * 0.141 / 100, 0.0109999999999999, 194, 133, 71, 225) --Faim barre
-			drawStats(0.015, 0.778, pSoif * 0.141 / 100, 0.0109999999999999, 71, 133, 194, 225) --Soif barre
 		else
 			waitDisplayHud = 1000
 		end
