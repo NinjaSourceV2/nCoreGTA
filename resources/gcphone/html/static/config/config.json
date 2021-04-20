@@ -70,8 +70,8 @@
         "value": "12.png"
     },
     "sonido_default": {
-        "label": "Casa Papel",
-        "value": "casa_papel.ogg"
+        "label": "Iphone 11",
+        "value": "iphone_11.ogg"
     },
     "serviceCall": [{
             "display": "Police",

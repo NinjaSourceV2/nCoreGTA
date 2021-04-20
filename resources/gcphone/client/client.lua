@@ -28,11 +28,9 @@ local PhoneInCall = {}
 local currentPlaySound = false
 local soundDistanceMax = 8.0
 
-
 function hasPhone(cb)
   if (exports.nMenuPersonnel:getQuantity("Téléphone") > 0) then return cb(true) else cb(false) end
 end
-
 
 function NoPhoneFound()
   exports.GTA_Notif:GTA_NUI_ShowNotification({
@@ -359,14 +357,12 @@ local inCall = false
 
 RegisterNetEvent("gcPhone:waitingCall")
 AddEventHandler("gcPhone:waitingCall", function(infoCall, initiator)
+  SendNUIMessage({event = 'waitingCall', infoCall = infoCall, initiator = initiator})
   if initiator == true then
-    SendNUIMessage({event = 'waitingCall', infoCall = infoCall, initiator = initiator})
     PhonePlayCall()
     if menuIsOpen == false then
       TooglePhone()
     end
-  elseif hasPhone == true then
-    SendNUIMessage({event = 'waitingCall', infoCall = infoCall, initiator = initiator})
   end
 end)
 
@@ -374,17 +370,10 @@ RegisterNetEvent("gcPhone:acceptCall")
 AddEventHandler("gcPhone:acceptCall", function(infoCall, initiator)
   if inCall == false and USE_RTC == false then
     inCall = true
-    if Config.UseMumbleVoIP then
-      exports["mumble-voip"]:SetCallChannel(infoCall.id+1)
-    elseif Config.UseSaltyChat then
-      exports['saltychat']:EstablishCall(AppelsEnCours[id].receiver_src, AppelsEnCours[id].transmitter_src) --Assign Channel
-      exports['saltychat']:EstablishCall(AppelsEnCours[id].transmitter_src, AppelsEnCours[id].receiver_src) --Assign Channel
-    else
-      NetworkSetVoiceChannel(infoCall.id + 1)
-      NetworkSetTalkerProximity(0.0)
-    end
+    NetworkSetVoiceChannel(infoCall.id + 1)
+    NetworkSetTalkerProximity(0.0)
   end
-  if menuIsOpen == false then
+  if menuIsOpen == false then 
     TooglePhone()
   end
   PhonePlayCall()
@@ -395,15 +384,8 @@ RegisterNetEvent("gcPhone:rejectCall")
 AddEventHandler("gcPhone:rejectCall", function(infoCall)
   if inCall == true then
     inCall = false
-    if Config.UseMumbleVoIP then
-      exports["mumble-voip"]:SetCallChannel(0)
-    elseif Config.UseSaltyChat then
-      exports['saltychat']:EndCall(AppelsEnCours[id].receiver_src, AppelsEnCours[id].transmitter_src) --Assign Channel
-      exports['saltychat']:EndCall(AppelsEnCours[id].transmitter_src, AppelsEnCours[id].receiver_src) --Assign Channel
-    else
-      Citizen.InvokeNative(0xE036A705F989E049)
-      NetworkSetTalkerProximity(2.5)
-    end
+    Citizen.InvokeNative(0xE036A705F989E049)
+    NetworkSetTalkerProximity(2.5)
   end
   PhonePlayText()
   SendNUIMessage({event = 'rejectCall', infoCall = infoCall})
@@ -417,11 +399,9 @@ end)
 
 
 function startCall (phone_number, rtcOffer, extraData)
-  if rtcOffer == nil then
-    rtcOffer = ''
-  end
   TriggerServerEvent('gcPhone:startCall', phone_number, rtcOffer, extraData)
 end
+
 
 function acceptCall (infoCall, rtcAnswer)
   TriggerServerEvent('gcPhone:acceptCall', infoCall, rtcAnswer)
@@ -435,7 +415,7 @@ function ignoreCall(infoCall)
   TriggerServerEvent('gcPhone:ignoreCall', infoCall)
 end
 
-function requestHistoriqueCall()
+function requestHistoriqueCall() 
   TriggerServerEvent('gcPhone:getHistoriqueCall')
 end
 
@@ -447,28 +427,27 @@ function appelsDeleteAllHistorique ()
   TriggerServerEvent('gcPhone:appelsDeleteAllHistorique')
 end
 
-
 --====================================================================================
 --  Event NUI - Appels
 --====================================================================================
 
 RegisterNUICallback('startCall', function (data, cb)
   startCall(data.numero, data.rtcOffer, data.extraData)
-  cb(true)
+  cb()
 end)
 
 RegisterNUICallback('acceptCall', function (data, cb)
   acceptCall(data.infoCall, data.rtcAnswer)
-  cb(true)
+  cb()
 end)
 RegisterNUICallback('rejectCall', function (data, cb)
   rejectCall(data.infoCall)
-  cb(true)
+  cb()
 end)
 
 RegisterNUICallback('ignoreCall', function (data, cb)
   ignoreCall(data.infoCall)
-  cb(true)
+  cb()
 end)
 
 RegisterNUICallback('notififyUseRTC', function (use, cb)
@@ -489,14 +468,13 @@ end)
 
 RegisterNUICallback('onCandidates', function (data, cb)
   TriggerServerEvent('gcPhone:candidates', data.id, data.candidates)
-  cb(true)
+  cb()
 end)
 
 RegisterNetEvent("gcPhone:candidates")
 AddEventHandler("gcPhone:candidates", function(candidates)
   SendNUIMessage({event = 'candidatesAvailable', candidates = candidates})
 end)
-
 
 
 RegisterNetEvent('gcphone:autoCall')
@@ -510,6 +488,7 @@ RegisterNetEvent('gcphone:autoCallNumber')
 AddEventHandler('gcphone:autoCallNumber', function(data)
   TriggerEvent('gcphone:autoCall', data.number)
 end)
+
 
 RegisterNetEvent('gcphone:autoAcceptCall')
 AddEventHandler('gcphone:autoAcceptCall', function(infoCall)
@@ -597,18 +576,15 @@ RegisterNUICallback('setGPS', function(data, cb)
 end)
 
 -- Add security for event (leuit#0100)
-RegisterNUICallback('callEvent', function(data, cb)
-  local eventName = data.eventName or ''
-  if string.match(eventName, 'gcphone') then
-    if data.data ~= nil then
-      TriggerEvent(data.eventName, data.data)
-    else
-      TriggerEvent(data.eventName)
-    end
-  end
-  cb(true)
+RegisterNUICallback('callEvent', function(data, cb) 
+  local eventName = data.eventName or '' 
+    if data.data ~= nil then  
+      TriggerEvent(data.eventName, data.data) 
+    else 
+      TriggerEvent(data.eventName) 
+    end 
+  cb() 
 end)
-
 
 RegisterNUICallback('useMouse', function(um, cb)
     useMouse = um
@@ -621,19 +597,17 @@ end)
 
 
 
-function TooglePhone()
+function TooglePhone() 
   menuIsOpen = not menuIsOpen
   SendNUIMessage({show = menuIsOpen})
-  if menuIsOpen == true then
+  if menuIsOpen == true then 
     PhonePlayIn()
-    TriggerEvent('gcPhone:setMenuStatus', true)
-    SetBigmapActive(1,0)
   else
     PhonePlayOut()
-    TriggerEvent('gcPhone:setMenuStatus', false)
-    SetBigmapActive(0,0)
   end
 end
+
+
 RegisterNUICallback('faketakePhoto', function(data, cb)
   menuIsOpen = false
   TriggerEvent('gcPhone:setMenuStatus', false)
@@ -659,13 +633,14 @@ end)
 ----------------------------------
 RegisterNUICallback('appelsDeleteHistorique', function (data, cb)
   appelsDeleteHistorique(data.numero)
-  cb(true)
-end)
-RegisterNUICallback('appelsDeleteAllHistorique', function (data, cb)
-  appelsDeleteAllHistorique(data.infoCall)
-  cb(true)
+  cb()
 end)
 
+
+RegisterNUICallback('appelsDeleteAllHistorique', function (data, cb)
+  appelsDeleteAllHistorique(data.infoCall)
+  cb()
+end)
 
 ----------------------------------
 ---------- Force Update ----------
@@ -676,15 +651,13 @@ AddEventHandler('gcphone:phoneReady', function()
   phoneReady = true
 end)
 
-AddEventHandler('onClientResourceStart', function(res)
-  DoScreenFadeIn(300)
-  if res == "gcphone" then
-    while not phoneReady do
-      TriggerServerEvent('gcPhone:allUpdate')
-      -- Try every 5 Seconds
-      Citizen.Wait(50000)
-    end
+--> Executer une fois la ressource restart : 
+AddEventHandler('onResourceStart', function(resourceName)
+  if (GetCurrentResourceName() ~= resourceName) then
+      return
   end
+    
+  TriggerServerEvent("GTA:TelephoneLoaded")
 end)
 
 
