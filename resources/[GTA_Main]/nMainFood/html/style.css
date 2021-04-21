@@ -3,6 +3,9 @@ html {
     padding: 0;
 }
 
+
+/*Resolution 1920 x ..*/
+
 .progress-hunger,
 .progress-water {
     position: relative;
@@ -15,24 +18,58 @@ html {
     overflow: hidden;
 }
 
+
+/*Resolution 1280 x ..*/
+
+@media screen and (max-width: 1280px) {
+    .progress-hunger,
+    .progress-water {
+        position: relative;
+        top: 535px;
+        left: 15px;
+        width: 175px;
+        height: 15px;
+        border-radius: 2px;
+        margin: 2px;
+        overflow: hidden;
+    }
+}
+
+
+/*Resolution 1600 x ..*/
+
+@media screen and (max-width: 1600px) {
+    .progress-hunger,
+    .progress-water {
+        position: relative;
+        top: 685px;
+        left: 15px;
+        width: 225px;
+        height: 15px;
+        border-radius: 2px;
+        margin: 2px;
+        overflow: hidden;
+    }
+}
+
 .progress-hunger {
-    background: #fec20f60;
+    background: #fec20f46;
 }
 
 .progress-water {
-    background: #0f7ffe65;
+    background: #0f7ffe3d;
 }
 
 .progress-hunger .progressfill {
     border-radius: 2px;
     width: 0%;
     height: 100%;
-    background: #FEC20F;
+    background: #ff910069;
 }
 
 .progress-water .progressfill {
     border-radius: 2px;
     width: 0%;
     height: 100%;
-    background: #0f7ffe;
+    background: #0383d352;
 }

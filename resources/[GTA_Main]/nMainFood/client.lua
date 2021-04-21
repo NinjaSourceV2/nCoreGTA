@@ -1,14 +1,14 @@
 -- DEFAULT VALUES
 local pFaim = 100
 local pSoif = 100
-local enableHud = false --> Ici pour changer le status du hud pour afficher votre faim/soif.
+local enableHud = true --> Ici pour changer le status du hud pour afficher votre faim/soif.
 
 -- TIMER
 Citizen.CreateThread(function ()
 	while true do
 	Citizen.Wait(390000) -->v390000
 		RemoveCalories(1.2)
-		RemoveWater(1.2)
+		RemoveWater(1.5)
 	end
 end)
 
@@ -177,12 +177,23 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(waitDisplayHud)
 
-		SendNUIMessage({
-			type = "hunger",
-			data_hudOn = enableHud,
-			data_faim = pFaim,
-			data_soif = pSoif
-		})
+		if IsPauseMenuActive() then
+			--> Remove the NUI WANTED :
+			SendNUIMessage({
+				type = "hunger",
+				data_hudOn = false,
+				data_faim = pFaim,
+				data_soif = pSoif
+			})
+		elseif not IsPauseMenuActive() then 
+			-->  Show the NUI WANTED :
+			SendNUIMessage({
+				type = "hunger",
+				data_hudOn = enableHud,
+				data_faim = pFaim,
+				data_soif = pSoif
+			})
+		end
 
 		if enableHud == true then
 			waitDisplayHud = 1
