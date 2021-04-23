@@ -20,6 +20,7 @@ client_scripts {
     'client_main/admin_main.lua',
     'client_main/main.lua',
     'client_main/spawn.lua',
+    'client_main/public_event.lua',
     'synchronisation/client.lua',
     'services/client.lua'
 }

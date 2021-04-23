@@ -48,7 +48,7 @@ AddEventHandler("GTA:JoueurLoaded", function()
 
     local ipls = {'facelobby', 'farm', 'farmint', 'farm_lod', 'farm_props', 
                 'des_farmhouse', 'post_hiest_unload', 'v_tunnel_hole',
-                'rc12b_default', 'refit_unload', 'shr_int'}
+                'rc12b_default', 'refit_unload', 'shr_int', 'Coroner_Int_on'}
 
     for _,v in pairs(ipls) do
         if not IsIplActive(v) then

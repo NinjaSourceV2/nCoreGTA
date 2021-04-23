@@ -1,8 +1,6 @@
 local isPlayerAdmin, godmode, isEnablePosition = false
 local qtyArgentPropre = 0
 
-
-
 --> Executer uniquement au spawn et au restart du core pour refresh si le joueur est admin :
 RegisterNetEvent("GTA:UpdatePlayerAdmin")
 AddEventHandler("GTA:UpdatePlayerAdmin", function(admin)
@@ -128,7 +126,6 @@ RegisterCommand("gab", function(source, args, rawCommand)
         end
     end
 end, false)
-
 
 --> Commande pour s'ajouté des menottes
 --> Pour vous give des menottes faite exemple : /give pistol 1. Il recherche au niveau de la bdd item "NAME".

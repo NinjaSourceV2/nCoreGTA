@@ -107,4 +107,5 @@ end)
 
 AddEventHandler('playerSpawned', function()
 	TriggerServerEvent("GTA:SetPositionPlayer")
+	TriggerServerEvent("GTA:LoadJobsJoueur")
 end)
