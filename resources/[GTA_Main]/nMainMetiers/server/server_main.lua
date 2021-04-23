@@ -25,17 +25,6 @@ AddEventHandler('GTA:LoadJobsJoueur', function()
 	end)
 end)
 
-RegisterServerEvent("GTA:ShowJobsDispo") --> Retourne le job du joueur.
-AddEventHandler("GTA:ShowJobsDispo", function()
-	local source = source
-	local license = GetPlayerIdentifiers(source)[1]
-
-
-	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @license',{['@license'] = license}, function(result)
-		TriggerClientEvent("GTA:LoadClientJob", source, result[1].job, result[1].enService, result[1].grade) --> Refresh le job du joueur.
-	end)
-end)
-
 RegisterServerEvent("GTA:GetJobsList")
 AddEventHandler("GTA:GetJobsList", function()
 	local source = source

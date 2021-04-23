@@ -1,4 +1,4 @@
-mainMenu = RageUI.CreateMenu("Emplois",  "Voici la liste des jobs disponible.")
+local mainMenu = RageUI.CreateMenu("Emplois",  "Voici la liste des jobs disponible.")
 local Duree = 0
 local listEmploi = {}
 
