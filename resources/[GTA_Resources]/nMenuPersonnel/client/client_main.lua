@@ -131,29 +131,6 @@ function getDistance(a, b)
     return square(x*x+y*y+z*z)
 end
 
-function afficherMarkerTarget()
-	local players = GetPlayers()
-	local closestDistance = -1
-	local closestPlayer = -1
-	local ply = GetPlayerPed(-1)
-	local plyCoords = GetEntityCoords(ply, 0)
-
-	for _,value in ipairs(players) do
-		local target = GetPlayerPed(value)
-		if(target ~= ply) then
-			local targetCoords = GetEntityCoords(GetPlayerPed(value), 0)
-			local distance = getDistance(targetCoords, plyCoords, true)
-			if distance < 2 then
-				if(closestDistance == -1 or closestDistance > distance) then
-					closestPlayer = value
-					closestDistance = distance
-					DrawMarker(0, targetCoords["x"], targetCoords["y"], targetCoords["z"] + 1, 0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 255, 255, 255, 200, 0, 0, 0, 0)
-				end
-			end
-		end
-	end
-end
-
 function RenderCarte()
 	DrawRect(0.883000000000001, 0.37, 0.185, 0.350, 0, 0, 0, 155)
 	DrawAdvancedText2(0.975000000000001, 0.239, 0.005, 0.0028, 0.7, "Carte d'identité", 255, 255, 255, 255, 1, 0)
