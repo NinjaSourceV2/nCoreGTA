@@ -61,3 +61,29 @@ function afficherMarkerTarget()
 		end
 	end
 end
+
+
+--[=====[
+            Play TaskStartScenarioInPlace :
+]=====]
+RegisterNetEvent("PlayTaskScenarioInPlace")
+AddEventHandler("PlayTaskScenarioInPlace", function(handle, animation, timer) 
+	TaskStartScenarioInPlace(handle, animation, 0, true)
+	Citizen.Wait(timer)
+	ClearPedTasks(handle)
+end)
+
+
+--[=====[
+            Play TaskPlayAnim :
+]=====]
+RegisterNetEvent("TaskPlayAnimation")
+AddEventHandler("TaskPlayAnimation", function(handle, dict, animation, duration, flags) 
+	duration = duration or -1
+	flags = flags or 0
+	RequestAnimDict(dict)
+	while not HasAnimDictLoaded(dict) do
+		Citizen.Wait(10)
+	end
+	TaskPlayAnim(handle, dict, animation, 8.0, -8, duration, flags, 0, 0, 0, 0)
+end)

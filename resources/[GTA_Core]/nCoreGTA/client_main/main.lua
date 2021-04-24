@@ -1,7 +1,6 @@
  --||@SuperCoolNinja. && RamexDeltaXOO||--
 
 
-local waitWantedLevel = 5
 RegisterNetEvent("GTA:JoueurLoaded")
 AddEventHandler("GTA:JoueurLoaded", function()
     --> Load le phone au spawn :
@@ -21,15 +20,12 @@ AddEventHandler("GTA:JoueurLoaded", function()
         Citizen.CreateThread(function()
             local myPlayer = GetEntityCoords(PlayerPedId())	
             while true do
-                Citizen.Wait(waitWantedLevel)
+                Citizen.Wait(0)
                 
                 --> Permet de ne pas recevoir d'indice de recherche :
                 if (GetPlayerWantedLevel(PlayerId()) > 0) then
-				    waitWantedLevel = 0
                     SetPlayerWantedLevel(PlayerId(), 0, false)
                     SetPlayerWantedLevelNow(PlayerId(), false)
-				else
-				    waitWantedLevel = 5
                 end
 
                 --> Permet de ne pas spawn les véhicule de cops prés du poste de police :

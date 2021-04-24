@@ -35,12 +35,7 @@ RegisterCommand("tpt", function()
                 Citizen.Wait(1)
             end
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez positionner un marker.",
-                type = "warning",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez positionner un marker.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
@@ -53,19 +48,9 @@ RegisterCommand("god", function()
         godmode = not godmode
         SetEntityInvincible(GetPlayerPed(-1), godmode)
         if (godmode == true) then
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "God Mode activer.",
-                type = "success",
-                icon = "fa fa-check fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"God Mode activer."})
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "God Mode désactiver.",
-                type = "success",
-                icon = "fa fa-check fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"God Mode désactiver."})
         end
     end
 end, false)
@@ -79,12 +64,7 @@ RegisterCommand("gap", function(source, args, rawCommand)
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentPropre", tonumber(qtyArgentPropre))
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez saisir un nombre correct.",
-                type = "warning",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
@@ -98,12 +78,7 @@ RegisterCommand("gas", function(source, args, rawCommand)
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentSale", tonumber(qtyArgentPropre))
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez saisir un nombre correct.",
-                type = "warning",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
@@ -117,12 +92,7 @@ RegisterCommand("gab", function(source, args, rawCommand)
         if (tonumber(qtyArgentPropre) ~= nil) then
             TriggerServerEvent("GTA_Admin:AjoutArgentBanque", tonumber(qtyArgentPropre))
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez saisir un nombre correct.",
-                type = "warning",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
@@ -136,12 +106,7 @@ RegisterCommand("give", function(source, args, rawCommand)
     itemQty = args[2] or 1
     if (isPlayerAdmin == true) then
         if (itemName == nil) then 
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez saisir un nom d'item correct exemple : /give Marteau 1.",
-                type = "error",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez saisir un nom d'item correct exemple : /give Marteau 1.", "error", "fa fa-exclamation-circle fa-2x"})
             return
         end
 
@@ -159,19 +124,9 @@ RegisterCommand("pv", function(source, args, rawCommand)
         if IsPedInVehicle(playerPed, veh, false) then
             SetEntityAsMissionEntity(veh, true, true )
             Citizen.InvokeNative(0xEA386986E786A54F, Citizen.PointerValueIntInitialized(veh))
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Véhicule supprimer.",
-                type = "success",
-                icon = "fa fa-check fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Véhicule supprimer."})
         else
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = "Veuillez monter dans un véhicule.",
-                type = "warning",
-                icon = "fa fa-exclamation-circle fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {"Veuillez monter dans un véhicule.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
@@ -183,20 +138,12 @@ RegisterCommand("pos", function(source, args, rawCommand)
     if (isPlayerAdmin == true) then
         isEnablePosition = not isEnablePosition
 
-        exports.GTA_Notif:GTA_NUI_ShowNotification({
-            text = "Position afficher.",
-            type = "success",
-            icon = "fa fa-check fa-2x",
-            position = "row-reverse"
-        })
+        if (isEnablePosition == true) then
+            TriggerEvent("NUI-Notification", {"Position afficher", "success"})
+        else
+            TriggerEvent("NUI-Notification", {"Position retirer", "success"})
+        end
     end
-
-    exports.GTA_Notif:GTA_NUI_ShowNotification({
-        text = "Position retirer.",
-        type = "success",
-        icon = "fa fa-check fa-2x",
-        position = "row-reverse"
-    })
 end, false)
 
 
@@ -216,22 +163,12 @@ RegisterCommand('v', function(source, args, rawCommand)
                 waiting = waiting + 100
                 Citizen.Wait(100)
                 if waiting > 3000 then
-                    exports.GTA_Notif:GTA_NUI_ShowNotification({
-                        text = "Veuillez saisir un nom d'un véhicule correct.",
-                        type = "error",
-                        icon = "fa fa-exclamation-circle fa-2x",
-                        position = "row-reverse"
-                    })
+                    TriggerEvent("NUI-Notification", {"Veuillez saisir un nom d'un véhicule correct.", "error", "fa fa-exclamation-circle fa-2x"})
                     break
                 end
             end
             CreateVehicle(vehiclehash, x, y, z, GetEntityHeading(PlayerPedId())+90, 1, 0)
-            exports.GTA_Notif:GTA_NUI_ShowNotification({
-                text = veh.. " spawn !",
-                type = "success",
-                icon = "fa fa-check fa-2x",
-                position = "row-reverse"
-            })
+            TriggerEvent("NUI-Notification", {veh.. " spawn !"})
         end)
     end
 end)
