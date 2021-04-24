@@ -135,7 +135,8 @@ Citizen.CreateThread(function()
 
         --> SubMenu Portefeuille : 
         RageUI.IsVisible(subPapiers, function()
-            afficherMarkerTarget()
+            TriggerEvent("ShowMarkerTarget")
+
             RageUI.List('💵   Argent propre ~g~ ' ..config.joueurs.ArgentPropre .. "$", {
                 { Name = "~b~Donner~w~"}
             }, index_Cash, description, {}, true, {
