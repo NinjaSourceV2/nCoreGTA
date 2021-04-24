@@ -36,6 +36,12 @@ Citizen.CreateThread(function()
                 end 
             end
         end
+
+        if GetNearZone() == "Stockage" then 
+            if (IsControlJustReleased(0, 38) or IsControlJustReleased(0, 214)) then  
+                RageUI.Visible(mainStockage, not RageUI.Visible(mainStockage))
+            end
+        end
         Citizen.Wait(TimerSleep)
     end
 end)

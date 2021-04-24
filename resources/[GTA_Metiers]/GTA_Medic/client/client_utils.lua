@@ -21,15 +21,16 @@ function IsNearOfZones()
         local vestairePos = Config.Locations[i]["Service"]
         local menuVehicule = Config.Locations[i]["GaragePosition"]
         local rangerVeh = Config.Locations[i]["RentrerVehicule"]
-
+        local stockage = Config.Locations[i]["StockageMenu"]
 
         --> Distance : 
         local dVestiaire = getDistance(plyCoords, vestairePos, true)
         local dMenuVeh = getDistance(plyCoords, menuVehicule, true)
         local dRangerVeh = getDistance(plyCoords, rangerVeh, true)
+        local dStockage = getDistance(plyCoords, stockage, true)
       
 
-        if (dVestiaire <= 5.0) or (dMenuVeh <= 5.0) or (dRangerVeh <= 5.0) then
+        if (dVestiaire <= 5.0) or (dMenuVeh <= 5.0) or (dRangerVeh <= 5.0) or (dStockage <= 5.0) then
             return true
         else
             return false 
@@ -46,11 +47,14 @@ function GetNearZone()
         local vestairePos = Config.Locations[i]["Service"]
         local menuVehicule = Config.Locations[i]["GaragePosition"]
         local rangerVeh = Config.Locations[i]["RentrerVehicule"]
+        local stockage = Config.Locations[i]["StockageMenu"]
 
         --> Distance : 
         local dVestiaire = getDistance(plyCoords, vestairePos, true)
         local dMenuVeh = getDistance(plyCoords, menuVehicule, true)
         local dRangerVeh = getDistance(plyCoords, rangerVeh, true)
+        local dStockage = getDistance(plyCoords, stockage, true)
+
 
 
         if (dVestiaire <= 3.0) then
@@ -59,6 +63,8 @@ function GetNearZone()
             return "MenuVeh"
         elseif(dRangerVeh <= 3.0)then
             return "RangerVeh"
+        elseif(dStockage <= 3.0)then 
+            return "Stockage"
         else
             return nil 
         end

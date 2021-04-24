@@ -128,6 +128,11 @@ AddEventHandler("GTA_Medic:OnService", function()
     end
 end)
 
+RegisterNetEvent("GTA_Medic:RefreshStockage")
+AddEventHandler("GTA_Medic:RefreshStockage", function(res2)
+    Config.Stockage = res2
+end)
+
 Citizen.CreateThread(function() 
 	while true do
 		Citizen.Wait(Duree)

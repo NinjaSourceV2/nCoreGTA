@@ -72,3 +72,86 @@ AddEventHandler("GTA_Medic:FactureRefuser", function(target)
     TriggerClientEvent("NUI-Notification", target, {"Le citoyen a refuser de payé la facture.", "success"})
     TriggerClientEvent("NUI-Notification", source, {"Vous avez refuser de payé votre facture.", "success"})
 end)
+
+RegisterNetEvent("GTA_Medic:GetAllStock")
+AddEventHandler("GTA_Medic:GetAllStock", function()
+    local source = source
+    MySQL.Async.fetchAll('SELECT * FROM gta_medic_stockage',{}, function(res2)
+        TriggerClientEvent("GTA_Medic:RefreshStockage", source, res2)
+    end)
+end)
+
+RegisterNetEvent("GTA_Medic:RetirerArgentPropreStockage")
+AddEventHandler("GTA_Medic:RetirerArgentPropreStockage", function(qty)
+    local source = source
+    MySQL.Async.fetchAll('SELECT * FROM gta_medic_stockage',{}, function(res2)
+        local argentPropre = res2[1].argent
+        print(argentPropre)
+        if (argentPropre >= qty) then
+            argentPropre = argentPropre - qty
+            MySQL.Async.execute("UPDATE gta_medic_stockage SET argent=@newArgent", {['@newArgent'] = tonumber(argentPropre)})
+            TriggerEvent("GTA:AjoutArgentPropre", source, qty)
+            TriggerEvent("NUI-Notification", {"Vous avez retirer de l'argent propre dans le coffre."})
+        else
+            TriggerClientEvent("NUI-Notification", source, {"Montant supérieur au montant disponible.", "warning"})
+        end
+    end)
+end)
+
+RegisterNetEvent("GTA_Medic:RetirerArgentSaleStockage")
+AddEventHandler("GTA_Medic:RetirerArgentSaleStockage", function(qty)
+    local source = source
+    MySQL.Async.fetchAll('SELECT * FROM gta_medic_stockage',{}, function(res2)
+        local argentSale = res2[1].argent_sale
+        print(argentSale)
+        if (argentSale >= qty) then
+            argentSale = argentSale - qty
+            MySQL.Async.execute("UPDATE gta_medic_stockage SET argent_sale=@newArgent", {['@newArgent'] = tonumber(argentSale)})
+            TriggerEvent("GTA:AjoutArgentSale", source, qty)
+            TriggerEvent("NUI-Notification", {"Vous avez retirer de l'argent sale dans le coffre."})
+        else
+            TriggerClientEvent("NUI-Notification", source, {"Montant supérieur au montant disponible.", "warning"})
+        end
+    end)
+end)
+
+RegisterNetEvent("GTA_Medic:DeposerArgentPropreStockage")
+AddEventHandler("GTA_Medic:DeposerArgentPropreStockage", function(qty)
+    local source = source
+
+    TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+        if (data.argent_propre >= qty) then 
+            MySQL.Async.fetchAll('SELECT * FROM gta_medic_stockage',{}, function(res2)
+                local argentPropre = res2[1].argent
+                argentPropre = argentPropre + qty
+                MySQL.Async.execute("UPDATE gta_medic_stockage SET argent=@newArgent", {['@newArgent'] = tonumber(argentPropre)})
+                TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(qty))
+                TriggerEvent("NUI-Notification", {"Vous avez deposer de l'argent propre dans le coffre."})
+            end)
+        else
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Montant supérieur au montant disponible.", "warning", "fa fa-exclamation-circle fa-2x")
+        end
+    end)
+end)
+
+
+RegisterNetEvent("GTA_Medic:DeposerArgentSaleStockage")
+AddEventHandler("GTA_Medic:DeposerArgentSaleStockage", function(qty)
+    local source = source
+
+    TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+        if (data.argent_sale >= qty) then 
+            MySQL.Async.fetchAll('SELECT * FROM gta_medic_stockage',{}, function(res2)
+                local argentSale = res2[1].argent_sale
+                argentSale = argentSale + qty
+                MySQL.Async.execute("UPDATE gta_medic_stockage SET argent_sale=@newArgent", {['@newArgent'] = tonumber(argentSale)})
+                TriggerEvent('GTA:RetirerArgentSale', source, tonumber(qty))
+                TriggerEvent("NUI-Notification", {"Vous avez deposer de l'argent sale dans le coffre."})
+            end)
+        else
+			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Montant supérieur au montant disponible.", "warning", "fa fa-exclamation-circle fa-2x")
+        end
+    end)
+end)
+
+

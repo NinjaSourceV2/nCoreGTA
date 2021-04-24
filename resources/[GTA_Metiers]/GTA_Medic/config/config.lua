@@ -21,6 +21,11 @@ Config = {
             ["RentrerVehicule"] = { 
                 ["x"] = 1141.03, ["y"] = -1602.0, ["z"] = 34.69
             },
+
+            --> Position du stockage.
+            ["StockageMenu"] = { 
+                ["x"] = 261.53, ["y"] = -1336.36, ["z"] = 24.53
+            },
         },
     },
 }
@@ -30,3 +35,5 @@ Config.Medic = {
     grade = " ",
     service = false
 }
+
+Config.Stockage = {}

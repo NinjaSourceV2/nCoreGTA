@@ -6,5 +6,6 @@ Citizen.CreateThread(function()
         OnSubCitoyenMenu()
         OnVestiaireMenu()
         OnMenuGarage()
+        OnMenuStockage()
     end
 end)
