@@ -14,6 +14,13 @@ AddEventHandler('GTA:UpdateJob', function(metiers)
 	MySQL.Async.execute("UPDATE gta_joueurs SET job=@job WHERE license=@license", { ['@license'] = license, ['@job'] = job})
 end)
 
+RegisterServerEvent('GTA:UpdateService') --> Update le service du joueur.
+AddEventHandler('GTA:UpdateService', function(service)
+	local source = source
+	local license = GetPlayerIdentifiers(source)[1]
+	MySQL.Async.execute("UPDATE gta_joueurs SET enService=@service WHERE license=@license", { ['@license'] = license, ['@service'] = service})
+end)
+
 RegisterServerEvent('GTA:LoadJobsJoueur')
 AddEventHandler('GTA:LoadJobsJoueur', function()
 	local source = source	
