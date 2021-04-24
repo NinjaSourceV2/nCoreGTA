@@ -87,3 +87,37 @@ AddEventHandler("TaskPlayAnimation", function(handle, dict, animation, duration,
 	end
 	TaskPlayAnim(handle, dict, animation, 8.0, -8, duration, flags, 0, 0, 0, 0)
 end)
+
+
+
+--[=====[
+            Show AlertNear :
+]=====]
+RegisterNetEvent("AlertNear")
+AddEventHandler("AlertNear", function(message) 
+	BeginTextCommandDisplayHelp("STRING");  
+    AddTextComponentSubstringPlayerName(message);  
+    EndTextCommandDisplayHelp(0, 0, 1, -1);
+end)
+
+--[=====[
+            Spawn Vehicule :
+]=====]
+RegisterNetEvent("SpawnVehicule")
+AddEventHandler("SpawnVehicule", function(pVeh, pos, imatricule)
+    local pVeh = GetHashKey(pVeh)
+
+    RequestModel(pVeh)
+    while not HasModelLoaded(pVeh) do
+        RequestModel(pVeh)
+        Citizen.Wait(0)
+    end
+
+    local veh = CreateVehicle(pVeh, pos.x, pos.y, pos.z, pos.h, true, false)
+
+	if (imatricule ~= nil) then
+    	SetVehicleNumberPlateText(veh, imatricule)
+	end
+
+	SetEntityAsMissionEntity(veh, true, true)
+end)
