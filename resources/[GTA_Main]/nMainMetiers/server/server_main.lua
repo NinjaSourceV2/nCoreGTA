@@ -12,6 +12,13 @@ AddEventHandler('GTA:UpdateJob', function(metiers)
 
 	local job = tostring(metiers)
 	MySQL.Async.execute("UPDATE gta_joueurs SET job=@job WHERE license=@license", { ['@license'] = license, ['@job'] = job})
+
+	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+		local travail = data.job
+		local service = data.enService
+		local grade = data.grade
+		TriggerClientEvent('GTA:LoadClientJob', source, tostring(travail), service, tostring(grade)) --> Update les jobs en générale coté client.
+	end)
 end)
 
 RegisterServerEvent('GTA:UpdateService') --> Update le service du joueur.
@@ -19,6 +26,27 @@ AddEventHandler('GTA:UpdateService', function(service)
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
 	MySQL.Async.execute("UPDATE gta_joueurs SET enService=@service WHERE license=@license", { ['@license'] = license, ['@service'] = service})
+
+	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+		local travail = data.job
+		local service = data.enService
+		local grade = data.grade
+		TriggerClientEvent('GTA:LoadClientJob', source, tostring(travail), service, tostring(grade)) --> Update les jobs en générale coté client.
+	end)
+end)
+
+RegisterServerEvent('GTA:UpdateGrade') --> Update le service du joueur.
+AddEventHandler('GTA:UpdateGrade', function(grade)
+	local source = source
+	local license = GetPlayerIdentifiers(source)[1]
+	MySQL.Async.execute("UPDATE gta_joueurs SET grade=@newGrade WHERE license=@license", { ['@license'] = license, ['@newGrade'] = grade})
+
+	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+		local travail = data.job
+		local service = data.enService
+		local grade = data.grade
+		TriggerClientEvent('GTA:LoadClientJob', source, tostring(travail), service, tostring(grade)) --> Update les jobs en générale coté client.
+	end)
 end)
 
 RegisterServerEvent('GTA:LoadJobsJoueur')
