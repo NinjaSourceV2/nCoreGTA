@@ -57,6 +57,76 @@ AddEventHandler("GTA_Medic:RequestFactureTarget", function(montant)
     TriggerEvent("NUI-Notification", {"Y pour payer votre facture L pour refuser", "success"})
 end)
 
+--on affiche les blips :
+local medicSortieVeh, medicRangerVeh  = nil, nil
+RegisterNetEvent("GTA_Medic:AfficherBlipsPoint")
+AddEventHandler('GTA_Medic:AfficherBlipsPoint', function ()
+    MedicSortieVeh = AddBlipForCoord(1157.5, -1597.98, 34.69)
+    SetBlipSprite(MedicSortieVeh,225)		
+    SetBlipColour(MedicSortieVeh, 5)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString('SORTIE VEHICULE') 
+	EndTextCommandSetBlipName(MedicSortieVeh)
+	
+	medicRangerVeh = AddBlipForCoord(1141.03, -1602.0, 34.69)
+	SetBlipSprite(medicRangerVeh,225)		
+	SetBlipColour(medicRangerVeh, 69)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentString('RANGER VEHICULE')
+	EndTextCommandSetBlipName(medicRangerVeh)
+end)
+
+RegisterNetEvent("GTA_Medic:RetirerBlipsPoint")
+AddEventHandler("GTA_Medic:RetirerBlipsPoint", function ()
+    if MedicSortieVeh ~= nil and DoesBlipExist(MedicSortieVeh) then
+        Citizen.InvokeNative(0x86A652570E5F25DD,Citizen.PointerValueIntInitialized(MedicSortieVeh))
+        MedicSortieVeh = nil
+	end
+	
+	if medicRangerVeh ~= nil and DoesBlipExist(medicRangerVeh) then
+		Citizen.InvokeNative(0x86A652570E5F25DD,Citizen.PointerValueIntInitialized(medicRangerVeh))
+		medicRangerVeh = nil
+	end
+end)
+
+
+RegisterNetEvent("GTA_Medic:OnService")
+AddEventHandler("GTA_Medic:OnService", function()
+    local ped = GetPlayerPed(-1)
+    if Config.Medic.grade == "Stagiaire" then
+        if GetEntityModel(ped) == 1885233650 then --> Homme
+            SetPedComponentVariation(ped, 11, 13, 3, 2)
+            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 4, 9, 3, 2)
+            SetPedComponentVariation(ped, 3, 92, 0, 2)
+            SetPedComponentVariation(ped, 6, 25, 0, 2)
+            SetPedComponentVariation(ped, 10, 57, 0, 2)
+        elseif GetEntityModel(ped) == -1667301416 then --> Femme
+            SetPedComponentVariation(ped, 11, 9, 2, 2)
+            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 4, 3, 3, 2)
+            SetPedComponentVariation(ped, 3, 98, 0, 2)
+            SetPedComponentVariation(ped, 6, 27, 0, 2)
+            SetPedComponentVariation(ped, 10, 57, 0, 2)
+        end
+    elseif Config.Medic.grade == "Medecin" then
+        if GetEntityModel(ped) == 1885233650 then --> Homme
+            SetPedComponentVariation(ped, 11, 13, 3, 2)
+            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 4, 9, 3, 2)
+            SetPedComponentVariation(ped, 3, 92, 0, 2)
+            SetPedComponentVariation(ped, 6, 25, 0, 2)
+            SetPedComponentVariation(ped, 10, 8, 1, 2)
+        elseif GetEntityModel(ped) == -1667301416 then --> Femme
+            SetPedComponentVariation(ped, 11, 9, 2, 2)
+            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 4, 3, 3, 2)
+            SetPedComponentVariation(ped, 3, 98, 0, 2)
+            SetPedComponentVariation(ped, 6, 27, 0, 2)
+            SetPedComponentVariation(ped, 10, 7, 1, 2)
+        end
+    end
+end)
 
 Citizen.CreateThread(function() 
 	while true do

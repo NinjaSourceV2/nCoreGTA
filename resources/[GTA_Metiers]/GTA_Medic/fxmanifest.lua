@@ -18,10 +18,7 @@ client_scripts {
 
 client_scripts {
     'config/config.lua';
-    'client/client_utils.lua',
-    'client/client_event.lua',
-    'client/marker_position.lua',
-    'client/menu_action.lua'
+    'client/*.lua'
 }
 
 server_script 'server/server.lua'

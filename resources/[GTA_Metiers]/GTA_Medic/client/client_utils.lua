@@ -6,6 +6,64 @@ AddEventHandler("GTA:LoadClientJob", function(newJobName, newService, newGrade)
 end)
 
 
+local square = math.sqrt
+function getDistance(a, b) 
+    local x, y, z = a.x-b.x, a.y-b.y, a.z-b.z
+    return square(x*x+y*y+z*z)
+end
+
+--> Return vrais si vous êtes proche de la zone :
+function IsNearOfZones()
+    for i = 1, #Config.Locations do
+        local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+
+        --> Position : 
+        local vestairePos = Config.Locations[i]["Service"]
+        local menuVehicule = Config.Locations[i]["GaragePosition"]
+        local rangerVeh = Config.Locations[i]["RentrerVehicule"]
+
+
+        --> Distance : 
+        local dVestiaire = getDistance(plyCoords, vestairePos, true)
+        local dMenuVeh = getDistance(plyCoords, menuVehicule, true)
+        local dRangerVeh = getDistance(plyCoords, rangerVeh, true)
+      
+
+        if (dVestiaire <= 5.0) or (dMenuVeh <= 5.0) or (dRangerVeh <= 5.0) then
+            return true
+        else
+            return false 
+        end
+    end
+end
+
+--> Retourne le nom de votre zone le plus proche :
+function GetNearZone()
+    for i = 1, #Config.Locations do
+        local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+
+        --> Position : 
+        local vestairePos = Config.Locations[i]["Service"]
+        local menuVehicule = Config.Locations[i]["GaragePosition"]
+        local rangerVeh = Config.Locations[i]["RentrerVehicule"]
+
+        --> Distance : 
+        local dVestiaire = getDistance(plyCoords, vestairePos, true)
+        local dMenuVeh = getDistance(plyCoords, menuVehicule, true)
+        local dRangerVeh = getDistance(plyCoords, rangerVeh, true)
+
+
+        if (dVestiaire <= 3.0) then
+            return "VestiaireMenu"
+        elseif (dMenuVeh <= 3.0)then
+            return "MenuVeh"
+        elseif(dRangerVeh <= 3.0)then
+            return "RangerVeh"
+        else
+            return nil 
+        end
+    end
+end
 
 local function GetPlayers()
     local players = {}

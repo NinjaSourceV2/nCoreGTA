@@ -5,7 +5,7 @@ local subInterCitoyen = RageUI.CreateSubMenu(mainMenu, "Menu Medic", "gestion me
 
 
 --> Main Menu :
-local function OnMainMenu()
+function OnMainMenu()
     RageUI.IsVisible(mainMenu, function()
         RageUI.Button("Intéraction Citoyen", "", {}, true, {onSelected = function() end}, subInterCitoyen)
     end, function()end)
@@ -13,7 +13,7 @@ end
 
 
 --> Citoyen menu :
-local function OnSubCitoyenMenu() 
+function OnSubCitoyenMenu() 
     RageUI.IsVisible(subInterCitoyen, function()
         
         TriggerEvent("ShowMarkerTarget")
@@ -72,11 +72,3 @@ Keys.Register('F6', 'F6', 'Menu Medic.', function()
 end)
 
 
--------------------------------> Main Thread :
-Citizen.CreateThread(function()
-    while (true) do
-        Citizen.Wait(1.0)
-        OnMainMenu()
-        OnSubCitoyenMenu()
-    end
-end)

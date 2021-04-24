@@ -1,29 +1,25 @@
 Config = {
     Locations = {
         [1] = {
-            ["Blip"] = { --> Position de l'hopital.
+            
+            --> Position de l'hopital.
+            ["Blip"] = { 
                 ["x"] = 1150.839, ["y"] = -1530.0, ["z"] = 35.38629
             },
 
-            ["Service"] = { --> Position prise de service.
-                ["x"] = 450.174, ["y"] = -992.276, ["z"] = 30.6896
+            --> Position prise de service.
+            ["Service"] = { 
+                ["x"] = 268.37, ["y"] = -1364.32, ["z"] = 24.53
             },
 
-            ["Garage"] = {
+            --> Position d'accès au garage medic.
+            ["GaragePosition"] = {
+                ["x"] = 1157.5, ["y"] = -1597.98, ["z"] = 34.69
+            },
 
-                --> Position d'accès au garage medic.
-                ["GaragePosition"] = {
-                    ["x"] = 459.21, ["y"] = -1008.07, ["z"] = 28.26
-                },
-
-                --> Position du véhicule pour le ranger.
-                ["RentrerVehicule"] = { 
-                    ["x"] = 451.89, ["y"] = -997.19, ["z"] = 25.76
-                },
-
-                ["MenuGaragePos"] = {
-                    ["x"] = 405.467, ["y"] = -951.877, ["z"] = -99.0041
-                }
+            --> Position du véhicule pour le ranger.
+            ["RentrerVehicule"] = { 
+                ["x"] = 1141.03, ["y"] = -1602.0, ["z"] = 34.69
             },
         },
     },
