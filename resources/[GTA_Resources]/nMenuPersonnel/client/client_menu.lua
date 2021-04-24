@@ -38,7 +38,9 @@ Citizen.CreateThread(function()
 
         --> SubMenu Inventaire : 
         RageUI.IsVisible(subInventaire, function()
-            afficherMarkerTarget()
+
+            TriggerEvent("ShowMarkerTarget")
+
             for k, v in pairs(ITEMS) do
                 if v.quantity > 0 then 
                     RageUI.List(v.libelle .. " ".. v.quantity, {
