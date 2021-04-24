@@ -50,7 +50,7 @@ Citizen.CreateThread(function ()
                 DrawMarker(tpZone.markerID, zone2.x, zone2.y, zone2.z-1, 0, 0, 0, 0, 0, 0, 1.501, 1.5001, 0.5001, tpZone.markerColor.r, tpZone.markerColor.g, tpZone.markerColor.b, tpZone.markerColor.a)        
             end
 
-            if distanceZone1 < 5 then
+            if distanceZone1 < 3 then
                 Duree = 0
 
                 if GetLastInputMethod(0) then
@@ -68,7 +68,7 @@ Citizen.CreateThread(function ()
                         SetEntityHeading(player, zone2.heading)
                     end
                 end
-            elseif distanceZone2 < 5 then
+            elseif distanceZone2 < 3 then
                 Duree = 0
 
                 if GetLastInputMethod(0) then
