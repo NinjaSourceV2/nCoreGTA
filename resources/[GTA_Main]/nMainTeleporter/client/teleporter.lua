@@ -50,13 +50,13 @@ Citizen.CreateThread(function ()
                 DrawMarker(tpZone.markerID, zone2.x, zone2.y, zone2.z-1, 0, 0, 0, 0, 0, 0, 1.501, 1.5001, 0.5001, tpZone.markerColor.r, tpZone.markerColor.g, tpZone.markerColor.b, tpZone.markerColor.a)        
             end
 
-            if distanceZone1 < 1 then
-                Duree = 8
+            if distanceZone1 < 5 then
+                Duree = 0
 
                 if GetLastInputMethod(0) then
-                    Ninja_Core__DisplayHelpAlert("~INPUT_PICKUP~ pour ~b~intéragir")
+                    DisplayHelpAlert("~INPUT_PICKUP~ pour ~b~intéragir")
                 else
-                    Ninja_Core__DisplayHelpAlert("~INPUT_CELLPHONE_EXTRA_OPTION~ pour ~b~intéragir")
+                    DisplayHelpAlert("~INPUT_CELLPHONE_EXTRA_OPTION~ pour ~b~intéragir")
                 end
 
                 if (IsControlJustReleased(0, 38) or IsControlJustReleased(0, 214)) then 
@@ -68,8 +68,8 @@ Citizen.CreateThread(function ()
                         SetEntityHeading(player, zone2.heading)
                     end
                 end
-            elseif distanceZone2 < 1 then
-                Duree = 8
+            elseif distanceZone2 < 5 then
+                Duree = 0
 
                 if GetLastInputMethod(0) then
                     DisplayHelpAlert("~INPUT_TALK~ pour ~r~sortir")
