@@ -121,3 +121,14 @@ AddEventHandler("SpawnVehicule", function(pVeh, pos, imatricule)
 
 	SetEntityAsMissionEntity(veh, true, true)
 end)
+
+
+--[=====[
+            Destroy Vehicule :
+]=====]
+RegisterNetEvent("DestroyVehicle")
+AddEventHandler("DestroyVehicle", function(entity)
+    SetEntityAsMissionEntity(entity,true,true)
+	Citizen.InvokeNative(0xAE3CBE5BF394C9C9, Citizen.PointerValueIntInitialized(entity))
+    TriggerEvent("NUI-Notification", {"Véhicule détruit."})
+end)
