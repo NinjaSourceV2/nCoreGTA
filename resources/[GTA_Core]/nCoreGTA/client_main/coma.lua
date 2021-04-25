@@ -1,7 +1,12 @@
+--[[Thanks to Kiminaze for his snippet code on the camera rotation.]]
+
 local isDead = false
 local EarlyRespawnTimer = 60000 * 1 --> 60 SECONDES
 local BleedoutTimer = 60000 * 10
-
+local cam = nil
+local angleY = 0.0
+local angleZ = 0.0
+local radius = 1.5
 
 local Keys = {
 	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
@@ -19,9 +24,13 @@ local Keys = {
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-        if (isDead) then
+		if (isDead) then
             HidAllHudFrame() --> Remove all hud from GTA.
         end
+
+		if (cam) then 
+			ProcessCamControls() --> Can now rotate around.
+		end
     end
 end)
 
@@ -29,7 +38,6 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(500)
-        
         if (not isDead and NetworkIsPlayerActive(PlayerId()) and IsPedFatallyInjured(PlayerPedId())) then
             BeginDeathScreen()
 
@@ -72,7 +80,75 @@ function HidAllHudFrame()
 	HideHudComponentThisFrame(20)
 end
 
+-- process camera controls @Kiminaze thanks to you buddy.
+function ProcessCamControls()
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)
+
+    DisableFirstPersonCamThisFrame()
+    
+    -- calculate new position
+    local newPos = ProcessNewPosition()
+    SetFocusArea(newPos.x, newPos.y, newPos.z, 0.0, 0.0, 0.0)
+    SetCamCoord(cam, newPos.x, newPos.y, newPos.z)
+    PointCamAtCoord(cam, playerCoords.x, playerCoords.y, playerCoords.z + 0.5)
+end
+
+function ProcessNewPosition()
+    local mouseX = 0.0
+    local mouseY = 0.0
+    
+    -- keyboard
+    if (IsInputDisabled(0)) then
+        mouseX = GetDisabledControlNormal(1, 1) * 8.0
+        mouseY = GetDisabledControlNormal(1, 2) * 8.0
+    else
+        mouseX = GetDisabledControlNormal(1, 1) * 1.5
+        mouseY = GetDisabledControlNormal(1, 2) * 1.5
+    end
+
+    angleZ = angleZ - mouseX -- around Z axis (left / right)
+    angleY = angleY + mouseY -- up / down
+    if (angleY > 89.0) then angleY = 89.0 elseif (angleY < -89.0) then angleY = -89.0 end
+    
+    local pCoords = GetEntityCoords(PlayerPedId())
+    local behindCam = {
+        x = pCoords.x + ((Cos(angleZ) * Cos(angleY)) + (Cos(angleY) * Cos(angleZ))) / 2 * (radius + 0.5),
+        y = pCoords.y + ((Sin(angleZ) * Cos(angleY)) + (Cos(angleY) * Sin(angleZ))) / 2 * (radius + 0.5),
+        z = pCoords.z + ((Sin(angleY))) * (radius + 0.5)
+    }
+    local rayHandle = StartShapeTestRay(pCoords.x, pCoords.y, pCoords.z + 0.5, behindCam.x, behindCam.y, behindCam.z, -1, PlayerPedId(), 0)
+    local a, hitBool, hitCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+    
+    local maxRadius = radius
+    if (hitBool and Vdist(pCoords.x, pCoords.y, pCoords.z + 0.5, hitCoords) < radius + 0.5) then
+        maxRadius = Vdist(pCoords.x, pCoords.y, pCoords.z + 0.5, hitCoords)
+    end
+    
+    local offset = {
+        x = ((Cos(angleZ) * Cos(angleY)) + (Cos(angleY) * Cos(angleZ))) / 2 * maxRadius,
+        y = ((Sin(angleZ) * Cos(angleY)) + (Cos(angleY) * Sin(angleZ))) / 2 * maxRadius,
+        z = ((Sin(angleY))) * maxRadius
+    }
+    
+    local pos = {
+        x = pCoords.x + offset.x,
+        y = pCoords.y + offset.y,
+        z = pCoords.z + offset.z
+    }
+    
+    return pos
+end
+
+
 function BeginDeathScreen()
+	isDead = true
+	ClearFocus()
+    local playerPed = PlayerPedId()
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", GetEntityCoords(playerPed), 0, 0, 0, GetGameplayCamFov())
+    SetCamActive(cam, true)
+    RenderScriptCams(true, true, 1000, true, false)
+
 	TriggerEvent('EnableDisableHUDFS', false)
     BeginTimerDeath()
 	__nSaveNewPosition()
@@ -82,6 +158,10 @@ end
 function EndDeathScreen()
     isDead = false
 	TriggerEvent('EnableDisableHUDFS', true)
+	ClearFocus()
+    RenderScriptCams(false, false, 0, true, false)
+    DestroyCam(cam, false)
+    cam = nil
 end
 
 function SendSignalEMS()
