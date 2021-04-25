@@ -19,9 +19,6 @@ AddEventHandler('GTA:updateTime', function(base, offset, freeze)
     baseTime = base
 end)
 
-AddEventHandler('playerSpawned', function()
-    TriggerServerEvent('GTA:requestSync')
-end)
 
 Citizen.CreateThread(function()
     while true do

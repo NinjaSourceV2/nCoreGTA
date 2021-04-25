@@ -148,7 +148,7 @@ Citizen.CreateThread(function()
                     config.Character.nom = SaisitText("", 10)
 
                     if tostring(config.Character.nom) == nil or tonumber(config.Character.nom) then
-                        exports.nCoreGTA:ShowNotification("Veuillez inserer un nom correct !")
+	                    TriggerEvent("NUI-Notification", {"Veuillez inserer un nom correct !.", "warning"})
                         return nil
                     end
 
@@ -161,7 +161,7 @@ Citizen.CreateThread(function()
                     config.Character.prenom = SaisitText("", 10)
 
                     if tostring(config.Character.prenom) == nil or tonumber(config.Character.prenom) then
-                        exports.nCoreGTA:ShowNotification("Veuillez inserer un prenom correct !")
+                        TriggerEvent("NUI-Notification", {"Veuillez inserer un prenom correct !.", "warning"})
                         return nil
                     end
 
@@ -174,7 +174,7 @@ Citizen.CreateThread(function()
                     config.Character.age = SaisitText("", 3)
 
                     if tonumber(config.Character.age) == nil then
-                        exports.nCoreGTA:ShowNotification("Veuillez inserer un age correct !")
+                        TriggerEvent("NUI-Notification", {"Veuillez inserer un age correct !.", "warning"})
                         return nil
                     end
 
@@ -187,7 +187,7 @@ Citizen.CreateThread(function()
                     config.Character.taille = SaisitText("", 3)
 
                     if tonumber(config.Character.taille) == nil then
-                        exports.nCoreGTA:ShowNotification("Veuillez inserer une taille correct !")
+                        TriggerEvent("NUI-Notification", {"Veuillez inserer une taille correct !.", "warning"})
                         return nil
                     end
 
@@ -200,7 +200,7 @@ Citizen.CreateThread(function()
                     config.Character.nationaliter = SaisitText("", 15)
 
                     if tostring(config.Character.nationaliter) == nil then
-                        exports.nCoreGTA:ShowNotification("Veuillez inserer une nationalité correct !")
+                        TriggerEvent("NUI-Notification", {"Veuillez inserer une nationalité correct !.", "warning"})
                         return nil
                     end
 

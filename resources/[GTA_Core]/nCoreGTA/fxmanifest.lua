@@ -21,6 +21,7 @@ client_scripts {
     'client_main/main.lua',
     'client_main/spawn.lua',
     'client_main/public_event.lua',
+    'client_main/coma.lua',
     'synchronisation/client.lua',
     'services/client.lua'
 }
@@ -29,9 +30,6 @@ files {
     'progressBar/progressbar.html'
 }
 
-export 'Ninja_Core_PedsText'
-export 'Ninja_Core_StartAnim'
-export 'Ninja_Core_nRequestAnimSet'
 export 'progression'
 
 --@Super.Cool.Ninja

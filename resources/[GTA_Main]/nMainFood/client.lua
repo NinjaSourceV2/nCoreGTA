@@ -49,14 +49,7 @@ function RemoveCalories(calories)
 		pFaim = 0
 	end
 	if pFaim <= 50 and pFaim > 0 then
-		exports.GTA_Notif:GTA_NUI_ShowNotification({
-			text = "Vous avez faim !",
-			type = "warning",
-			icon = "fa fa-cutlery fa-2x",
-			position = "row-reverse"
-		})
-
-		exports.GTA_NOTIF_EXPORT:Ninja_Core_nRequestAnimSet('move_m@buzzed', 'move_m@buzzed')
+		TriggerEvent("NUI-Notification", {"Vous avez faim !.", "warning"})
 	elseif pFaim == 0 then
 		SetEntityHealth(GetPlayerPed(-1), 0)
 	end
@@ -99,26 +92,12 @@ function RemoveWater(water)
 	end
 	if pSoif <= 50 and pSoif > 0 then
 
-	exports.GTA_Notif:GTA_NUI_ShowNotification({
-		text = "Vous êtes assoiffé !",
-		type = "warning",
-		icon = "fa fa-tint fa-2x",
-		position = "row-reverse"
-	})
+	TriggerEvent("NUI-Notification", {"Vous êtes assoiffé !.", "warning"})
 	elseif pSoif == 0 then
 		SetEntityHealth(GetPlayerPed(-1), 0)
 	end
 	TriggerServerEvent("nSetSoif", pSoif)
 end
-
--- GET VALUES
-local firstspawn = 0
-AddEventHandler('playerSpawned', function(spawn)
-	if firstspawn == 0 then
-		TriggerServerEvent("nGetStats")
-		firstspawn = 1
-	end
-end)
 
 -- NETWORK EVENTS
 RegisterNetEvent("nGetStats")
@@ -144,7 +123,6 @@ AddEventHandler("nResetStatsFood", function()
 	SetWater(100)
 end)
 
---exports.nCoreStuff:Ninja_Core_nRequestAnimSet('move_m@buzzed', 'move_m@buzzed')
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
@@ -171,34 +149,28 @@ AddEventHandler('EnableDisableHUDFS', function(bool)
 end)
 
 -- FUNCTIONS
-local waitDisplayHud = 1000
 --Chargement en boucle pour actualisé vos status Faim/Soif
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(waitDisplayHud)
+		Citizen.Wait(300)
+		SendNUIMessage({
+			type = "hunger",
+			data_hudOn = enableHud,
+			data_faim = pFaim,
+			data_soif = pSoif
+		})
+	end
+end)
 
-		if IsPauseMenuActive() then
-			--> Remove the NUI WANTED :
-			SendNUIMessage({
-				type = "hunger",
-				data_hudOn = false,
-				data_faim = pFaim,
-				data_soif = pSoif
-			})
-		elseif not IsPauseMenuActive() then 
-			-->  Show the NUI WANTED :
-			SendNUIMessage({
-				type = "hunger",
-				data_hudOn = enableHud,
-				data_faim = pFaim,
-				data_soif = pSoif
-			})
-		end
-
-		if enableHud == true then
-			waitDisplayHud = 1
-		else
-			waitDisplayHud = 1000
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(300)
+		if IsPauseMenuActive() and not isPaused then
+			isPaused = true
+			enableHud = false
+		elseif not IsPauseMenuActive() and isPaused then
+			isPaused = false
+			enableHud = true
 		end
 	end
 end)

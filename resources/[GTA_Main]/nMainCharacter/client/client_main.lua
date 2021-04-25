@@ -1,15 +1,14 @@
 indexii = {}
 
+--> Chargement des noms des tenues :
 Citizen.CreateThread(function()
 	GetLabelTenue()
 end)
 
---> Spawn a random character :
+--> Spawn character aleatoire :
 function GetPlayerModel(modelhash)
-	local playerPed = PlayerPedId()
-
 	if IsModelValid(modelhash) then
-		if not IsPedModel(playerPed, modelHash) then
+		if not IsPedModel(PlayerPedId(), modelHash) then
 			RequestModel(modelhash)
 			while not HasModelLoaded(modelhash) do
 				Wait(500)
@@ -18,21 +17,21 @@ function GetPlayerModel(modelhash)
 			SetPlayerModel(PlayerId(), modelhash)
 		end
 
-		SetPedHeadBlendData(PlayerPedId(), 0, math.random(45), 0,math.random(45), math.random(5), math.random(5),1.0,1.0,1.0,true)
+		SetPedHeadBlendData(PlayerPedId(), 0, math.random(45), 0, math.random(45), math.random(5), math.random(5),1.0,1.0,1.0,true)
 		SetPedHairColor(PlayerPedId(), math.random(1, 4), 1)
 
 		if IsPedMale(PlayerPedId()) then
-			SetPedComponentVariation(PlayerPedId(), 8, 15, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 8, 15, 0, 0) --> Accesoires
+			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0) --> Eyes
+			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0) --> Torso2
+			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0) --> Texture
+			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0) --> Torso
 		else
-			SetPedComponentVariation(PlayerPedId(), 8, 2, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0)
-			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 8, 0, 0, 0) --> Accesoires
+			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0) --> Eyes
+			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0) --> Torso2
+			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0) --> Texture
+			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)--> Torso
 		end
 
 		SetModelAsNoLongerNeeded(modelhash)
@@ -89,11 +88,9 @@ function AnimCam()
 	--> On charge un ped de sex homme :
 	GetPlayerModel("mp_m_freemode_01")
 
-
 	-->Spawn du ped juste avant de begin l'animation :
     SetEntityCoords(GetPlayerPed(-1), 405.59, -997.18, -99.00, 0.0, 0.0, 0.0, true)
 	SetEntityHeading(GetPlayerPed(-1), 90.00)
-
 
 	--> Setup de la derniere camera d'introduction :
 	config.Camera.cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 402.99, -998.02, -99.00, 0.00, 0.00, 0.00, 50.00, false, 0)
@@ -119,12 +116,12 @@ function CameraPosition(camera)
 	if config.CamPerso then
 		local newCam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", config.Camera[camera].x, config.Camera[camera].y, config.Camera[camera].z, 0.00, 0.00, 0.00, config.Camera[camera].fov, false, 0)
 		PointCamAtCoord(newCam, config.Camera[camera].x, config.Camera[camera].y, config.Camera[camera].z)
-   		SetCamActiveWithInterp(newCam, config.CamPerso, 2000, true, true)
+   		SetCamActiveWithInterp(newCam, config.CamPerso, 1000, true, true)
    		config.CamPerso = newCam
 	else
 		config.CamPerso = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", config.Camera[camera].x, config.Camera[camera].y, config.Camera[camera].z, 0.00, 0.00, 0.00, config.Camera[camera].fov, false, 0)
 	    SetCamActive(config.Camera.cam2, true)
-	    RenderScriptCams(true, false, 2000, true, true)
+	    RenderScriptCams(true, false, 1000, true, true)
 	end
 end
 

@@ -6,6 +6,7 @@ config.activerPoliceWanted = false
 config.activerPvp = true 
 config.salaireTime = 900000
 config.savePosTime = 60000
+config.timerSignalEMS = 60000 --> Definis le temps d'attente entre chaque envoi de signal pour les ems si le joueur est dans le coma.
 
 --> Valeur de départ Joueur : 
 config.argentPropre = 500

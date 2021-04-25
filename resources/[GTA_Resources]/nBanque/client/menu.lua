@@ -8,12 +8,7 @@ Citizen.CreateThread(function()
 			onSelected = function()
 				local quantityMoneyitems = InputNombre("Somme d'argent à retirer :")
 				if tonumber(quantityMoneyitems) == nil then
-					exports.GTA_Notif:GTA_NUI_ShowNotification({
-						text = "Veuillez saisir un nombre correct.",
-						type = "error",
-						icon = "fa fa-exclamation-circle fa-2x",
-						position = "row-reverse"
-					})
+	                TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct. ", "warning"})
 					return nil
 				end
 				TriggerServerEvent("nBanqueSolde:PermissionRABanque", quantityMoneyitems)
@@ -22,13 +17,7 @@ Citizen.CreateThread(function()
 			RageUI.Button('Deposer', "", {}, true, { onSelected = function()
 				local quantityMoneyBanqueitems = InputNombre("Somme d'argent à déposer :")
 				if tonumber(quantityMoneyBanqueitems) == nil then
-
-					exports.GTA_Notif:GTA_NUI_ShowNotification({
-						text = "Veuillez saisir un nombre correct.",
-						type = "error",
-						icon = "fa fa-exclamation-circle fa-2x",
-						position = "row-reverse"
-					})
+	                TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct. ", "warning"})
 					return nil
 				end
 				TriggerServerEvent("nBanqueSolde:PermissionDABanque", quantityMoneyBanqueitems)

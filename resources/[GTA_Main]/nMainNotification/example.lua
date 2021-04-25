@@ -15,7 +15,7 @@
 
 -->For the e.g we will show the notification by using command : 
 RegisterCommand("notif", function(source, args)
-    exports.GTA_Notif:GTA_NUI_ShowNotification({
+    exports.nMainNotification:GTA_NUI_ShowNotification({
         text = "This is a notification using html/css/js and lua.",
         type = args[1],
         icon = "fab fa-angellist fa-2x", --> for the size i recommend you to use always x2 better resolution.
@@ -32,7 +32,7 @@ end, false)
 
 --Else you will always use the function like this : 
 --[[
-    exports.GTA_Notif:GTA_NUI_ShowNotification({
+    exports.nMainNotification:GTA_NUI_ShowNotification({
         text = "Your Text, Hello World !",
         type = "success", --> Your type between error/success/warning
         icon = "fas fa-check fa-2x",

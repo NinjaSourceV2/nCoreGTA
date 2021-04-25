@@ -1,11 +1,21 @@
  --||@SuperCoolNinja. && RamexDeltaXOO||--
 
-
 RegisterNetEvent("GTA:JoueurLoaded")
 AddEventHandler("GTA:JoueurLoaded", function()
-    --> Load le phone au spawn :
-    TriggerServerEvent("GTA:TelephoneLoaded")
+    TriggerServerEvent("GTA:TelephoneLoaded") --> Load le phone au spawn :
 
+    local ipls = {'facelobby', 'farm', 'farmint', 'farm_lod', 'farm_props', 
+                'des_farmhouse', 'post_hiest_unload', 'v_tunnel_hole',
+                'rc12b_default', 'refit_unload', 'shr_int', 'Coroner_Int_on'}
+
+    for _,v in pairs(ipls) do
+        if not IsIplActive(v) then
+            RequestIpl(v)
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
     --> PVP :
     if config.activerPvp == true then
         for _, player in ipairs(GetActivePlayers()) do
@@ -18,10 +28,9 @@ AddEventHandler("GTA:JoueurLoaded", function()
     --> COPS :
     if config.activerPoliceWanted == false then
         Citizen.CreateThread(function()
-            local myPlayer = GetEntityCoords(PlayerPedId())	
             while true do
                 Citizen.Wait(0)
-                
+                local myPlayer = GetEntityCoords(PlayerPedId())	
                 --> Permet de ne pas recevoir d'indice de recherche :
                 if (GetPlayerWantedLevel(PlayerId()) > 0) then
                     SetPlayerWantedLevel(PlayerId(), 0, false)
@@ -37,20 +46,10 @@ AddEventHandler("GTA:JoueurLoaded", function()
     --> Salaire :
     Citizen.CreateThread(function ()
         while true do
-        Citizen.Wait(config.salaireTime)
+            Citizen.Wait(config.salaireTime)
             TriggerServerEvent("GTA:salaire")
         end
     end)
-
-    local ipls = {'facelobby', 'farm', 'farmint', 'farm_lod', 'farm_props', 
-                'des_farmhouse', 'post_hiest_unload', 'v_tunnel_hole',
-                'rc12b_default', 'refit_unload', 'shr_int', 'Coroner_Int_on'}
-
-    for _,v in pairs(ipls) do
-        if not IsIplActive(v) then
-            RequestIpl(v)
-        end
-    end
 end)
 
 RegisterNetEvent("GTA:AfficherArgentPropre")
@@ -101,31 +100,14 @@ RegisterCommand('+changevoice', function()
         currentdistancevoice = (currentdistancevoice + 1) % 3
 	if currentdistancevoice == 0 then
 		NetworkSetTalkerProximity(distance_voix.Normal) -- 5 meters range
+	    TriggerEvent("NUI-Notification", {"Niveau vocal : normal."})
 
-        exports.GTA_Notif:GTA_NUI_ShowNotification({
-            text = "Niveau vocal : normal.",
-            type = "success",
-            icon = "fa fa-check fa-2x",
-            position = "row-reverse"
-        })
 	elseif currentdistancevoice == 1 then
 		NetworkSetTalkerProximity(distance_voix.Grande) -- 12 meters range
-
-        exports.GTA_Notif:GTA_NUI_ShowNotification({
-            text = "Niveau vocal : crier.",
-            type = "success",
-            icon = "fa fa-check fa-2x",
-            position = "row-reverse"
-        })
+	    TriggerEvent("NUI-Notification", {"Niveau vocal : crier."})
 	elseif currentdistancevoice == 2 then
         NetworkSetTalkerProximity(distance_voix.Faible) -- 1 meters range
-
-        exports.GTA_Notif:GTA_NUI_ShowNotification({
-            text = "Niveau vocal : chuchoter.",
-            type = "success",
-            icon = "fa fa-check fa-2x",
-            position = "row-reverse"
-        })
+	    TriggerEvent("NUI-Notification", {"Niveau vocal : chuchoter."})
 	end
 end, false)
 

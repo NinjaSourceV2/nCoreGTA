@@ -3,6 +3,15 @@ function LocalPed()
 	return GetPlayerPed(-1)
 end
 
+local function showLoadingPromt(label, time)
+    Citizen.CreateThread(function()
+        BeginTextCommandBusyString(tostring(label))
+        EndTextCommandBusyString(3)
+        Citizen.Wait(time)
+        RemoveLoadingPrompt()
+    end)
+end
+
 local function spawnPlayerLastPos(PosX, PosY)
 	--Definit la position du joueur : 
 	for height = 1, 1000 do
@@ -95,17 +104,6 @@ Citizen.CreateThread(function ()
 		Citizen.Wait(config.savePosTime)
 		LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(LocalPed(), true))
 		TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
-
-		exports.GTA_Notif:GTA_NUI_ShowNotification({
-			text = "Position synchronisée.",
-			type = "success",
-			icon = "fa fa-check fa-2x",
-			position = "row-reverse"
-		})
+	    TriggerEvent("NUI-Notification", {"Position synchronisée."})
 	end
-end)
-
-AddEventHandler('playerSpawned', function()
-	TriggerServerEvent("GTA:SetPositionPlayer")
-	TriggerServerEvent("GTA:LoadJobsJoueur")
 end)

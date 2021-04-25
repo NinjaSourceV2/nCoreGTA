@@ -7,7 +7,7 @@ local t_alert =
 
 RegisterNetEvent("GTA_NUI_ShowNotif_client")
 AddEventHandler("GTA_NUI_ShowNotif_client",function(data_text, data_type, data_icon, data_position, data_sound)
-    exports.GTA_Notif:GTA_NUI_ShowNotification({
+    exports.nMainNotification:GTA_NUI_ShowNotification({
         text = data_text,
         type = data_type, --> Your type between error/success/warning
         icon = data_icon,

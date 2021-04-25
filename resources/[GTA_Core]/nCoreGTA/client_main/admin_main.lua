@@ -55,6 +55,11 @@ RegisterCommand("god", function()
     end
 end, false)
 
+RegisterCommand("kill", function()
+    local getPlayer = GetPlayerPed(-1)
+    SetEntityHealth(getPlayer, 0)
+end, false)
+
 
 --> Commande pour s'ajouté de l'argent propre :
 --> /gap montant 
@@ -152,8 +157,8 @@ end, false)
 RegisterCommand('v', function(source, args, rawCommand)
     if (isPlayerAdmin == true) then
         local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 8.0, 0.5))
-        local veh = args[1]
-        if veh == nil then exports.nCoreGTA:ShowNotification("~y~Veuillez saisir un nom d'un véhicule.") end
+        local veh = args[1] 
+        if veh == nil then TriggerEvent("NUI-Notification", {"Veuillez saisir un nom d'un véhicule.", "warning"}) end
         vehiclehash = GetHashKey(veh)
         RequestModel(vehiclehash)
         
@@ -209,9 +214,4 @@ AddEventHandler('onResourceStart', function(resourceName)
 	end
 
     TriggerServerEvent("GTA:CheckAdmin")
-end)
-
---> Executer au spawn du joueur :
-AddEventHandler('playerSpawned', function()
-	TriggerServerEvent("GTA:CheckAdmin")
 end)

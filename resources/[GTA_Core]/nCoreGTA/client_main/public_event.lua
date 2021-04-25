@@ -1,4 +1,15 @@
 --[=====[
+        Spawn du player :
+]=====]
+AddEventHandler('playerSpawned', function()
+	TriggerServerEvent("GTA:SetPositionPlayer")
+	TriggerServerEvent("GTA:LoadJobsJoueur")
+	TriggerServerEvent("nGetStats")
+	TriggerServerEvent("GTA:CheckAdmin")
+    TriggerServerEvent('GTA:requestSync')
+end)
+
+--[=====[
         Notification :
 ]=====]
 
@@ -7,12 +18,19 @@ AddEventHandler("NUI-Notification", function(t)
     setmetatable(t,{__index={b = "success", c = "fa fa-handshake-o fa-2x", d = "row-reverse"}})
     local textNotif, tType, iCon, pPos = t[1] or t.a, t[2] or t.b, t[3] or t.c, t[4] or t.d
 
-    exports.GTA_Notif:GTA_NUI_ShowNotification({
+    exports.nMainNotification:GTA_NUI_ShowNotification({
         text = textNotif,
         type = tType,
         icon = iCon,
         position = pPos
     })
+end)
+
+RegisterNetEvent('nMenuNotif:showNotification')
+AddEventHandler('nMenuNotif:showNotification', function(text)
+    SetNotificationTextEntry( "STRING" )
+    AddTextComponentString( text )
+	DrawNotification( false, false )
 end)
 
 
@@ -88,6 +106,22 @@ AddEventHandler("TaskPlayAnimation", function(handle, dict, animation, duration,
 	TaskPlayAnim(handle, dict, animation, 8.0, -8, duration, flags, 0, 0, 0, 0)
 end)
 
+--[=====[
+           Anim Set Attitude (demarche) :
+]=====]
+RegisterNetEvent("BeginRequestAnimSet")
+AddEventHandler("BeginRequestAnimSet", function(animSet) 
+	if not HasAnimSetLoaded(animSet) then
+		RequestAnimSet(animSet)
+
+		while not HasAnimSetLoaded(animSet) do
+			Citizen.Wait(1)
+		end
+		SetPedMotionBlur(GetPlayerPed(-1), true)
+		SetPedMovementClipset(GetPlayerPed(-1), animSet, true)
+	end
+end)
+
 
 
 --[=====[
@@ -131,4 +165,13 @@ AddEventHandler("DestroyVehicle", function(entity)
     SetEntityAsMissionEntity(entity,true,true)
 	Citizen.InvokeNative(0xAE3CBE5BF394C9C9, Citizen.PointerValueIntInitialized(entity))
     TriggerEvent("NUI-Notification", {"Véhicule détruit."})
+end)
+
+
+--[=====[
+            On Player death :
+]=====]
+RegisterNetEvent("GTA:OnPlayerDeath")
+AddEventHandler("GTA:OnPlayerDeath", function()
+    BeginDeathScreen()
 end)

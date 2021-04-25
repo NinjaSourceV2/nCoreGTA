@@ -26,14 +26,7 @@ Citizen.CreateThread(function()
                 RageUI.Button(v, "", {}, true, {onSelected = function()
                     TriggerServerEvent("GTA:UpdateJob", v)
                     TriggerServerEvent("GTA:LoadJobsJoueur")
-
-                    exports.GTA_Notif:GTA_NUI_ShowNotification({
-                        text = "Vous voici avec votre nouveau job "..v,
-                        type = "success",
-                        icon = "fa fa-handshake-o fa-2x",
-                        position = "row-reverse"
-                    })
-
+	                TriggerEvent("NUI-Notification", {"Vous voici avec votre nouveau job "..v})
                     RageUI.CloseAll(true)
                 end});
             end

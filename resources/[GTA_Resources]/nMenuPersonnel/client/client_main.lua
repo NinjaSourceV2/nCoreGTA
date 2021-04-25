@@ -163,13 +163,7 @@ end
 function RequestToSave()
 	local LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
 	TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
-
-	exports.GTA_Notif:GTA_NUI_ShowNotification({
-        text = "Position Sauvegarder.",
-        type = "success",
-        icon = "fa fa-check fa-2x",
-        position = "row-reverse"
-    })
+	TriggerEvent("NUI-Notification", {"Position Sauvegarder."})
 end
 
 function playAnimation(dict, anim, timer, move)
