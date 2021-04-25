@@ -33,26 +33,8 @@ function hasPhone(cb)
 end
 
 function NoPhoneFound()
-  exports.GTA_Notif:GTA_NUI_ShowNotification({
-    text = "Intéraction impossible, vous devez vous fournir d'un phone.",
-    type = "warning",
-    icon = "fa fa-exclamation-circle fa-2x",
-    position = "row-reverse",
-    sound = "warning"
-  })
+  TriggerEvent("NUI-Notification", {"Intéraction impossible, vous devez vous fournir d'un phone.", "warning"})
 end
-
---[[ 
-AddEventHandler('esx:onPlayerDeath', function()
-  if menuIsOpen then
-    menuIsOpen = false
-    TriggerEvent('gcPhone:setMenuStatus', false)
-    SendNUIMessage({show = false})
-    PhonePlayOut()
-    SetBigmapActive(0,0)
-  end
-end)
-]]
 
 --====================================================================================
 --
