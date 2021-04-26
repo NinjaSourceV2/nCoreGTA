@@ -67,7 +67,7 @@ end
 
 -------------------------------> Control :
 Keys.Register('F6', 'F6', 'Menu Medic.', function()
-    --if (Config.Medic.job ~= "Medic") then return end
+    if (Config.Medic.job ~= "Medic") then return end
     RageUI.Visible(mainMenu, not RageUI.Visible(mainMenu))
 end)
 

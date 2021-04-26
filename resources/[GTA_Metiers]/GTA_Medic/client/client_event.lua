@@ -13,6 +13,16 @@ AddEventHandler("GTA_Medic:ReviveTarget", function()
     local ped = GetPlayerPed(-1)
     local x, y, z = table.unpack(GetEntityCoords(ped , true))
 
+    RequestAnimDict('mini@cpr@char_b@cpr_str')
+    while not HasAnimDictLoaded('mini@cpr@char_b@cpr_str') do
+        Citizen.Wait(10)
+    end
+        
+    local myPed = PlayerPedId()
+    local animation = 'cpr_success'
+    local flags = 262144
+    TaskPlayAnim(myPed, 'mini@cpr@char_b@cpr_str', animation, 8.0, -8, -1, flags, 0, 0, 0, 0)
+
     SetEntityHealth(ped, 100.0)
     local pos = GetEntityCoords(ped)
 	local h = GetEntityHeading(ped)
