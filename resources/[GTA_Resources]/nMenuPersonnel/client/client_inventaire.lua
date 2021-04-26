@@ -19,21 +19,9 @@ AddEventHandler("gui:getItems", function(THEITEMS)
 	ITEMS = THEITEMS
 end)
 
-
-function getPods()
-	local pods = 0
-	for _, v in pairs(ITEMS) do
-		pods = pods + v.quantity
-	end
-	return pods
-end
-
 RegisterNetEvent("player:receiveItem")
 AddEventHandler("player:receiveItem", function(item_name, quantity, max_qty)
-	print(quantity)
-	print(max_qty)
 	item_name = tostring(item_name)
-	print(ITEMS[item_name])
 
 	if	(ITEMS[item_name] == nil)then 
 		if (quantity <= max_qty) then
