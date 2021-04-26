@@ -22,9 +22,8 @@ end)
 RegisterNetEvent("player:receiveItem")
 AddEventHandler("player:receiveItem", function(item_name, quantity, max_qty)
 	item_name = tostring(item_name)
-
 	if	(ITEMS[item_name] == nil)then 
-		if (quantity <= max_qty) then
+		if (tonumber(quantity) <= tonumber(max_qty)) then
 			new(item_name, quantity)
 			TriggerEvent("NUI-Notification", {"Vous avez reçu x"..tonumber(quantity) ..item_name})
 		else
