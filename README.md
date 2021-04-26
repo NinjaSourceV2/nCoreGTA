@@ -1,7 +1,4 @@
 # nCoreGTA
-Hey ! Cette source à étais créer dans le but d'aidez toute nouvel personne voulant créer son serveur sur la plateforme "FiveM" sans devoir recréer la roue.
-le tout codé de la plus simple des façon, facile à comprendre et facile de s'y retrouver.
-
 Cette source est plus basé pour du Serveur RP, mais peut être utilisé pour tout type de GameMode.
 Mon but derrière tout ça est simplement de partager mon savoir avec vous que ça soit pour des script complexe payant ou des script simple gratuit. 
 
