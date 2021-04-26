@@ -8,8 +8,6 @@ local isMouseEnable, hautMis, basMis, chaussureMis, ChapeauMis, isFoodHudEnable 
 local index_Cash = 1
 
 
-
-
 Citizen.CreateThread(function()
     while (true) do
         Citizen.Wait(1.0)
@@ -105,55 +103,6 @@ Citizen.CreateThread(function()
         RageUI.IsVisible(subPapiers, function()
             
             TriggerEvent("ShowMarkerTarget")
-
-            RageUI.List('💵   Argent propre ~g~ ' ..config.joueurs.ArgentPropre .. "$", {
-                { Name = "~b~Donner~w~"}
-            }, index_Cash, description, {}, true, {
-                onListChange = function(Index, Item) index_Cash = Index; end,
-                onSelected = function(Index, Item)
-                    if Index == 1 then
-                        local ClosestPlayerSID = GetPlayerServerId(GetClosestPlayer())
-                        if ClosestPlayerSID ~= 0 then
-                            local result = InputNombre("Montant : ")
-
-                            if tonumber(result) == nil then
-	                            TriggerEvent("NUI-Notification", {"Veuillez inserer un nombre correct !", "warning"})
-                                return nil
-                            end
-	                        exports.rprogress:Start("Intéraction en cours", 1000)
-                            TriggerServerEvent("nArgent:DonnerArgentPropre", ClosestPlayerSID, tonumber(result))
-                            RageUI.Visible(subPapiers, false)
-                        else
-	                        TriggerEvent("NUI-Notification", {"Aucune personne devant vous !", "warning"})
-                        end
-                    end
-                end,
-            })
-
-            RageUI.List('💴   Argent sale~r~ ' ..config.joueurs.argentSale .. "$", {
-                { Name = "~b~Donner~w~"}
-            }, index_Cash, description, {}, true, {
-                onListChange = function(Index, Item) index_Cash = Index; end,
-
-                onSelected = function(Index, Item)
-                    if Index == 1 then 
-                        local ClosestPlayerSID = GetPlayerServerId(GetClosestPlayer())
-                        if ClosestPlayerSID ~= 0 then
-                            local result = InputNombre("Montant : ")
-            
-                            if tonumber(result) == nil then
-	                            TriggerEvent("NUI-Notification", {"Veuillez inserer un nombre correct !", "warning"})
-                                return nil
-                            end
-	                        exports.rprogress:Start("Intéraction en cours", 1000)
-                            TriggerServerEvent("GTA:DonnerArgentSale", ClosestPlayerSID, tonumber(result))
-                            RageUI.Visible(subPapiers, false)
-                        else
-                            TriggerEvent("NUI-Notification", {"Aucune personne devant vous !", "warning"})
-                        end
-                    end
-                end,
-            })
 
             RageUI.Button('Regarder votre identité', "", {}, true, {
                 onSelected = function()

@@ -21,8 +21,6 @@ USE `gta_serveur`;
 DROP TABLE IF EXISTS `gta_joueurs`;
 CREATE TABLE IF NOT EXISTS `gta_joueurs` (
   `license` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `argent_propre` int(11) DEFAULT NULL,
-  `argent_sale` int(11) DEFAULT NULL,
   `banque` int(11) DEFAULT NULL,
   `job` varchar(255) COLLATE utf8mb4_bin DEFAULT 'Chomeur',
   `isFirstConnection` tinyint(1) NOT NULL DEFAULT 1,
@@ -30,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs` (
   `prenom` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT 'Sans Prenom',
   `taille` int(10) unsigned NOT NULL DEFAULT 0,
   `age` int(120) NOT NULL DEFAULT 0,
-  `origine` varchar(50) COLLATE utf8mb4_bin DEFAULT '',
+  `origine` varchar(50) COLLATE utf8mb4_bin DEFAULT 'Citoyen',
   `faim` int(11) DEFAULT 100,
   `soif` int(11) DEFAULT 100,
   `isAdmin` tinyint(1) DEFAULT 0,
@@ -118,8 +116,10 @@ CREATE TABLE IF NOT EXISTS `gta_medic_stockage` (
   `argent_sale` int(11) unsigned DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table gta_serveur.gta_medic_stockage : ~0 rows (environ)
+-- Listage des données de la table gta_serveur.gta_medic_stockage : ~1 rows (environ)
 /*!40000 ALTER TABLE `gta_medic_stockage` DISABLE KEYS */;
+INSERT INTO `gta_medic_stockage` (`argent`, `argent_sale`) VALUES
+	(500, 0);
 /*!40000 ALTER TABLE `gta_medic_stockage` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_metiers
@@ -143,29 +143,32 @@ DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `libelle` varchar(255) DEFAULT NULL,
   `isUsable` tinyint(1) DEFAULT 1,
-  `type` tinyint(3) NOT NULL DEFAULT 0
+  `type` tinyint(3) NOT NULL DEFAULT 0,
+  `max_qty` bigint(20) DEFAULT 100
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Listage des données de la table gta_serveur.items : ~17 rows (environ)
+-- Listage des données de la table gta_serveur.items : ~19 rows (environ)
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` (`libelle`, `isUsable`, `type`) VALUES
-	('Pistolet', 1, 3),
-	('9mm', 1, 3),
-	('Marteau', 1, 3),
-	('Batte', 1, 3),
-	('Pied-de-biche', 1, 3),
-	('Couteau', 1, 3),
-	('Menotte', 1, 0),
-	('Hache', 1, 3),
-	('Machette', 1, 3),
-	('Poing-américain', 1, 3),
-	('Tazer', 1, 3),
-	('Matraque', 1, 3),
-	('Seringe-Adrenaline', 1, 4),
-	('Soda', 1, 1),
-	('Téléphone', 1, 0),
-	('Pain', 1, 2),
-	('Eau', 1, 1);
+INSERT INTO `items` (`libelle`, `isUsable`, `type`, `max_qty`) VALUES
+	('Pistolet', 1, 3, 100),
+	('9mm', 1, 3, 100),
+	('Marteau', 1, 3, 100),
+	('Batte', 1, 3, 100),
+	('Pied-de-biche', 1, 3, 100),
+	('Couteau', 1, 3, 100),
+	('Menotte', 1, 0, 100),
+	('Hache', 1, 3, 100),
+	('Machette', 1, 3, 100),
+	('Poing-américain', 1, 3, 100),
+	('Tazer', 1, 3, 100),
+	('Matraque', 1, 3, 100),
+	('Seringe-Adrenaline', 1, 4, 100),
+	('Soda', 1, 1, 100),
+	('Téléphone', 1, 0, 100),
+	('Pain', 1, 2, 100),
+	('Eau', 1, 1, 100),
+	('Argent-Propre', 1, 0, 2147483647),
+	('Argent-Sale', 1, 0, 2147483647);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. phone_app_chat

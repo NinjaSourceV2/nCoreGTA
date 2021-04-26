@@ -33,6 +33,17 @@ AddEventHandler('nMenuNotif:showNotification', function(text)
 	DrawNotification( false, false )
 end)
 
+RegisterNetEvent('GTAO:NotificationIcon')
+AddEventHandler('GTAO:NotificationIcon', function(icon, title, soustitre, text)
+	soustitre = soustitre or " "
+	SetNotificationTextEntry("STRING")
+	AddTextComponentString(text)
+	SetNotificationMessage(icon, icon, true, 1, title, soustitre, text)
+	DrawNotification(false, true)
+end)
+--TriggerEvent("GTAO:NotificationIcon", "CHAR_BANK_MAZE", "Titre","Sous Titre", "TEXT LOREM SISISI ASASAASLLAALLA")
+
+
 
 --[=====[
             Marker Target :

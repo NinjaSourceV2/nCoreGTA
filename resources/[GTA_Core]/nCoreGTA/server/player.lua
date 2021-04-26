@@ -47,20 +47,18 @@ function Player:Find(source, callback)
 
 	MySQL.Async.fetchAll('SELECT * FROM gta_joueurs WHERE license = @username',{['@username'] = pLicense}, function(res)
 	        if callback then
-	            for k, v in ipairs(res) do
+	            for _, v in ipairs(res) do
 	               callback(v)
 	            end
 	        end
 	end)
 end
 
-function Player:New(license, argent_propre, argent_sale, banque)
+function Player:New(license, banque)
 	return MySQL.Async.execute(
-		'INSERT INTO gta_joueurs (`license`,`argent_propre`,`argent_sale`, `banque`) VALUES (@license, @argent_propre, @argent_sale, @banque)',
+		'INSERT INTO gta_joueurs (`license`, `banque`) VALUES (@license, @banque)',
 		{ 
 			['license'] = license,
-			['argent_propre'] = argent_propre,
-			['argent_sale'] = argent_sale,
 			['banque'] = banque
 		},
 		function ()
@@ -72,11 +70,7 @@ AddEventHandler('GTA:LoadArgent', function()
 	local source = source
 	Player:Find(source, function(data)
 		if data then
-			local argentPropre = data.argent_propre
-			local argentSale = data.argent_sale
 			local argentBanque = data.banque
-			
-			TriggerClientEvent('GTA:AfficherArgentPropre', source, argentPropre)
 			TriggerClientEvent('GTA:AfficherBanque', source, argentBanque)
 		end
 	end)
@@ -96,6 +90,23 @@ AddEventHandler('GTA:GetInfoJoueurs', function(source, callback)
 	end)
 end)
 
+
+RegisterServerEvent('GTA:GetUserQtyItem')  --> cette event sert uniquement a get la quantité d'un item server-side.
+AddEventHandler('GTA:GetUserQtyItem', function(source, itemName, callback)
+	local source = source
+	local license = GetPlayerIdentifiers(source)[1]
+
+	MySQL.Async.fetchAll("SELECT * FROM user_inventory WHERE license = @username AND item_name = @item", {['@username'] = license, ['@item'] = tostring(itemName)}, function(result)
+		if(result[1] ~= nil) then
+			if callback then
+				callback(result[1].quantity)
+			end
+		else
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  source, "Vous ne possédez pas cette item sur vous.", "warning")
+		end
+	end)
+end)
+
 RegisterServerEvent('GTA:CreationJoueur')  --> cette event sert uniquement a créer votre perso.
 AddEventHandler('GTA:CreationJoueur', function(source)
 	local source = source
@@ -107,7 +118,9 @@ AddEventHandler('GTA:CreationJoueur', function(source)
 			print('Creation de personnage pour : [' .. GetPlayerName(source) .. "] -  [License] : "..license)
 		end
 
-		Player:New(license, config.argentPropre, config.argentSale, config.banque)
+		Player:New(license, config.banque)
+		MySQL.Async.execute('INSERT INTO user_inventory SET ?', { {['license'] = license, ['item_name'] = "Argent-Propre", ['quantity'] = tonumber(config.argentPropre)} })
+		MySQL.Async.execute('INSERT INTO user_inventory SET ?', { {['license'] = license, ['item_name'] = "Argent-Sale", ['quantity'] = tonumber(config.argentSale)} })
 	end
 end)
 
@@ -122,8 +135,7 @@ AddEventHandler('GTA:salaire', function()
 				local newValue = data.banque + res[1].salaire
 				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 				TriggerClientEvent('GTA:AfficherBanque', source, newValue)
-			TriggerClientEvent("GTA_NUI_ShowNotif_client",  source, " Salaire reçu : + "..res[1].salaire.." $", "success", "fa fa-user fa-2x", "row")
-
+				TriggerClientEvent("GTAO:NotificationIcon", source, "CHAR_BANK_MAZE", "Maze Bank", "+ : ~g~" ..res[1].salaire.. " $", "Salaire reçu")
 			end)
 		end
 	end)
@@ -134,9 +146,11 @@ AddEventHandler('GTA:AjoutArgentPropre', function(source, value)
 	local src = source
 	Player:Find(src, function(data)
 		if data then
-			local newValue = data.argent_propre + value
-			MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
-			TriggerClientEvent('GTA:AfficherArgentPropre', src, newValue)
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+				local newValue = argentPropreQty + value
+				MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = newValue}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Propre"}})
+				TriggerClientEvent("GTAO:NotificationIcon", src, "CHAR_BANK_MAZE", "Maze Bank", "+ : ~g~" ..value.. " $", "Argent reçu")
+			end)
 		end
 	end)
 end)
@@ -147,9 +161,12 @@ AddEventHandler('GTA:AjoutArgentSale', function(source, value)
 	local src = source
 	Player:Find(src, function(data)
 		if data then
-			local newValue = data.argent_sale + value
-			MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
-			--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Sale", function(argentSaleQty)
+				local newValue = argentSaleQty + value
+				MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = newValue}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Sale"}})
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Nouveau Solde Argent Sale : "..newValue)
+				--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
+			end)
 		end
 	end)
 end)
@@ -162,6 +179,7 @@ AddEventHandler('GTA:AjoutArgentBanque', function(source, value)
 			local newValue = data.banque + value
 			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			TriggerClientEvent('GTA:AfficherBanque', src, newValue)
+			TriggerClientEvent("GTAO:NotificationIcon", src, "CHAR_BANK_MAZE", "Maze Bank", "+  : ~g~" ..value.. " $", "Argent reçu en banque")
 		end
 	end)
 end)
@@ -171,15 +189,17 @@ AddEventHandler('GTA:RetirerArgentPropre', function(source, value)
 	local src = source
 	Player:Find(src, function(data)
 		if data then
-			local getArgentPropre = data.argent_propre
-			if getArgentPropre >= value then
-				local newCash = data.argent_propre - value
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newCash WHERE license = @license',{ ['@license'] = tostring(data.license),['@newCash'] = tostring(newCash)})
-				TriggerClientEvent('GTA:AfficherArgentPropre', src, newCash)
-				TriggerClientEvent('GTA:AjoutSonPayer', src)
-			else
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
-			end
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+				local getArgentPropre = argentPropreQty
+				if getArgentPropre >= value then
+					local newCash = getArgentPropre - value
+					MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = newCash}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Propre"}})
+					TriggerClientEvent('GTA:AjoutSonPayer', src)
+					TriggerClientEvent("GTAO:NotificationIcon", src, "CHAR_BANK_MAZE", "Maze Bank", "- " ..value.. " $")
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", src, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
+				end
+			end)
 		end
 	end)
 end)
@@ -187,18 +207,21 @@ end)
 RegisterServerEvent('GTA:RetirerArgentSale') --> cette event sert uniquement a retirer votre argent sale par une valeur en parametre.
 AddEventHandler('GTA:RetirerArgentSale', function(source, value)
 	local src = source
-
 	Player:Find(src, function(data)
 		if data then
-			local getArgentSale = data.argent_sale
-			if getArgentSale >= value then
-				local newValue = data.argent_sale - value
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_sale=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
-				--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
-				TriggerClientEvent('GTA:AjoutSonPayer', src)
-			else
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
-			end
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Sale", function(argentSaleQty)
+				local getArgentSale = argentSaleQty
+				if getArgentSale >= value then
+					local newValue = getArgentSale - value
+					MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = newValue}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Sale"}})
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Nouveau Solde Argent Sale : "..newValue)
+
+					--> Si vous utilisé un hud autre que de base, veuillez le refresh ici.
+					TriggerClientEvent('GTA:AjoutSonPayer', src)
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
+				end
+			end)
 		end
 	end)
 end)
@@ -212,6 +235,7 @@ AddEventHandler('GTA:RetirerArgentBanque', function(source, value)
 			MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
 			TriggerClientEvent('GTA:AfficherBanque', src, newValue)
 			TriggerClientEvent('GTA:AjoutSonPayer', src)
+			TriggerClientEvent("GTAO:NotificationIcon", src, "CHAR_BANK_MAZE", "Maze Bank", "Nouveau Solde : ~g~" ..newValue.. " $", "Argent banque retirer")
 		end
 	end)
 end)
@@ -221,19 +245,24 @@ AddEventHandler('GTA:RetirerAtmBanque', function(source, value)
 	local src = source
 	Player:Find(src, function(data)
 		if data then
-			local getArgentBanque = data.banque
-			if getArgentBanque >= value then
-				local newValue = data.banque - value
-				local newArgentPropre = data.argent_propre + value
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+				local getArgentPropre = argentPropreQty
+				local getArgentBanque = data.banque
 
-				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@newArgentPropre WHERE license = @license',{ ['@license'] = tostring(data.license),['@newArgentPropre'] = tostring(newArgentPropre)})
+				if getArgentBanque >= value then
+					local newValue = data.banque - value
+					local newArgentPropre = getArgentPropre + value
 
-				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
-				TriggerClientEvent('GTA:AfficherArgentPropre', src, newArgentPropre)
-			else
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
-			end
+					MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
+					MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = newArgentPropre}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Propre"}})
+
+
+					TriggerClientEvent('GTA:AfficherBanque', src, newValue)
+					TriggerClientEvent("GTAO:NotificationIcon", src, "CHAR_BANK_MAZE", "Maze Bank", "Nouveau Solde : ~g~" ..newValue.. " $", "Argent banque retirer")
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", src, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
+				end
+			end)
 		end
 	end)
 end)
@@ -244,19 +273,22 @@ AddEventHandler('GTA:DeposerAtmBanque', function(source, value)
 	local src = source
 	Player:Find(src, function(data)
 		if data then
-			local getArgentPropre = data.argent_propre
-			if getArgentPropre >= value then
-				local argentPropre = data.argent_propre - value
-				local newValue = data.banque + value
+			TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+				local getArgentPropre = argentPropreQty
+				if getArgentPropre >= value then
+					local argentPropre = getArgentPropre - value
+					local newValue = data.banque + value
 
-				MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
-				MySQL.Async.execute('UPDATE gta_joueurs SET argent_propre=@argentPropre WHERE license = @license',{ ['@license'] = tostring(data.license),['@argentPropre'] = tostring(argentPropre)})
-				
-				TriggerClientEvent('GTA:AfficherBanque', src, newValue)
-				TriggerClientEvent('GTA:AfficherArgentPropre', src, argentPropre)
-			else
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
-			end
+					MySQL.Async.execute('UPDATE gta_joueurs SET banque=@newValue WHERE license = @license',{ ['@license'] = tostring(data.license),['@newValue'] = tostring(newValue)})
+					MySQL.Async.execute("UPDATE user_inventory SET ? WHERE ? AND ?", { {['quantity'] = argentPropre}, {['license'] = tostring(data.license)}, {['item_name'] = "Argent-Propre"}})
+
+					TriggerClientEvent('GTA:AfficherBanque', src, newValue)
+					TriggerClientEvent("GTAO:NotificationIcon",src, "CHAR_BANK_MAZE", "Maze Bank", "Nouveau Solde : ~g~" ..newValue.. " $", "Argent banque déposer")
+
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous n'avez cette somme d'argent sur vous.", "warning", "fa fa-exclamation-circle fa-2x")
+				end
+			end)
 		end
 	end)
 end)

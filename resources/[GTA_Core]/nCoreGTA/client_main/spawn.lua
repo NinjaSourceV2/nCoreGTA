@@ -48,14 +48,6 @@ AddEventHandler("GTA:NewPlayerPosition", function(PosX, PosY, PosZ)
 		spawnPlayerLastPos(PosX, PosY) 
 		NetworkResurrectLocalPlayer(tonumber(PosX), tonumber(PosY), tonumber(PosZ) + 0.0, 0, true, true, false)
 
-		exports.rprogress:Custom({
-			Label = "Chargement de votre personnage",
-			Duration = 1000,
-			LabelPosition = "right",
-			Color = "rgba(255, 255, 255, 0.5)",
-			BGColor = "rgba(0, 0, 0, 0.8)"
-		})
-
 		Wait(3000)
 
 		showLoadingPromt("PCARD_JOIN_GAME", 8000)

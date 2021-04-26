@@ -10,8 +10,8 @@ end)
 
 --> Executer une fois que le joueur se give un item :
 RegisterNetEvent("GTA:GivePlayerItem")
-AddEventHandler("GTA:GivePlayerItem", function(itemName, qty)
-    TriggerEvent("player:receiveItem", itemName, qty)
+AddEventHandler("GTA:GivePlayerItem", function(itemName, qty, maxqty)
+    TriggerEvent("player:receiveItem", itemName, qty, maxqty)
 end)
 
 

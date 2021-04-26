@@ -16,7 +16,7 @@ AddEventHandler("GTA_Admin:GiveItem", function(itemName, qty)
 
 	MySQL.Async.fetchAll("SELECT * FROM items WHERE libelle = @libelle", { ['@libelle'] = itemName}, function(res)
 		if(res[1]) then
-			TriggerClientEvent("GTA:GivePlayerItem", source, itemName, qty)
+			TriggerClientEvent("GTA:GivePlayerItem", source, itemName, qty, res[1].max_qty)
 		else
 			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "L'item saisit : "..itemName.." est introuvable.", "error", "fa fa-exclamation-circle fa-2x")
 		end

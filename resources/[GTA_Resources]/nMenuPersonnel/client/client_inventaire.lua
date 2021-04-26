@@ -1,7 +1,6 @@
 ----------------------||Inventaire||--------------------
 ITEMS = {}
 NewItems = {}
-local maxCapacity = 100 -->Max the slot dans votre inventaire par item
 local indexInv = 1
 
 --[[INFO : TYPE 1 = SOIF, TYPE 2 = FOOD, TYPE 3 = OBJECT,  TYPE 4 = UTILISATION OBJET POUR TARGET]]
@@ -20,6 +19,7 @@ AddEventHandler("gui:getItems", function(THEITEMS)
 	ITEMS = THEITEMS
 end)
 
+
 function getPods()
 	local pods = 0
 	for _, v in pairs(ITEMS) do
@@ -29,17 +29,26 @@ function getPods()
 end
 
 RegisterNetEvent("player:receiveItem")
-AddEventHandler("player:receiveItem", function(item_name, quantity)
-	if (getPods() + quantity <= maxCapacity) then
-		item_name = tostring(item_name)
-		if (ITEMS[item_name] == nil) then
+AddEventHandler("player:receiveItem", function(item_name, quantity, max_qty)
+	print(quantity)
+	print(max_qty)
+	item_name = tostring(item_name)
+	print(ITEMS[item_name])
+
+	if	(ITEMS[item_name] == nil)then 
+		if (quantity <= max_qty) then
 			new(item_name, quantity)
+			TriggerEvent("NUI-Notification", {"Vous avez reçu x"..tonumber(quantity) ..item_name})
 		else
-			add({ item_name, quantity })
+			TriggerEvent("NUI-Notification", {"Quantité trop grande ou Inventaire rempli."})
 		end
-		TriggerEvent("NUI-Notification", {"Vous avez reçu x"..tonumber(quantity) ..item_name})
-	else
-		TriggerEvent("NUI-Notification", {"Quantité trop grande ou Inventaire rempli."})
+	elseif (ITEMS[item_name] ~= nil)then 
+		if (ITEMS[item_name].quantity + quantity <= max_qty) then
+			add({ item_name, quantity })
+			TriggerEvent("NUI-Notification", {"Vous avez reçu x"..tonumber(quantity) ..item_name})
+		else
+			TriggerEvent("NUI-Notification", {"Quantité trop grande ou Inventaire rempli."})
+		end
 	end
 end)
 
@@ -109,13 +118,15 @@ end
 
 function getQuantity(itemName)
     if ITEMS[tostring(itemName)] ~= nil then
+		print(ITEMS[tostring(itemName)].quantity)
         return ITEMS[tostring(itemName)].quantity
     end
     return 0
 end
 
-AddEventHandler("player:getQuantity", function(item, call)
-	 call({count=getQuantity(item)})
+RegisterNetEvent("player:getQuantity")
+AddEventHandler("player:getQuantity", function(item)
+	getQuantity(item)
 end)
 
 function use(itemName, quantity)

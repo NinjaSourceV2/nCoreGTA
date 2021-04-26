@@ -17,6 +17,8 @@ AddEventHandler("item:getItems", function()
 	end)
 end)
 
+
+
 RegisterServerEvent("item:setItem")
 AddEventHandler("item:setItem", function(item, quantity)
 	local source = source	
@@ -66,17 +68,22 @@ RegisterServerEvent("player:giveItem")
 AddEventHandler("player:giveItem", function(NearestPlayerSID, item, id, quantity)
     local source = source
 	local targetid = GetPlayerIdentifiers(NearestPlayerSID)[1]
-    local quantity = math.floor(tonumber(quantity))
-    MySQL.Async.fetchAll("SELECT SUM(quantity) FROM user_inventory WHERE license = @username", { ['@username'] = targetid }, function(result)
-        if quantity < 101 then --Limit item max pour l'inventaire'
-			TriggerClientEvent("player:looseItem", source, item, quantity)
-			TriggerClientEvent("player:receiveItem", NearestPlayerSID, item, quantity)
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. quantity .. " : " .. id, "success", "fa fa-check fa-2x")
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Une personne vous a donner x" .. quantity .. " " ..id, "success", "fa fa-check fa-2x")
+
+	MySQL.Async.fetchAll("SELECT * FROM items WHERE libelle = @libelle", { ['@libelle'] = id}, function(res)
+		if(res[1]) then
+			local quantity = math.floor(tonumber(quantity))
+			if quantity < max_qty then --Limit item max pour l'inventaire'
+				TriggerClientEvent("player:looseItem", source, item, quantity)
+				TriggerClientEvent("player:receiveItem", NearestPlayerSID, item, quantity, res[1].max_qty)
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. quantity .. " : " .. id, "success", "fa fa-check fa-2x")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Une personne vous a donner x" .. quantity .. " " ..id, "success", "fa fa-check fa-2x")
+			else
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous ne pouvez pas porter plus d'item sur vous ! ~b~", "warning", "fa fa-exclamation-circle fa-2x")
+				TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Cette Personne ne peut pas transporter plus d'item.", "warning", "fa fa-exclamation-circle fa-2x")
+			end
 		else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous ne pouvez pas porter plus d'item sur vous ! ~b~", "warning", "fa fa-exclamation-circle fa-2x")
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", NearestPlayerSID, "Cette Personne ne peut pas transporter plus d'item.", "warning", "fa fa-exclamation-circle fa-2x")
-        end
-    end)
+			TriggerClientEvent("GTA_NUI_ShowNotif_client",  source, "Cette item est introuvable.", "warning")
+		end
+	end)
 end)
 

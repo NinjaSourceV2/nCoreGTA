@@ -3,15 +3,12 @@ AddEventHandler("GTA_Interaction:GetinfoPlayers", function()
     local source = source 
 	local license = GetPlayerIdentifiers(source)[1]
 
-    MySQL.Async.fetchAll("SELECT * FROM gta_joueurs WHERE license = @license", { ['@license'] = license}, function(res)
-        TriggerClientEvent('GTA_Interaction:UpdateInfoPlayers', source, res[1].nom, res[1].prenom)
-    end)
-
-    TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
-        local argentPropre = data.argent_propre
-        local argentBanque = data.banque 
-        local argentSale = data.argent_sale
-        TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentPropre, argentBanque, argentSale)
+	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+		local argentBanque = data.banque 
+		local nom = data.nom
+		local prenom = data.prenom
+        TriggerClientEvent('GTA_Interaction:UpdateInfoPlayers', source, nom, prenom)
+		TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentBanque)
 	end)
 end)
 
@@ -45,23 +42,27 @@ end)
 RegisterServerEvent('bank:givecash')
 AddEventHandler('bank:givecash', function(toPlayer, amount)
 	local source = source
-	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
-		local argentPropre = data.argent_propre
-        local argentBanque = data.banque 
-        local argentSale = data.argent_sale
-
-		if (tonumber(argentPropre) >= tonumber(amount)) then
-			TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(amount))
-			TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
-				TriggerEvent('GTA:AjoutArgentPropre', toPlayer, tonumber(amount))
-				TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentPropre, argentBanque, argentSale)
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. amount, "success", "fa fa-check fa-2x")
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent propre: ~g~$".. amount, "success", "fa fa-check fa-2x")
+	TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+		TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Sale", function(argentSaleQty)
+			TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+				local argentPropre = argentPropreQty
+				local argentSale = argentSaleQty
+				local argentBanque = data.banque 
+		
+				if (tonumber(argentPropre) >= tonumber(amount)) then
+					TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(amount))
+					TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
+						TriggerEvent('GTA:AjoutArgentPropre', toPlayer, tonumber(amount))
+						TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentBanque)
+						TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné : x" .. amount, "success", "fa fa-check fa-2x")
+						TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent propre: ~g~$".. amount, "success", "fa fa-check fa-2x")
+					end)
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent!", "warning", "fa fa-exclamation-circle fa-2x")
+					CancelEvent()
+				end
 			end)
-		else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent!", "warning", "fa fa-exclamation-circle fa-2x")
-			CancelEvent()
-		end
+		end)
 	end)
 end)
 
@@ -84,23 +85,27 @@ end)
 RegisterServerEvent('bank:givesale')
 AddEventHandler('bank:givesale', function(toPlayer, amount)
 	local source = source
-	TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
-		local argentPropre = data.argent_propre
-        local argentBanque = data.banque 
-        local argentSale = data.argent_sale
-		if (tonumber(argentSale) >= tonumber(amount)) then
-			TriggerEvent('GTA:RetirerArgentSale', source, tonumber(amount))
-			TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
-				TriggerEvent('GTA:AjoutArgentSale', toPlayer, tonumber(amount))
-				TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentPropre, argentBanque, argentSale)
+	TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
+		TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Sale", function(argentSaleQty)
+			TriggerEvent('GTA:GetInfoJoueurs', source, function(data)
+				local argentPropre = argentPropreQty
+				local argentSale = argentSaleQty
+				local argentBanque = data.banque 
+				if (tonumber(argentSale) >= tonumber(amount)) then
+					TriggerEvent('GTA:RetirerArgentSale', source, tonumber(amount))
+					TriggerEvent('GTA:GetInfoJoueurs', toPlayer, function(data)
+						TriggerEvent('GTA:AjoutArgentSale', toPlayer, tonumber(amount))
+						TriggerClientEvent('GTA_Interaction:UpdateMoneyPlayers', source, argentBanque)
 
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné: -$".. amount, "success", "fa fa-check fa-2x")
-				TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent sale : ~r~$".. amount, "success", "fa fa-check fa-2x")
+						TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Vous avez donné: -$".. amount, "success", "fa fa-check fa-2x")
+						TriggerClientEvent("GTA_NUI_ShowNotif_client", toPlayer, "Une personne vous a donner de l'argent sale : ~r~$".. amount, "success", "fa fa-check fa-2x")
+					end)
+				else
+					TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent dans le portefeuille !", "warning", "fa fa-exclamation-circle fa-2x")
+					CancelEvent()
+				end
 			end)
-		else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Pas assez d'argent dans le portefeuille !", "warning", "fa fa-exclamation-circle fa-2x")
-			CancelEvent()
-		end
+		end)
 	end)
 end)
 
@@ -111,7 +116,6 @@ AddEventHandler('GTA:GetHautJoueur', function()
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
 
-
 	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_vetement WHERE license = @license", { ['@license'] = license}, function(res)
 		TriggerClientEvent("GTA:MettreHautJoueur", source, {res[1].topsID, res[1].topsDraw, res[1].topsCouleur, res[1].undershirtsID, res[1].undershirtsDraw, res[1].undershirtsCouleur, res[1].torsosID, res[1].torsosDraw})
 	end)
@@ -121,7 +125,6 @@ RegisterServerEvent("GTA:GetBasJoueur")
 AddEventHandler('GTA:GetBasJoueur', function()
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
-
 
 	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_vetement WHERE license = @license", { ['@license'] = license}, function(res)
 		TriggerClientEvent("GTA:MettreBasJoueur", source, {res[1].legsID, res[1].legsDraw, res[1].legsCouleur})
@@ -134,7 +137,6 @@ AddEventHandler('GTA:GetChaussureJoueur', function()
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
 
-
 	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_vetement WHERE license = @license", { ['@license'] = license}, function(res)
 		TriggerClientEvent("GTA:MettreChaussureJoueur", source, {res[1].shoesID, res[1].shoesDraw, res[1].shoesCouleur})
 	end)
@@ -144,7 +146,6 @@ RegisterServerEvent("GTA:GetBonnetJoueur")
 AddEventHandler('GTA:GetBonnetJoueur', function()
 	local source = source
 	local license = GetPlayerIdentifiers(source)[1]
-
 
 	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_vetement WHERE license = @license", { ['@license'] = license}, function(res)
 		TriggerClientEvent("GTA:MettreBonnetJoueur", source, {res[1].HatsID, res[1].HatsDraw, res[1].HatsCouleurs})

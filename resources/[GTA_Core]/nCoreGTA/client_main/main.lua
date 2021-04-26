@@ -52,21 +52,13 @@ Citizen.CreateThread(function()
     end)
 end)
 
-RegisterNetEvent("GTA:AfficherArgentPropre")
-AddEventHandler("GTA:AfficherArgentPropre", function(value)
-	StatSetInt("MP0_WALLET_BALANCE", value, false)
-    ShowHudComponentThisFrame(4)
 
-    Wait(1000)
-    RemoveMultiplayerBankCash(0xC7C6789AA1CFEDD0)
-end)
 
 RegisterNetEvent("GTA:AfficherBanque")
 AddEventHandler("GTA:AfficherBanque", function(value)
 	StatSetInt("BANK_BALANCE", value, true)
     ShowHudComponentThisFrame(3)
-    
-    Wait(1000)
+
     RemoveMultiplayerHudCash(0x968F270E39141ECA)
 end)
 

@@ -8,10 +8,8 @@ AddEventHandler("GTA_Interaction:UpdateInfoPlayers", function(newName, newSecond
 end)
 
 RegisterNetEvent("GTA_Interaction:UpdateMoneyPlayers")
-AddEventHandler("GTA_Interaction:UpdateMoneyPlayers", function(newArgentPropre, newArgentBanque, newArgentSale)
-    config.joueurs.ArgentPropre = newArgentPropre 
+AddEventHandler("GTA_Interaction:UpdateMoneyPlayers", function(newArgentBanque)
 	config.joueurs.argentBanque = newArgentBanque
-	config.joueurs.argentSale = newArgentSale
 end)
 
 RegisterNetEvent('bank:givecash')
@@ -25,14 +23,9 @@ AddEventHandler('bank:givesale', function(toPlayer, amount)
     local player2 = GetPlayerFromServerId(toPlayer)
     local playing = IsPlayerPlaying(player2)
     if (playing ~= false) then
-      TriggerServerEvent("bank:givesale", toPlayer, tonumber(amount))
+      	TriggerServerEvent("bank:givesale", toPlayer, tonumber(amount))
     else
-		exports.GTA_Notif:GTA_NUI_ShowNotification({
-			text = " Aucune personne devant vous.",
-			type = "warning",
-			icon = "fa fa-exclamation-circle fa-2x",
-			position = "row-reverse"
-		})
+		TriggerEvent("NUI-Notification", {"Aucune personne devant vous !", "warning"})
     end
   end
 end)
@@ -167,8 +160,6 @@ function RequestToSave()
 end
 
 function playAnimation(dict, anim, timer, move)
-	--print("DICT = %s, Anim = %s, Timer = %s, Move = %s", dict, anim, timer, move)
-	
 	RequestAnimDict(dict)
     while not HasAnimDictLoaded(dict) do
         Wait(0)

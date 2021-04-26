@@ -8,7 +8,5 @@ config.joueurs = {
     origine = " ",
     grade = " ",
     age = 0,
-    argentPropre = 0,
-    argentBanque = 0,
-    argentSale = 0
+    argentBanque = 0
 }
