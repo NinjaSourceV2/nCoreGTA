@@ -5,6 +5,7 @@ local subTenues =  RageUI.CreateSubMenu(mainMenu, "Tenue", "Votre tenue.")
 local subOptions =  RageUI.CreateSubMenu(mainMenu, "Option menu", "options.")
 
 local isMouseEnable, hautMis, basMis, chaussureMis, ChapeauMis, isFoodHudEnable = true, true, true, true, false, true
+local isEssenceHudActiver = true
 local index_Cash = 1
 
 
@@ -28,6 +29,17 @@ Citizen.CreateThread(function()
                 end,
                 onSelected = function(Index)
                     isFoodHudEnable = Index
+                end
+            })
+            RageUI.Checkbox('Activer/désactiver hud essence', "", isEssenceHudActiver, {}, {
+                onChecked = function()
+                    TriggerEvent("fuel-vehicle:AfficherHud", true)
+                end,
+                onUnChecked = function()
+                    TriggerEvent("fuel-vehicle:AfficherHud", false)
+                end,
+                onSelected = function(Index)
+                    isEssenceHudActiver = Index
                 end
             })
             RageUI.Button('~g~Sauvegarder ma position', "", {}, true, { onSelected = function() RequestToSave() end});
