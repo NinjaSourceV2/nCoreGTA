@@ -52,8 +52,6 @@ Citizen.CreateThread(function()
     end)
 end)
 
-
-
 RegisterNetEvent("GTA:AfficherBanque")
 AddEventHandler("GTA:AfficherBanque", function(value)
 	StatSetInt("BANK_BALANCE", value, true)

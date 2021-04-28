@@ -24,12 +24,12 @@ RegisterCommand("tpt", function()
             local waypointCoords = GetBlipInfoIdCoord(waypoint)
     
             for height = 1, 1000 do
-                SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
+                SetPedCoordsKeepVehicle(GetPlayerPed(-1), waypointCoords["x"], waypointCoords["y"], height + 0.0)
     
                 local foundGround, zPos = GetGroundZFor_3dCoord(waypointCoords["x"], waypointCoords["y"], height + 0.0)
     
                 if foundGround then
-                    SetPedCoordsKeepVehicle(LocalPed(), waypointCoords["x"], waypointCoords["y"], height + 0.0)
+                    SetPedCoordsKeepVehicle(GetPlayerPed(-1), waypointCoords["x"], waypointCoords["y"], height + 0.0)
                     break
                 end
                 Citizen.Wait(1)
