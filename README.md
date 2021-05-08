@@ -44,7 +44,7 @@ Bon Dev à vous, encore une fois je suis disponible à vos questions. :rocket:
 
 
 ## Discord SourceV2 :
-https://discord.gg/uQVjDzzweg
+https://discord.gg/NKHJTqn
 
 
 ## Installation :
