@@ -100,7 +100,7 @@ AddEventHandler('GTA:InitJoueur', function()
 
 	--> Create Data player : 
 	if result[1] == nil then
-    	MySQL.Async.execute('INSERT INTO gta_joueurs (`license`, `isAdmin`, `banque`, `inventaire`, `identiter`, `phone_number`) VALUES (@license, @admin, @banque, @inventaire, @identiter, @phone_number)',{ ['@license'] = license, ['@admin'] = 1, ['@banque'] = config.banque, ['@inventaire'] = "[]", ['@identiter'] = "[]", ['@phone_number'] = randomPhoneNumber})
+    	MySQL.Async.execute('INSERT INTO gta_joueurs (`license`, `isAdmin`, `banque`, `inventaire`, `identiter`, `phone_number`) VALUES (@license, @admin, @banque, @inventaire, @identiter, @phone_number)',{ ['@license'] = license, ['@admin'] = 0, ['@banque'] = config.banque, ['@inventaire'] = "[]", ['@identiter'] = "[]", ['@phone_number'] = randomPhoneNumber})
         PlayersSource[source].inventaire = {}
         PlayersSource[source].identiter = {}
         PlayersSource[source].phone_number = getActualNumber
@@ -111,7 +111,7 @@ AddEventHandler('GTA:InitJoueur', function()
         PlayersSource[source].job = "Chomeur"
         PlayersSource[source].grade = "Aucun"
         PlayersSource[source].enService = 0
-        PlayersSource[source].isAdmin = true
+        PlayersSource[source].isAdmin = false
         PlayersSource[source].isFirstConnexion = 1
 
 
