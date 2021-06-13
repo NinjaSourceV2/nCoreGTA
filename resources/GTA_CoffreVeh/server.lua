@@ -141,11 +141,14 @@ end)
 RegisterServerEvent("GTA_Coffre:looseItem")
 AddEventHandler("GTA_Coffre:looseItem", function(plate, id, item, quantity)
     local source = source
-    CARS[plate][id].quantity = CARS[plate][id].quantity - quantity
 
-    --> plus tard a modifier pour de l'optimisation (pas important): 
-    MySQL.Async.execute("UPDATE vehicle_inventory SET `quantity` = @qty WHERE `plate` = @plate AND `item_name` = @item",
+    if CARS[plate][id].quantity > 0 then 
+        CARS[plate][id].quantity = CARS[plate][id].quantity - quantity
+
+        --> plus tard a modifier pour de l'optimisation (pas important): 
+        MySQL.Async.execute("UPDATE vehicle_inventory SET `quantity` = @qty WHERE `plate` = @plate AND `item_name` = @item",
         { ['@plate'] = plate, ['@qty'] = CARS[plate][id].quantity, ['@item'] = item })
-        
-    TriggerClientEvent("GTA_Inventaire:AjouterItem", source, item, quantity)
+
+        TriggerClientEvent("GTA_Inventaire:AjouterItem", source, item, quantity)
+    end
 end)
