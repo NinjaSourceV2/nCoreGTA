@@ -4,10 +4,16 @@ mais peut finalement être utilisée pour tout type de GameMode.
 
 ## Screen :
 
-![MenuPerso](https://cdn.discordapp.com/attachments/829856536229576704/836197115482210304/Capture_decran_2021-04-26_130835.png)
-![Inventaire](https://cdn.discordapp.com/attachments/829856536229576704/836364214787637258/Capture_decran_2021-04-27_001109.png)
+![MenuPerso](https://cdn.discordapp.com/attachments/829856536229576704/853663802255605770/menu_perso.png)
+![Identité](https://cdn.discordapp.com/attachments/829856536229576704/853663803316764692/identity.png)
+![Tenues_Intéractions](https://cdn.discordapp.com/attachments/829856536229576704/853663805342613534/capuche.png)
+![Optimisation](https://cdn.discordapp.com/attachments/829856536229576704/853663805355196416/settings.png)
+![Inventaire](https://cdn.discordapp.com/attachments/829856536229576704/853663806424088586/inventaire.png)
+![Map](https://cdn.discordapp.com/attachments/829856536229576704/853663807682379806/ma.png)
 ![PersoCréation](https://cdn.discordapp.com/attachments/829856536229576704/836193724760457266/Capture_decran_2021-04-26_125254.png)
 ![SystemComa](https://cdn.discordapp.com/attachments/829856536229576704/836194408683929600/Capture_decran_2021-04-26_125750.png)
+![Phone](https://cdn.discordapp.com/attachments/829856536229576704/853663809204781136/gcphone.png)
+
 
 --------------||by Super.Cool.Ninja||--------------
 
