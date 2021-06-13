@@ -6,10 +6,17 @@ local enableHud = true --> Ici pour changer le status du hud pour afficher votre
 -- TIMER
 Citizen.CreateThread(function ()
 	while true do
-	Citizen.Wait(390000) -->v390000
+	Citizen.Wait(390000) -->390000
 		RemoveCalories(1.2)
 		RemoveWater(1.5)
 	end
+end)
+
+-- Refresh les nouvel valeur faim/soif
+RegisterNetEvent("GTA:UpdateHungerStat")
+AddEventHandler("GTA:UpdateHungerStat", function(faim, soif)
+	SetCalories(faim)
+	SetWater(soif)
 end)
 
 -- CALORIES
@@ -99,21 +106,16 @@ function RemoveWater(water)
 	TriggerServerEvent("nSetSoif", pSoif)
 end
 
--- NETWORK EVENTS
-RegisterNetEvent("nGetStats")
-AddEventHandler("nGetStats", function(calories, water, needs)
-	SetCalories(calories)
-	SetWater(water)
-end)
-
 RegisterNetEvent("nAddFaim")
-AddEventHandler("nAddFaim", function(calories)
-	AddCalories(calories)
+AddEventHandler("nAddFaim", function(qty, item_name, itemid)
+	AddCalories(qty)
+	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, itemid, 1)
 end)
 
 RegisterNetEvent("nAddSoif")
-AddEventHandler("nAddSoif", function(water)
-	AddWater(water)
+AddEventHandler("nAddSoif", function(qty, item_name, itemid)
+	AddWater(qty)
+	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, itemid, 1)
 end)
 
 
@@ -162,6 +164,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
+local isPaused = false
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(300)

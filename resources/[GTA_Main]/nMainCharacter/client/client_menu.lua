@@ -1,9 +1,3 @@
---RageUI.Button(Label, Description, Style, Enabled, Callback, Submenu)
---RageUI.CreateSubMenu(ParentMenu, Title, Subtitle, X, Y, TextureDictionary, TextureName, R, G, B, A)
---RMenu:Get(Type, Name)
---RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, Submenu)
---RageUI.IsVisible(Menu, Items, Panels)
-
 mainMenu =  RageUI.CreateMenu("Éditeur de personnage", "~b~NOUVEAU PERSONNAGE")
 local heritage =  RageUI.CreateSubMenu(mainMenu, "Éditeur de personnage", "~b~HÉRÉDITÉ")
 local apparence = RageUI.CreateSubMenu(mainMenu, "Éditeur de personnage", "~b~APPARENCE")
@@ -37,14 +31,11 @@ Citizen.CreateThread(function()
                 onListChange = function(Index)
                     config.Character.index_sex = Index;
                     if Index == 1 then
-                        TriggerServerEvent("GTA:UpdateSexPersonnage", "mp_m_freemode_01")
-                        GetPlayerModel("mp_m_freemode_01")
                         config.Sex = "mp_m_freemode_01"
                     elseif Index == 2 then
-                        TriggerServerEvent("GTA:UpdateSexPersonnage", "mp_f_freemode_01")
-                        GetPlayerModel("mp_f_freemode_01")
                         config.Sex = "mp_f_freemode_01"
                     end
+                    GetPlayerModel(config.Sex)
                 end,
             })
             RageUI.Button('Hérédité', "Choisissez vos parents.", {}, true, {onSelected = function() CameraPosition('face') end}, heritage);
@@ -97,22 +88,16 @@ Citizen.CreateThread(function()
                 config.Character.hairIndex = Index
                 SetPedComponentVariation(GetPlayerPed(-1), 2,config.Character.hairIndex,2,10)
             end,
+            onSelected = function() CameraPosition('face') end
         })
 
-        RageUI.List('Couleur de cheveux', config.Character.hairColors, config.Character.hairColorIndex, "Séléctionner une couleur.", {}, true, {
+        RageUI.List('Couleur des cheveux', config.Character.hairColors, config.Character.hairColorIndex, "Séléctionner une couleur.", {}, true, {
             onListChange = function(Index)
                 config.Character.hairColorIndex = Index
                 SetPedHairColor(GetPlayerPed(-1),config.Character.hairColorIndex)
             end,
+            onSelected = function() CameraPosition('face') end
         })
-
-        RageUI.List('Couleur des yeux', config.Character.eyesColor, config.Character.eyesColorIndex, "Séléctionner une couleur.", {}, true, {
-            onListChange = function(Index)
-                config.Character.eyesColorIndex = Index
-                SetPedEyeColor(GetPlayerPed(-1), config.Character.eyesColorIndex)
-            end,
-        })
-
         end, function() end)
 
         --> MENU VÊTEMENTS :
@@ -151,8 +136,6 @@ Citizen.CreateThread(function()
 	                    TriggerEvent("NUI-Notification", {"Veuillez inserer un nom correct !.", "warning"})
                         return nil
                     end
-
-                    TriggerServerEvent("GTA:UpdateNom", tostring(config.Character.nom))
                 end
             });     
             
@@ -164,8 +147,6 @@ Citizen.CreateThread(function()
                         TriggerEvent("NUI-Notification", {"Veuillez inserer un prenom correct !.", "warning"})
                         return nil
                     end
-
-                    TriggerServerEvent("GTA:UpdatePrenom", tostring(config.Character.prenom))
                 end
             });    
 
@@ -177,21 +158,6 @@ Citizen.CreateThread(function()
                         TriggerEvent("NUI-Notification", {"Veuillez inserer un age correct !.", "warning"})
                         return nil
                     end
-
-                    TriggerServerEvent("GTA:UpdateAge", tonumber(config.Character.age))
-                end
-            });   
-
-            RageUI.Button("Taille : ", "", { RightLabel = config.Character.taille}, true, {
-                onSelected = function()  
-                    config.Character.taille = SaisitText("", 3)
-
-                    if tonumber(config.Character.taille) == nil then
-                        TriggerEvent("NUI-Notification", {"Veuillez inserer une taille correct !.", "warning"})
-                        return nil
-                    end
-
-                    TriggerServerEvent("GTA:UpdateTaille", tonumber(config.Character.taille))
                 end
             });   
 
@@ -203,18 +169,34 @@ Citizen.CreateThread(function()
                         TriggerEvent("NUI-Notification", {"Veuillez inserer une nationalité correct !.", "warning"})
                         return nil
                     end
-
-                    TriggerServerEvent("GTA:UpdateOrigin", tostring(config.Character.nationaliter))
                 end
             });   
         end, function() end)
-
+        
         if RageUI.Visible(mainMenu) or RageUI.Visible(heritage) or RageUI.Visible(apparence) or RageUI.Visible(vetements) or RageUI.Visible(identity) then
-	    waitMenuCreation = 1
+            waitMenuCreation = 0
             DisableControlAction(0, 140, true) --> DESACTIVER LA TOUCHE POUR PUNCH
             DisableControlAction(0, 172, true) --DESACTIVE CONTROLL HAUT  
-	else
-	    waitMenuCreation = 1000
+            DisableControlAction(0, 1, true) 
+            DisableControlAction(0, 2, true) 
+            DisableControlAction(0, 106, true) 
+            DisableControlAction(0, 142, true) 
+            DisableControlAction(0, 30, true) 
+            DisableControlAction(0, 31, true) 
+            DisableControlAction(0, 21, true)
+            DisableControlAction(0, 24, true) 
+            DisableControlAction(0, 25, true) 
+            DisableControlAction(0, 47, true) 
+            DisableControlAction(0, 58, true) 
+            DisableControlAction(0, 263, true) 
+            DisableControlAction(0, 264, true) 
+            DisableControlAction(0, 257, true)
+            DisableControlAction(0, 141, true) 
+            DisableControlAction(0, 143, true)
+            DisableControlAction(0, 75, true) 
+            DisableControlAction(27, 75, true) 
+        else
+            waitMenuCreation = 1000
         end
     end
 end)
@@ -227,33 +209,27 @@ function ValiderPersonnage()
         TriggerServerEvent("GTA:TenueFemme", config.Outfit[index_tenue].id.female)
     end
 
-    --> Sexe Update :
-    TriggerServerEvent("GTA:UpdateSexPersonnage", config.Sex)
+    --> Data physic de votre character : 
+    config.data = {
+        sex = config.Sex,
+        visage = config.Parents.ShapeMixData,
+        couleurPeau = config.Parents.SkinMixData,
+        pere = config.Parents.dadIndex,
+        mere = config.Parents.momIndex,
+        cheveux = config.Character.hairIndex,
+        couleur_cheveux = config.Character.hairColorIndex
+    }
 
-    --> Visage Update : 
-    TriggerServerEvent("GTA:UpdateVisage", config.Parents.ShapeMixData)
+    Wait(5)
 
-    --> Couleur de peau Update : 
-    TriggerServerEvent("GTA:UpdateCouleurPeau", config.Parents.SkinMixData)
+    --> Update toute les informations du physic de votre character :
+    TriggerServerEvent("GTA:UpdateCharacterData", json.encode(config.data))
 
-    --> Couleur Yeux Update : 
-    TriggerServerEvent("GTA:UpdateYeux", config.Character.eyesColorIndex)
-
-    --> Dad Update : 
-    TriggerServerEvent("GTA:UpdateDad", config.Parents.dadIndex)
-
-    --> Mom Update : 
-    TriggerServerEvent("GTA:UpdateMom", config.Parents.momIndex)
-
-    --> Cheveux Update : 
-    TriggerServerEvent("GTA:UpdateCheveux", config.Character.hairIndex)
-
-    --> Couleur Cheveux Update : 
-    TriggerServerEvent("GTA:UpdateCouleurCheveux", config.Character.hairColorIndex)
+    --> Identier Update : 
+    TriggerServerEvent("GTA:UpdateIdentiter", tostring(config.Character.nom), tostring(config.Character.prenom), tonumber(config.Character.age), tostring(config.Character.nationaliter))
 
 	--print(" Visage : ".. config.Parents.ShapeMixData .. " pere : " ..config.Parents.dadIndex.. " mere : " ..config.Parents.momIndex)
 
-    --> Couleur 
     EndCreation()
 end
 
@@ -262,3 +238,7 @@ RegisterNetEvent("GTA:BeginMenuCreation")
 AddEventHandler("GTA:BeginMenuCreation",function()
     RageUI.Visible(mainMenu, not RageUI.Visible(mainMenu))
 end)
+
+
+
+

@@ -30,10 +30,5 @@ Config = {
     },
 }
 
-Config.Medic = {
-    job = " ",
-    grade = " ",
-    service = false
-}
 
 Config.Stockage = {}

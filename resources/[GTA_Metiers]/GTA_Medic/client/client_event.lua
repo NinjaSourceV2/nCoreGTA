@@ -2,6 +2,7 @@ local requestFacture = false
 local factureMontant = 0
 local Duree = 1000
 
+
 RegisterNetEvent("GTA_Medic:HealhTarget")
 AddEventHandler("GTA_Medic:HealhTarget", function()
     local ped = GetPlayerPed(-1)
@@ -103,7 +104,7 @@ end)
 RegisterNetEvent("GTA_Medic:OnService")
 AddEventHandler("GTA_Medic:OnService", function()
     local ped = GetPlayerPed(-1)
-    if Config.Medic.grade == "Stagiaire" then
+    if  exports.nCoreGTA:GetPlayerJobGrade() == "Stagiaire" then
         if GetEntityModel(ped) == 1885233650 then --> Homme
             SetPedComponentVariation(ped, 11, 13, 3, 2)
             SetPedComponentVariation(ped, 8, 15, 0, 2)
@@ -113,13 +114,13 @@ AddEventHandler("GTA_Medic:OnService", function()
             SetPedComponentVariation(ped, 10, 57, 0, 2)
         elseif GetEntityModel(ped) == -1667301416 then --> Femme
             SetPedComponentVariation(ped, 11, 9, 2, 2)
-            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 8, 9, 0, 2)
             SetPedComponentVariation(ped, 4, 3, 3, 2)
             SetPedComponentVariation(ped, 3, 98, 0, 2)
             SetPedComponentVariation(ped, 6, 27, 0, 2)
             SetPedComponentVariation(ped, 10, 57, 0, 2)
         end
-    elseif Config.Medic.grade == "Medecin" then
+    elseif exports.nCoreGTA:GetPlayerJobGrade() == "Medecin" then
         if GetEntityModel(ped) == 1885233650 then --> Homme
             SetPedComponentVariation(ped, 11, 13, 3, 2)
             SetPedComponentVariation(ped, 8, 15, 0, 2)
@@ -129,7 +130,7 @@ AddEventHandler("GTA_Medic:OnService", function()
             SetPedComponentVariation(ped, 10, 8, 1, 2)
         elseif GetEntityModel(ped) == -1667301416 then --> Femme
             SetPedComponentVariation(ped, 11, 9, 2, 2)
-            SetPedComponentVariation(ped, 8, 15, 0, 2)
+            SetPedComponentVariation(ped, 8, 9, 0, 2)
             SetPedComponentVariation(ped, 4, 3, 3, 2)
             SetPedComponentVariation(ped, 3, 98, 0, 2)
             SetPedComponentVariation(ped, 6, 27, 0, 2)
@@ -157,7 +158,8 @@ Citizen.CreateThread(function()
 		if IsControlJustPressed(1, 246) and requestFacture then --Y
             if target ~= 0 then
 				requestFacture = false
-				TriggerServerEvent("GTA_Medic:FactureAutoriser", target, tonumber(factureMontant))
+                TriggerServerEvent("GTA:RetirerArgentBanque", factureMontant)
+				TriggerServerEvent("GTA_Medic:FactureAutoriser", target, factureMontant)
 			else
                 TriggerEvent("NUI-Notification", {"Aucune personne devant vous.", "warning", "fa fa-exclamation-circle fa-2x", "warning"})
             end

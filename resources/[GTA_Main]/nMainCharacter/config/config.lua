@@ -1,13 +1,16 @@
 config = {}
 
+config.data = {}
+
 config.Parents = {mom = 0, dad = 0, ShapeMixData = 0.5, SkinMixData  = 0.5, ressemblance = 5, couleur = 5}
 config.Parents.momIndex = 1
 config.Parents.dadIndex = 1
 
 config.isMenuEnable = false
 config.Camera = {
-    face = {x = 402.92, y = -1000.72, z = -98.45, fov = 10.00},
+    face = {x = 402.92, y = -1000.72, z = -98.35, fov = 7.00},
     body = {x = 402.92, y = -1000.72, z = -99.01, fov = 30.00},
+    torso = {x = 402.92, y = -1000.72, z = -98.80, fov = 10.00},
     cam = nil,
     cam2 = nil,
     cam3 = nil
@@ -24,48 +27,24 @@ config.Character = {
     dad = { "Benjamin", "Daniel", "Joshua", "Noah", "Andrew", "Juan", "Alex", "Isaac", "Evan", "Ethan", "Vincent", "Angel", "Diego", "Adrian", "Gabriel", "Michael", "Santiago", "Kevin", "Louis", "Samuel", "Anthony", " Claude", "Niko" },
     hairCut = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23},
     hairIndex = 1,
-    hairColors = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30},
+    hairColors = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
     hairColorIndex = 1,
-    eyesColor = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20},
-    eyesColorIndex = 20,
-    nom = "Sans Nom",
-    prenom = "Sans Prenom",
+    nom = "N/A",
+    prenom = "N/A",
     age = 0,
-    taille = 0,
-    nationaliter = ""
+    nationaliter = "N/A"
 }
 
 config.Outfit = {
-	{
-		label = 'Tenue Détente',
+    {
+		label = "Tenue Tape-à-l'oeil",
 		id = {
 			male = {
-				Tops = {componentId = 11, drawableId = 126, textureId = 10, paletteId = 0},
-                Undershirts = {componentId = 8, drawableId = 15, textureId= 0,paletteId = 0},
-                Shoes = {componentId = 6, drawableId = 12, textureId = 0, paletteId = 0},
-                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
-                Legs = {componentId = 4, drawableId = 82, textureId = 0,  paletteId = 0},
-                Torsos = {componentId = 3, drawableId = 1, textureId = 0, paletteId = 0}
-			},
-			female = {
-                Tops = {componentId = 11, drawableId = 106, textureId = 0, paletteId = 0},
-                Undershirts = {componentId = 8, drawableId = 15, textureId= 0,paletteId = 0},
-                Shoes = {componentId = 6, drawableId = 32, textureId = 0, paletteId = 0},
-                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
-                Legs = {componentId = 4, drawableId = 44, textureId = 0,  paletteId = 0},
-                Torsos = {componentId = 3, drawableId = 6, textureId = 0, paletteId = 0}
-			}
-		}
-	},
-	{
-		label = 'Tenue Pro',
-		id = {
-			male = {
-                Tops = {componentId = 11, drawableId = 10, textureId = 0, paletteId = 0},
-                Undershirts = {componentId = 8, drawableId = 10, textureId= 0,paletteId = 0},
+                Tops = {componentId = 11, drawableId = 29, textureId = 0, paletteId = 0},
+                Undershirts = {componentId = 8, drawableId = 31, textureId= 0,paletteId = 0},
                 Shoes = {componentId = 6, drawableId = 10, textureId = 0, paletteId = 0},
-                Accessories = {componentId = 7, drawableId = 12, textureId = 2, paletteId = 0},
-                Legs = {componentId = 4, drawableId = 10, textureId = 0, paletteId = 0},
+                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
+                Legs = {componentId = 4, drawableId = 24, textureId = 0, paletteId = 0},
                 Torsos = {componentId = 3, drawableId = 4, textureId = 0,paletteId = 0}
 			},
 			female = {

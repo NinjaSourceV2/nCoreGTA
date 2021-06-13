@@ -27,31 +27,29 @@ local TokoVoipID = nil
 local PhoneInCall = {}
 local currentPlaySound = false
 local soundDistanceMax = 8.0
+local pHavePhone = false
 
-function hasPhone(cb)
-  if (exports.nMenuPersonnel:getQuantity("Téléphone") > 0) then return cb(true) else cb(false) end
-end
+RegisterNetEvent("GTA_Phone:PlayerHavePhone")
+AddEventHandler("GTA_Phone:PlayerHavePhone", function(bool)
+    pHavePhone = bool
+    if (pHavePhone == true) then
+       TooglePhone() 
+    else
+      NoPhoneFound()
+    end
+end)
 
 function NoPhoneFound()
-  TriggerEvent("NUI-Notification", {"Intéraction impossible, vous devez vous fournir d'un phone.", "warning"})
+  TriggerEvent("NUI-Notification", {"vous devez vous fournir d'un phone.", "warning"})
 end
 
---====================================================================================
---
---====================================================================================
 Citizen.CreateThread(function()
   while true do
     Citizen.Wait(0)
     if takePhoto ~= true then
-      if IsControlJustPressed(1, 172) then --> Touche du HAUT.
-        hasPhone(function (hasPhone)
-          if hasPhone == true then
-            TooglePhone()
-          else
-            NoPhoneFound()
-          end
-        end)
-      end
+        if IsControlJustPressed(1, 172) then --> Touche du HAUT.
+          TriggerServerEvent("GTA_Phone:RequestOpenPhone")
+        end
       if menuIsOpen == true then
         DisableControlAction(0, 140,true) --DESACTIVE CONTROLL B
         DisableControlAction(0, 172,true) --DESACTIVE CONTROLL HAUT
@@ -240,9 +238,7 @@ RegisterNetEvent("gcPhone:receiveMessage")
 AddEventHandler("gcPhone:receiveMessage", function(message)
   SendNUIMessage({event = 'newMessage', message = message})
   table.insert(messages, message)
-
-  hasPhone(function (hasPhone)
-    if hasPhone == true then
+    if pHavePhone == true then
       if message.owner == 0 then
         local app = "Nouveau message"
         if Config.ShowNumberNotification == true then
@@ -273,7 +269,6 @@ AddEventHandler("gcPhone:receiveMessage", function(message)
         PlaySound(-1, "Menu_Accept", "Phone_SoundSet_Default", 0, 0, 1)
       end
     end
-  end)
 end)
 
 --====================================================================================

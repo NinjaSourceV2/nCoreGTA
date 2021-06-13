@@ -20,18 +20,22 @@ function GetPlayerModel(modelhash)
 		SetPedHeadBlendData(PlayerPedId(), 0, math.random(45), 0, math.random(45), math.random(5), math.random(5),1.0,1.0,1.0,true)
 		SetPedHairColor(PlayerPedId(), math.random(1, 4), 1)
 
-		if IsPedMale(PlayerPedId()) then
-			SetPedComponentVariation(PlayerPedId(), 8, 15, 0, 0) --> Accesoires
-			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0) --> Eyes
-			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0) --> Torso2
-			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0) --> Texture
-			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0) --> Torso
+		if config.Sex == "mp_m_freemode_01" then
+			SetPedComponentVariation(PlayerPedId(), 8, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 4,61,0, 0)
+			SetPedComponentVariation(PlayerPedId(), 6,34,0, 0)
 		else
-			SetPedComponentVariation(PlayerPedId(), 8, 0, 0, 0) --> Accesoires
-			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0) --> Eyes
-			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0) --> Torso2
-			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0) --> Texture
-			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)--> Torso
+			SetPedComponentVariation(PlayerPedId(), 4,15,0, 0)
+			SetPedComponentVariation(PlayerPedId(), 8, 2, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 7, 0, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 11, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 10, 0, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 3, 15, 0, 0)
+			SetPedComponentVariation(PlayerPedId(), 6,35,0, 0)
 		end
 
 		SetModelAsNoLongerNeeded(modelhash)
@@ -49,15 +53,6 @@ function SaisitText(actualtext, max)
         text = GetOnscreenKeyboardResult()
     end
     return text
-end
-
-
-function BeginCreation()
-	config.isMenuEnable = true
-	DisplayRadar(false)
-	TriggerEvent('EnableDisableHUDFS', false)
-	AnimCam()
-	Visible()
 end
 
 local function LoadAnim(dict)
@@ -106,10 +101,11 @@ function AnimCam()
 	Wait(500)
 
 	FreezeEntityPosition(GetPlayerPed(-1), true)
-
+    
 	--> Ouverture du menu :
 	TriggerEvent("GTA:BeginMenuCreation")
 end
+
 
 --> Gestion des camera :
 function CameraPosition(camera)
@@ -142,13 +138,16 @@ function EndCreation()
 	--> Nouvel position du joueur :
 	SetEntityCoords(playerPed, config.PlayerSpawnPos.x, config.PlayerSpawnPos.y, config.PlayerSpawnPos.z)
 	SetEntityHeading(playerPed, config.PlayerSpawnPos.h)
+
+    PlayerLoaded = true
 	
 	DoScreenFadeIn(1000)
 	Wait(1000)
 	
 	RageUI.Visible(mainMenu, false)
-	DisplayRadar(true)
 
+	DisplayRadar(true)
+	DisplayHud(true)
 	TriggerEvent('EnableDisableHUDFS', true)
 end
 
@@ -190,11 +189,6 @@ AddEventHandler("GTA:ChangerCouleurPeau",function(aCPeau)
 	config.Parents.SkinMixData = aCPeau
 end)
 
-RegisterNetEvent("GTA:ChangerCouleurYeux")
-AddEventHandler("GTA:ChangerCouleurYeux",function(yeux)
-	config.Character.eyesColorIndex = yeux
-end)
-
 RegisterNetEvent("GTA:ChangerDad")
 AddEventHandler("GTA:ChangerDad",function(dad)
 	config.Parents.dadIndex = dad
@@ -216,15 +210,14 @@ AddEventHandler("GTA:ChangerCouleurCheveux",function(aCCheveux)
 end)
 
 RegisterNetEvent("GTA:UpdatePersonnage")
-AddEventHandler("GTA:UpdatePersonnage",function(sex, cheveux, couleurCheveux, couleurYeux, pere, mere, couleurPeau, visage)
-	config.Sex = sex
-	config.Parents.ShapeMixData = visage
-    config.Character.hairIndex = cheveux
-	config.Character.hairColorIndex = couleurCheveux
-	config.Parents.SkinMixData = couleurPeau
-	config.Character.eyesColorIndex = couleurYeux
-	config.Parents.dadIndex = pere
-	config.Parents.momIndex = mere
+AddEventHandler("GTA:UpdatePersonnage",function(data)
+	config.Sex = data["sex"]
+	config.Parents.ShapeMixData = data["visage"]
+	config.Parents.SkinMixData =  data["couleurPeau"]
+	config.Parents.dadIndex = data["pere"]
+	config.Parents.momIndex = data["mere"]
+    config.Character.hairIndex = data["cheveux"]
+	config.Character.hairColorIndex = data["couleur_cheveux"]
 
 	local modelhashed = GetHashKey(config.Sex)
 	RequestModel(modelhashed)
@@ -235,11 +228,7 @@ AddEventHandler("GTA:UpdatePersonnage",function(sex, cheveux, couleurCheveux, co
 	
 	SetPlayerModel(PlayerId(), modelhashed)
 	SetModelAsNoLongerNeeded(modelhashed)
-	
-	TriggerServerEvent("GTA:LoadVetement")
-	
-	--print(" Sex : " ..config.Sex .. " Visage : ".. config.Parents.ShapeMixData .. " Cheveux : " ..config.Character.hairIndex.. " couleurCheveux : " ..config.Character.hairColorIndex.. " couleurPeau : " ..config.Parents.SkinMixData.. " couleurYeux : " ..config.Character.eyesColorIndex.. " pere : " ..config.Parents.dadIndex.. " mere : " ..config.Parents.momIndex)
-	
+		
 	--> Visage :
 	SetPedHeadBlendData(GetPlayerPed(-1), config.Parents.momIndex, config.Parents.dadIndex, nil, config.Parents.momIndex, config.Parents.dadIndex, nil, config.Parents.ShapeMixData, config.Parents.SkinMixData, nil, true)
 	
@@ -247,54 +236,40 @@ AddEventHandler("GTA:UpdatePersonnage",function(sex, cheveux, couleurCheveux, co
 	SetPedComponentVariation(GetPlayerPed(-1), 2,config.Character.hairIndex,2,10)
 	SetPedHairColor(GetPlayerPed(-1),config.Character.hairColorIndex)
 
-	--> Yeux : 
-	SetPedEyeColor(GetPlayerPed(-1), config.Character.eyesColorIndex)
+	TriggerServerEvent("GTA:LoadVetement")
+
+	TriggerEvent("NUI-Notification", {"Personnage synchronisé."})
 end)
 
 
-local topsID = 0; topsDraw = 0; topsCouleur = 0; torsosID = 0; torsosDraw = 0; undershirtsID = 0; undershirtsDraw = 0; legsID = 0;
-local legsDraw = 0; legsCouleur = 0; shoesID = 0; shoesDraw = 0; AccessoiresID = 0; AccessoiresDraw = 0; AccessoiresCouleur = 0;
 RegisterNetEvent("GTA:UpdateVetement")
 AddEventHandler("GTA:UpdateVetement",function(args)
-	topsID = tonumber(args[1])
-	topsDraw = tonumber(args[2])
-	topsCouleur = tonumber(args[3])
-	undershirtsID = tonumber(args[4])
-	undershirtsDraw = tonumber(args[5])
-	undershirtsCouleur = tonumber(args[6])
-	torsosID = tonumber(args[7])
-	torsosDraw = tonumber(args[8])
-	legsID = tonumber(args[9])
-	legsDraw = tonumber(args[10])
-	legsCouleur = tonumber(args[11])
-	shoesID = tonumber(args[12])
-	shoesDraw = tonumber(args[13])
-	shoesCouleur = tonumber(args[14])
-	AccessoiresID = tonumber(args[15])
-	AccessoiresDraw = tonumber(args[16])
-	AccessoiresCouleur = tonumber(args[17])
-	HatsID = tonumber(args[18])
-	HatsDraw = tonumber(args[19])
-	HatsCouleurs = tonumber(args[20])
-
-	--print("Torse : ", torsosID, torsosDraw, 0)
-	--print("Legs : ",  legsID, 	legsDraw, 	legsCouleur)
-	--print("Shoes : ", shoesID, 	shoesDraw, 	shoesCouleur)
-	--print("undershirts : ", undershirtsID, undershirtsDraw, undershirtsCouleur)
-	--print("Tops : ", topsID, topsDraw, topsCouleur)
-	--print("Hats : ", HatsID, HatsDraw, HatsCouleurs)
-
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(topsID), tonumber(topsDraw), tonumber(topsCouleur), 0)		
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(torsosID), tonumber(torsosDraw), 0, 0) 	
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(undershirtsID), tonumber(undershirtsDraw), 0, 0)
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(legsID), tonumber(legsDraw), tonumber(legsCouleur), 0)
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(shoesID), tonumber(shoesDraw), 0, 0)
-	SetPedComponentVariation(GetPlayerPed(-1), tonumber(AccessoiresID), tonumber(AccessoiresDraw), tonumber(AccessoiresCouleur), 0)
-	SetPedPropIndex(GetPlayerPed(-1), tonumber(HatsID), tonumber(HatsDraw), tonumber(HatsCouleurs), 0)
-	SetPedComponentVariation(GetPlayerPed(-1), 10, 0, 0, 2)
+	--> Chargement de vos vêtement accessoire mask :
+	SetPedComponentVariation(GetPlayerPed(-1), args[1], args[2], args[3], 0)
+	SetPedComponentVariation(GetPlayerPed(-1), args[7], args[8], 0, 0)
+	SetPedComponentVariation(GetPlayerPed(-1), args[4], args[5], args[6], 0) 
+	SetPedComponentVariation(GetPlayerPed(-1), args[9], args[10], args[11], 0) 
+	SetPedComponentVariation(GetPlayerPed(-1), args[12], args[13], args[14], 0) 
+	SetPedComponentVariation(GetPlayerPed(-1), args[15], args[16], args[17], 0) 
+	SetPedComponentVariation(GetPlayerPed(-1), args[21], args[22], 0, 0) --> Mask.
+	SetPedPropIndex(GetPlayerPed(-1), args[18], args[19], args[20], 0) --> Chapeau.
 end)
 
 RegisterNetEvent("GTA:BeginCreation")
 AddEventHandler("GTA:BeginCreation", function()
-	BeginCreation()
+	FreezeEntityPosition(GetPlayerPed(-1), false)
+	DisplayRadar(false)
+	DisplayHud(false)
+	TriggerEvent('EnableDisableHUDFS', false)
+	config.isMenuEnable = true
+	AnimCam()
+	Visible()
+end)
+
+--> Executer une fois la ressource restart : 
+AddEventHandler('onResourceStart', function(resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then
+        return
+	end
+	TriggerEvent("GTA:BeginCreation")
 end)

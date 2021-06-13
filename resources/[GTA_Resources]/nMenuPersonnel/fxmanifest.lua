@@ -1,14 +1,12 @@
 fx_version 'cerulean'
 game 'gta5'
 
-files {
-    'json/**/*'
-}
+dependency 'nCoreGTA'
+
 
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
-    'server/server_main.lua',
-    'server/server_inventaire.lua'
+    'server/server_main.lua'
 }
 
 client_scripts {
@@ -24,10 +22,13 @@ client_scripts {
 
     'config/config.lua',
     'client/client_main.lua',
-    'client/client_armes.lua',
-    'client/client_inventaire.lua',
     'client/client_menu.lua'
 }
 
-export 'getQuantity'
-export 'notFull'
+ui_page "html/index.html"
+files {
+    "html/index.html",
+    "html/script.js",
+    "html/style.css",
+    "html/idcard.png"
+}

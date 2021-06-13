@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.76);
+}
+
+.main-container {
+    display: none;
+    margin: 130px 50px 0 0;
+    float: right;
+    width: 457px;
+    height: 288px;
+    background-repeat: no-repeat;
+    background-image: url("./idcard.png");
+}
+
+.container-text {
+    margin-left: auto;
+    margin-right: 20px;
+    text-align: right;
+}
+
+#nom {
+    margin-top: 85px;
+}
+
+#origine,
+#age,
+#profession,
+#telephone {
+    margin-top: 11px;
+}

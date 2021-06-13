@@ -30,7 +30,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Display.Subtitle = true;
     Menu.Display.Background = true;
     Menu.Display.Navigation = true;
-    Menu.Display.InstructionalButton = true;
+    Menu.Display.InstructionalButton = false;
     Menu.Display.PageCounter = true;
 
     Menu.Title = Title or ""

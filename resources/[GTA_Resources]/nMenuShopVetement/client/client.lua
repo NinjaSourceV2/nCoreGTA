@@ -5,6 +5,7 @@ tPantalonLabel, tPantalonValue = {}, {}
 tChaussureLabel, tChaussureValue = {}, {}
 tChapeauLabel, tChapeauValue = {}, {}
 tAccessLabel, tAccessValue = {}, {}
+tMaskLabel, tMaskValue = {}, {}
 
 
 Ninja_Core__DisplayHelpAlert = function(msg)
@@ -12,6 +13,16 @@ Ninja_Core__DisplayHelpAlert = function(msg)
     AddTextComponentSubstringPlayerName(msg);  
     EndTextCommandDisplayHelp(0, 0, 1, -1);
 end
+
+RegisterNetEvent("GTA_Vetement:PaiementAccepter")
+AddEventHandler("GTA_Vetement:PaiementAccepter", function(itemid, prix)
+    TriggerServerEvent("GTA:PaiementCash", "cash", itemid, prix)
+end)
+
+RegisterNetEvent("GTA_Vetement:RefreshUserSex")
+AddEventHandler("GTA_Vetement:RefreshUserSex", function(sexe)
+	Config.sexe = sexe
+end)
 
 square = math.sqrt
 function getDistance(a, b) 
@@ -22,9 +33,9 @@ end
 --> Retourne le sex de votre joueurs :
 function getSexVetement()
 	for i = 1, #Config.Locations do
-		if IsPedModel(GetPlayerPed(-1), "mp_m_freemode_01") then
+		if Config.sexe == "mp_m_freemode_01" then
 			return Config.Locations[i]["Homme"]
-		else
+        elseif Config.sexe == "mp_f_freemode_01" then
 			return Config.Locations[i]["Femme"]
 		end
 	end
@@ -34,80 +45,13 @@ end
 function IsNearOfZones()
     for i = 1, #Config.Locations do
         local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+        local menuVetement = Config.Locations[i]["MagasinDeVetement"]
+        local dMenuVetementPos = getDistance(plyCoords, menuVetement, true)
 
-        --> Position des tenue : 
-        local tShirtPos = Config.Locations[i]["MagasinDeVetement"]["TShirtPos"]
-        local pullPos = Config.Locations[i]["MagasinDeVetement"]["PullPos"]
-		local vestePos = Config.Locations[i]["MagasinDeVetement"]["VestePos"]
-		local pantalonPos = Config.Locations[i]["MagasinDeVetement"]["PantalonPos"]
-		local chaussurePos = Config.Locations[i]["MagasinDeVetement"]["ChaussurePos"]
-		local chapeauPos = Config.Locations[i]["MagasinDeVetement"]["ChapeauPos"]
-		local accessPos = Config.Locations[i]["MagasinDeVetement"]["AccessoirePos"]
-        
-
-        --> Distance des tenues : 
-        local dTShirt = getDistance(plyCoords, tShirtPos, true)
-        local dPull = getDistance(plyCoords, pullPos, true)
-        local dVeste = getDistance(plyCoords, vestePos, true)
-        local dPantalon = getDistance(plyCoords, pantalonPos, true)
-        local dChaussure = getDistance(plyCoords, chaussurePos, true)
-        local dChapeau = getDistance(plyCoords, chapeauPos, true)
-        local dAccess = getDistance(plyCoords, accessPos, true)
-
-
-
-        if (dTShirt <= 1.0) or (dPull <= 1.0) or (dPull <= 1.0) or (dVeste <= 1.0) or (dPantalon <= 1.0) or (dChaussure <= 1.0) or (dChapeau <= 1.0) or (dAccess <= 1.0) then
+        if (dMenuVetementPos <= 1.0) then
             return true
         else
             return false 
-        end
-    end
-end
-
-
---> Retourne le nom de votre zone le plus proche :
-function GetNearZone()
-    for i = 1, #Config.Locations do
-        local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
-
-        --> Position des tenue : 
-        local tShirtPos = Config.Locations[i]["MagasinDeVetement"]["TShirtPos"]
-        local pullPos = Config.Locations[i]["MagasinDeVetement"]["PullPos"]
-        local vestePos = Config.Locations[i]["MagasinDeVetement"]["VestePos"]
-		local pantalonPos = Config.Locations[i]["MagasinDeVetement"]["PantalonPos"]
-		local chaussurePos = Config.Locations[i]["MagasinDeVetement"]["ChaussurePos"]
-		local chapeauPos = Config.Locations[i]["MagasinDeVetement"]["ChapeauPos"]
-        local accesPos = Config.Locations[i]["MagasinDeVetement"]["AccessoirePos"]
-        
-        
-        
-        
-        --> Distance des tenues : 
-        local distTShirt = getDistance(plyCoords, tShirtPos, true)
-        local distPull = getDistance(plyCoords, pullPos, true)
-        local distVeste = getDistance(plyCoords, vestePos, true)
-        local distPantalon = getDistance(plyCoords, pantalonPos, true)
-        local distChaussure = getDistance(plyCoords, chaussurePos, true)
-        local distChapeau = getDistance(plyCoords, chapeauPos, true)
-        local distAccess = getDistance(plyCoords, accesPos, true)
-
-
-        if (distTShirt <= 2.0) then
-            return "TshirtMenu"
-        elseif (distPull <= 2.0) then 
-            return "PullMenu"
-        elseif (distVeste <= 2.0) then 
-            return "VesteMenu"
-        elseif (distPantalon <= 2.0) then 
-            return "PantalonMenu"
-        elseif (distChaussure <= 2.0) then 
-            return "ChaussureMenu"
-        elseif (distChapeau <= 2.0) then 
-            return "chapeauMenu"
-        elseif (distAccess <= 2.0) then 
-            return "accessMenu"
-        else
-            return nil 
         end
     end
 end
@@ -169,6 +113,15 @@ function GetLabelAccessoire()
 	end
 end
 
+-- Get le nom des Mask : 
+function GetLabelMask()
+	for k, v in pairs(getSexMenu["Mask"]) do
+        table.insert(tMaskLabel, k)
+        table.insert(tMaskValue, v)
+	end
+end
+
+
 --> Blips Magasin de vêtement : 
 Citizen.CreateThread(function()
     for i = 1, #Config.Locations do
@@ -189,8 +142,12 @@ end)
 local firstspawn = 0
 AddEventHandler('playerSpawned', function(spawn)
 	if firstspawn == 0 then
-        getSexMenu = getSexVetement()
+
+        TriggerServerEvent("GTA_Vetement:GetPlayerSexServer")
+
         Wait(150)
+
+        getSexMenu = getSexVetement()
     
         GetLabelTShirt()
         GetLabelPulls()
@@ -199,6 +156,7 @@ AddEventHandler('playerSpawned', function(spawn)
         GetLabelChaussures()
         GetLabelChapeau()
         GetLabelAccessoire()
+        GetLabelMask()
         firstspawn = 1
     end
 end)
@@ -209,8 +167,11 @@ AddEventHandler('onResourceStart', function(resourceName)
         return
 	end
 	
-    getSexMenu = getSexVetement()
+    TriggerServerEvent("GTA_Vetement:GetPlayerSexServer")
+
     Wait(150)
+
+    getSexMenu = getSexVetement()
 
     GetLabelTShirt()
     GetLabelPulls()
@@ -219,4 +180,5 @@ AddEventHandler('onResourceStart', function(resourceName)
     GetLabelChaussures()
     GetLabelChapeau()
     GetLabelAccessoire()
+    GetLabelMask()
 end)

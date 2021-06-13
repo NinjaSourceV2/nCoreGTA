@@ -3,16 +3,19 @@
 -- #Version 2.0
 -- Rework by Super.Cool.Ninja for nCoreGTA.
 --====================================================================================
-math.randomseed(os.time()) 
+RegisterNetEvent("GTA_Phone:RequestOpenPhone")
+AddEventHandler("GTA_Phone:RequestOpenPhone", function(canOpen) 
+    local source = source
+    TriggerEvent('GTA_Inventaire:GetItemQty', source, "phone", function(qtyItem, itemid)
+        if (qtyItem > 0) then 
+            canOpen = true
+        else
+            canOpen = false
+        end
+    end)
+    TriggerClientEvent("GTA_Phone:PlayerHavePhone", source, canOpen)
+end)
 
---- Pour les numero du style XXX-XXXX
-function getPhoneRandomNumber()
-    local numBase0 = math.random(100,999)
-    local numBase1 = math.random(0,999)
-    local num = string.format("%03d-%03d", numBase0, numBase1)
-
-	return num
-end
 
 local function getPlayerID(source)
     local license = GetPlayerIdentifiers(source)[1]
@@ -20,52 +23,14 @@ local function getPlayerID(source)
 end
 
 --====================================================================================
---  SIM CARDS // Thanks to AshKetchumza for the idea an some code.
---====================================================================================
-RegisterServerEvent('gcPhone:useSimCard') --> Converted
-AddEventHandler('gcPhone:useSimCard', function(source, identifier)
-    local source = source
-    local license = getPlayerID(source)
-    local myPhoneNumber = nil
-    
-    repeat
-        myPhoneNumber = getPhoneRandomNumber()
-        local ress = MySQL.Sync.fetchScalar("SELECT license FROM gta_joueurs WHERE phone_number = @phone_number", {['@phone_number'] = myPhoneNumber})
-        local id = ress
-    until id == nil
-
-    MySQL.Async.insert("UPDATE gta_joueurs SET phone_number = @myPhoneNumber WHERE license = @license", { 
-        ['@myPhoneNumber'] = myPhoneNumber,
-        ['@license'] = license
-    }, function (rows)
-        --xPlayer.removeInventoryItem('sim_card', 1)
-        local num = MySQL.Sync.fetchScalar("SELECT phone_number FROM gta_joueurs WHERE license = @license", {['@license'] = license})
-
-        TriggerClientEvent("gcPhone:myPhoneNumber", source, num)
-
-        MySQL.Sync.fetchAll("SELECT * FROM phone_users_contacts WHERE identifier = @identifier", { ['@identifier'] = license}, function(res2)
-            TriggerClientEvent("gcPhone:contactList", source, res2)
-        end)
-        
-        
-        MySQL.Sync.fetchAll("SELECT phone_messages.* FROM phone_messages LEFT JOIN gta_joueurs ON gta_joueurs.license = @identifier WHERE phone_messages.receiver = gta_joueurs.phone_number", { ['@identifier'] = license}, function(result)
-            if (result) then
-                TriggerClientEvent("gcPhone:allMessage", source, result)
-            end
-        end)
-        
-        sendHistoriqueCall(source, num)
-    end)
-end)
-
-
---====================================================================================
 --  Utils
 --====================================================================================
 function getSourceFromIdentifier(identifier, cb) --> Converted.
     TriggerEvent('GTA:GetJoueurs', function(joueurs)
-        for k in pairs(joueurs) do
+        for k, v in pairs(joueurs) do
+            print(joueurs[k])
             if(joueurs[k] ~= nil and joueurs[k] == identifier) or (joueurs[k] == identifier) then
+                print(joueurs[k])
                 cb(k)
                 return
             end

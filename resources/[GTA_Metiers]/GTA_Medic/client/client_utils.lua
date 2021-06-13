@@ -1,11 +1,3 @@
-RegisterNetEvent("GTA:LoadClientJob")
-AddEventHandler("GTA:LoadClientJob", function(newJobName, newService, newGrade)
-	Config.Medic.job = newJobName
-	Config.Medic.service = newService
-	Config.Medic.grade = newGrade
-end)
-
-
 local square = math.sqrt
 function getDistance(a, b) 
     local x, y, z = a.x-b.x, a.y-b.y, a.z-b.z
@@ -156,13 +148,3 @@ function DrawAdvancedText(x,y ,w,h,sc, text, r,g,b,a,font,jus)
 	AddTextComponentString(text)
 	DrawText(x - 0.1+w, y - 0.02+h)
 end
-
-
---> Executer une fois la ressource restart sert a update la variable qui contient les information du player concernant les jobs: 
-AddEventHandler('onResourceStart', function(resourceName)
-    if (GetCurrentResourceName() ~= resourceName) then
-        return
-	end
-
-	TriggerServerEvent("GTA:LoadJobsJoueur")
-end)

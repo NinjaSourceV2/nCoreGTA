@@ -1,6 +1,8 @@
 fx_version 'cerulean'
 game 'gta5'
 
+dependency 'nCoreGTA'
+
 server_script '@mysql-async/lib/MySQL.lua'
 server_script 'server/server_main.lua'
 

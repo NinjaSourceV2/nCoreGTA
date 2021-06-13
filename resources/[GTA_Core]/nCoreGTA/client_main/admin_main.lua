@@ -1,24 +1,9 @@
-local isPlayerAdmin, godmode, isEnablePosition = false
-local qtyArgentPropre = 0
-
---> Executer uniquement au spawn et au restart du core pour refresh si le joueur est admin :
-RegisterNetEvent("GTA:UpdatePlayerAdmin")
-AddEventHandler("GTA:UpdatePlayerAdmin", function(admin)
-    isPlayerAdmin = admin
-end)
-
-
---> Executer une fois que le joueur se give un item :
-RegisterNetEvent("GTA:GivePlayerItem")
-AddEventHandler("GTA:GivePlayerItem", function(itemName, qty, maxqty)
-    TriggerEvent("player:receiveItem", itemName, qty, maxqty)
-end)
-
+local godmode, isEnablePosition = false, false
 
 --> Commande pour se tp sur un marker :
 --> /tpt 
 RegisterCommand("tpt", function()
-    if (isPlayerAdmin == true) then 
+    if (GetIsPlayerAdmin() == true) then 
         local waypoint = GetFirstBlipInfoId(8)
         if DoesBlipExist(waypoint) then
             local waypointCoords = GetBlipInfoIdCoord(waypoint)
@@ -44,7 +29,7 @@ end, false)
 --> Commande pour être invincible : 
 --> /god
 RegisterCommand("god", function()
-    if (isPlayerAdmin == true) then 
+    if (GetIsPlayerAdmin() == true) then 
         godmode = not godmode
         SetEntityInvincible(GetPlayerPed(-1), godmode)
         if (godmode == true) then
@@ -55,75 +40,42 @@ RegisterCommand("god", function()
     end
 end, false)
 
+
+--> Commande pour se kill : 
+--> /kill
 RegisterCommand("kill", function()
     local getPlayer = GetPlayerPed(-1)
     SetEntityHealth(getPlayer, 0)
 end, false)
 
 
---> Commande pour s'ajouté de l'argent propre :
---> /gap montant 
-RegisterCommand("gap", function(source, args, rawCommand)
-    qtyArgentPropre = args[1]
-    if (isPlayerAdmin == true) then
-        if (tonumber(qtyArgentPropre) ~= nil) then
-            TriggerServerEvent("GTA_Admin:AjoutArgentPropre", tonumber(qtyArgentPropre))
-        else
-            TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
-        end
-    end
-end, false)
-
-
---> Commande pour s'ajouté de l'argent sale :
---> /gas montant
-RegisterCommand("gas", function(source, args, rawCommand)
-    qtyArgentPropre = args[1]
-    if (isPlayerAdmin == true) then
-        if (tonumber(qtyArgentPropre) ~= nil) then
-            TriggerServerEvent("GTA_Admin:AjoutArgentSale", tonumber(qtyArgentPropre))
-        else
-            TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
-        end
-    end
-end, false)
-
-
 --> Commande pour s'ajouté de l'argent en banque :
 --> /gab montant
 RegisterCommand("gab", function(source, args, rawCommand)
-    qtyArgentPropre = args[1]
-    if (isPlayerAdmin == true) then
-        if (tonumber(qtyArgentPropre) ~= nil) then
-            TriggerServerEvent("GTA_Admin:AjoutArgentBanque", tonumber(qtyArgentPropre))
+    local qtyArgentBanque = args[1]
+    if (GetIsPlayerAdmin() == true) then
+        if (tonumber(qtyArgentBanque) ~= nil) then
+            TriggerServerEvent("GTA_Admin:AjoutArgentBanque", tonumber(qtyArgentBanque))
         else
             TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct.", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end
 end, false)
 
---> Commande pour s'ajouté des menottes
---> Pour vous give des menottes faite exemple : /give pistol 1. Il recherche au niveau de la bdd item "NAME".
+
+--> Commande pour se give un item :
+--> /give "item_name" montant
 RegisterCommand("give", function(source, args, rawCommand)
-    local itemName = args[1]
-    local itemQty = args[2]
-
-    itemQty = args[2] or 1
-    if (isPlayerAdmin == true) then
-        if (itemName == nil) then 
-            TriggerEvent("NUI-Notification", {"Veuillez saisir un nom d'item correct exemple : /give Marteau 1.", "error", "fa fa-exclamation-circle fa-2x"})
-            return
-        end
-
-        TriggerServerEvent("GTA_Admin:GiveItem", itemName, tonumber(itemQty))
+    if (GetIsPlayerAdmin() == true) then
+        TriggerServerEvent("GTA_Inventaire:ReceiveItem", args[1], tonumber(args[2]))
     end
 end, false)
 
 
 --> Commande pour supprimer un véhicule
---> Pour supprimer un véhicule faite /pv
-RegisterCommand("pv", function(source, args, rawCommand)
-    if (isPlayerAdmin == true) then
+--> Pour supprimer un véhicule faite /dv
+RegisterCommand("dv", function(source, args, rawCommand)
+    if (GetIsPlayerAdmin() == true) then
         local playerPed = GetPlayerPed(-1)
         local veh = GetVehiclePedIsIn(playerPed)
         if IsPedInVehicle(playerPed, veh, false) then
@@ -137,25 +89,11 @@ RegisterCommand("pv", function(source, args, rawCommand)
 end, false)
 
 
---> Commande pour afficher votre position x,y,z,h
---> Pour afficher votre position faite /pos
-RegisterCommand("pos", function(source, args, rawCommand)
-    if (isPlayerAdmin == true) then
-        isEnablePosition = not isEnablePosition
-
-        if (isEnablePosition == true) then
-            TriggerEvent("NUI-Notification", {"Position afficher", "success"})
-        else
-            TriggerEvent("NUI-Notification", {"Position retirer", "success"})
-        end
-    end
-end, false)
-
 
 --> Commande pour vous give un véhicule
 --> Pour vous give un véhicule faite exemple: /v adder
 RegisterCommand('v', function(source, args, rawCommand)
-    if (isPlayerAdmin == true) then
+    if (GetIsPlayerAdmin() == true) then
         local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 8.0, 0.5))
         local veh = args[1] 
         if veh == nil then TriggerEvent("NUI-Notification", {"Veuillez saisir un nom d'un véhicule.", "warning"}) end
@@ -172,11 +110,28 @@ RegisterCommand('v', function(source, args, rawCommand)
                     break
                 end
             end
-            CreateVehicle(vehiclehash, x, y, z, GetEntityHeading(PlayerPedId())+90, 1, 0)
+            local vehicule = CreateVehicle(vehiclehash, x, y, z, GetEntityHeading(PlayerPedId())+90, 1, 0)
+            SetVehicleNumberPlateText(vehicule, "XXXXX")
             TriggerEvent("NUI-Notification", {veh.. " spawn !"})
         end)
     end
 end)
+
+
+--> Commande pour afficher votre position x,y,z,h
+--> Pour afficher votre position faite /pos
+RegisterCommand("pos", function(source, args, rawCommand)
+    if (GetIsPlayerAdmin() == true) then
+        isEnablePosition = not isEnablePosition
+
+        if (isEnablePosition == true) then
+            TriggerEvent("NUI-Notification", {"Position afficher", "success"})
+        else
+            TriggerEvent("NUI-Notification", {"Position retirer", "success"})
+        end
+    end
+end, false)
+
 
 -----> AFFICHER POSITION X,Y,Z :
 local waitEnablePostition = 1000
@@ -207,11 +162,106 @@ Citizen.CreateThread(function ()
     end 
 end)
 
---> Executer une fois la ressource restart : 
-AddEventHandler('onResourceStart', function(resourceName)
-    if (GetCurrentResourceName() ~= resourceName) then
-        return
-	end
 
-    TriggerServerEvent("GTA:CheckAdmin")
+
+
+--> Basic Noclip Variables
+local in_noclip_mode = false
+local travelSpeed = 4
+local curLocation, curRotation, curHeading
+local target
+local waitEnableNC = 1000
+local rotationSpeed = 1.5
+local forwardPush = 0.3
+local moveUpKey = 44      -- Q
+local moveDownKey = 46    -- E
+local moveForwardKey = 32 -- W
+local moveBackKey = 33    -- S
+local rotateLeftKey = 34  -- A
+local rotateRightKey = 35 -- D
+
+--> Commande pour activer/desactiver le mode no clip
+--> Pour activer/desactiver le mode no clip faite /nc
+RegisterCommand("nc", function(source, args, rawCommand)
+    if (GetIsPlayerAdmin() == true) then
+        in_noclip_mode = not in_noclip_mode
+        
+        if (in_noclip_mode == true) then
+            local playerPed = PlayerPedId()
+            local x, y, z = table.unpack( GetEntityCoords( playerPed, false ) )
+            curLocation = { x = x, y = y, z = z }
+            curRotation = GetEntityRotation( playerPed, false )
+            curHeading = GetEntityHeading( playerPed )
+            TriggerEvent("NUI-Notification", {"No-Clip Activer", "success"})
+        else
+            TriggerEvent("NUI-Notification", {"No-Clip Désactiver", "success"})
+        end
+    end
+end, false)
+
+-- Credits to @Oui (Lambda Menu)
+function degToRad( degs )
+    return degs * 3.141592653589793 / 180
+end
+
+-- Updates the players position
+function handleMovement(xVect,yVect)
+    if ( IsControlPressed( 1, moveUpKey ) or IsDisabledControlPressed( 1, moveUpKey ) ) then
+        curLocation.z = curLocation.z + forwardPush
+    elseif ( IsControlPressed( 1, moveDownKey ) or IsDisabledControlPressed( 1, moveDownKey ) ) then
+        curLocation.z = curLocation.z - forwardPush
+    end
+
+    if ( IsControlPressed( 1, moveForwardKey ) or IsDisabledControlPressed( 1, moveForwardKey ) ) then
+        curLocation.x = curLocation.x + xVect
+        curLocation.y = curLocation.y + yVect
+    elseif ( IsControlPressed( 1, moveBackKey ) or IsDisabledControlPressed( 1, moveBackKey ) ) then
+        curLocation.x = curLocation.x - xVect
+        curLocation.y = curLocation.y - yVect
+    end
+
+    if ( IsControlPressed( 1, rotateLeftKey ) or IsDisabledControlPressed( 1, rotateLeftKey ) ) then
+        curHeading = curHeading + rotationSpeed
+    elseif ( IsControlPressed( 1, rotateRightKey ) or IsDisabledControlPressed( 1, rotateRightKey ) ) then
+        curHeading = curHeading - rotationSpeed
+    end
+end
+
+Citizen.CreateThread( function()
+    while true do
+    Citizen.Wait(waitEnableNC)
+    if (in_noclip_mode) then
+        waitEnableNC = 0
+        local playerPed = PlayerPedId()
+
+        if ( IsEntityDead( playerPed ) ) then
+            in_noclip_mode = false
+            waitEnableNC = 100
+        else
+            target = playerPed
+
+            -- Handle Noclip Movement.
+            local inVehicle = IsPedInAnyVehicle( playerPed, true )
+
+            if ( inVehicle ) then
+                target = GetVehiclePedIsUsing( playerPed )
+            end
+
+            SetEntityVelocity( playerPed, 0.0, 0.0, 0.0 )
+            SetEntityRotation( playerPed, 0, 0, 0, 0, false )
+
+            -- Prevent Conflicts/Damage
+            local xVect = forwardPush * math.sin( degToRad(curHeading) ) * -1.0
+            local yVect = forwardPush * math.cos( degToRad(curHeading) )
+
+            handleMovement(xVect,yVect)
+
+            -- Update player postion.
+            SetEntityCoordsNoOffset( target, curLocation.x, curLocation.y, curLocation.z, true, true, true )
+            SetEntityHeading( target, curHeading - rotationSpeed )
+        end
+    else
+        waitEnableNC = 1000
+    end
+    end
 end)

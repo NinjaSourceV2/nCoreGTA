@@ -17,18 +17,39 @@ DROP DATABASE IF EXISTS `gta_serveur`;
 CREATE DATABASE IF NOT EXISTS `gta_serveur` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 USE `gta_serveur`;
 
+-- Listage de la structure de la table gta_serveur. cles_vehicule
+DROP TABLE IF EXISTS `cles_vehicule`;
+CREATE TABLE IF NOT EXISTS `cles_vehicule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `license` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `plate` varchar(12) COLLATE utf8mb4_bin NOT NULL,
+  `count` int(11) DEFAULT 0,
+  `label` varchar(255) COLLATE utf8mb4_bin DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Listage des données de la table gta_serveur.cles_vehicule : ~0 rows (environ)
+/*!40000 ALTER TABLE `cles_vehicule` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cles_vehicule` ENABLE KEYS */;
+
+-- Listage de la structure de la table gta_serveur. gta_coffres
+DROP TABLE IF EXISTS `gta_coffres`;
+CREATE TABLE IF NOT EXISTS `gta_coffres` (
+  `id_unique` text DEFAULT NULL,
+  `dataCoffre` text DEFAULT NULL,
+  `dataStorage` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table gta_serveur.gta_coffres : ~0 rows (environ)
+/*!40000 ALTER TABLE `gta_coffres` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gta_coffres` ENABLE KEYS */;
+
 -- Listage de la structure de la table gta_serveur. gta_joueurs
 DROP TABLE IF EXISTS `gta_joueurs`;
 CREATE TABLE IF NOT EXISTS `gta_joueurs` (
   `license` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `banque` int(11) DEFAULT NULL,
+  `banque` int(11) DEFAULT 0,
   `job` varchar(255) COLLATE utf8mb4_bin DEFAULT 'Chomeur',
-  `isFirstConnection` tinyint(1) NOT NULL DEFAULT 1,
-  `nom` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT 'Sans Nom',
-  `prenom` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT 'Sans Prenom',
-  `taille` int(10) unsigned NOT NULL DEFAULT 0,
-  `age` int(120) NOT NULL DEFAULT 0,
-  `origine` varchar(50) COLLATE utf8mb4_bin DEFAULT 'Citoyen',
   `faim` int(11) DEFAULT 100,
   `soif` int(11) DEFAULT 100,
   `isAdmin` tinyint(1) DEFAULT 0,
@@ -36,8 +57,10 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs` (
   `lastpos` varchar(255) COLLATE utf8mb4_bin DEFAULT '{-887.48388671875, -2311.68872070313,  -3.50776553153992}',
   `grade` varchar(255) COLLATE utf8mb4_bin DEFAULT 'Aucun',
   `phone_number` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
-  PRIMARY KEY (`license`),
-  KEY `faim_soif` (`faim`,`soif`)
+  `inventaire` text COLLATE utf8mb4_bin NOT NULL,
+  `identiter` text COLLATE utf8mb4_bin NOT NULL,
+  `isFirstConnexion` tinyint(1) DEFAULT 1,
+  KEY `KEY` (`license`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table gta_serveur.gta_joueurs : ~0 rows (environ)
@@ -63,20 +86,36 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs_banni` (
 DROP TABLE IF EXISTS `gta_joueurs_humain`;
 CREATE TABLE IF NOT EXISTS `gta_joueurs_humain` (
   `license` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `sex` varchar(30) COLLATE utf8mb4_bin NOT NULL DEFAULT 'mp_m_freemode_01',
-  `cheveux` int(11) DEFAULT 0,
-  `couleurCheveux` int(11) DEFAULT 0,
-  `couleurYeux` int(11) DEFAULT 0,
-  `pere` float DEFAULT 0,
-  `mere` float DEFAULT 0,
-  `couleurPeau` int(11) DEFAULT 0,
-  `visage` float DEFAULT 0,
+  `data_personnage` text COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`license`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table gta_serveur.gta_joueurs_humain : ~0 rows (environ)
 /*!40000 ALTER TABLE `gta_joueurs_humain` DISABLE KEYS */;
 /*!40000 ALTER TABLE `gta_joueurs_humain` ENABLE KEYS */;
+
+-- Listage de la structure de la table gta_serveur. gta_joueurs_vehicle
+DROP TABLE IF EXISTS `gta_joueurs_vehicle`;
+CREATE TABLE IF NOT EXISTS `gta_joueurs_vehicle` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `vehicle_name` varchar(60) COLLATE utf8mb4_bin DEFAULT 'Véhicule',
+  `vehicle_model` int(255) DEFAULT NULL,
+  `vehicle_plate` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL,
+  `vehicle_state` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL,
+  `vehicle_colorprimary` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL,
+  `vehicle_colorsecondary` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL,
+  `vehicle_pearlescentcolor` varchar(60) COLLATE utf8mb4_bin NOT NULL,
+  `vehicle_wheelcolor` varchar(60) COLLATE utf8mb4_bin NOT NULL,
+  `zone_garage` varchar(155) COLLATE utf8mb4_bin DEFAULT 'Aucun',
+  `proprietaire` varchar(155) COLLATE utf8mb4_bin DEFAULT 'Volé',
+  `prix` int(255) DEFAULT 0,
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Listage des données de la table gta_serveur.gta_joueurs_vehicle : ~0 rows (environ)
+/*!40000 ALTER TABLE `gta_joueurs_vehicle` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gta_joueurs_vehicle` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_joueurs_vetement
 DROP TABLE IF EXISTS `gta_joueurs_vetement`;
@@ -102,6 +141,8 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs_vetement` (
   `HatsID` int(125) DEFAULT 0,
   `HatsDraw` int(125) DEFAULT 0,
   `HatsCouleurs` int(125) DEFAULT 0,
+  `MaskID` int(125) DEFAULT 1,
+  `MaskDraw` int(125) DEFAULT 0,
   PRIMARY KEY (`license`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -116,10 +157,10 @@ CREATE TABLE IF NOT EXISTS `gta_medic_stockage` (
   `argent_sale` int(11) unsigned DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table gta_serveur.gta_medic_stockage : ~1 rows (environ)
+-- Listage des données de la table gta_serveur.gta_medic_stockage : ~0 rows (environ)
 /*!40000 ALTER TABLE `gta_medic_stockage` DISABLE KEYS */;
 INSERT INTO `gta_medic_stockage` (`argent`, `argent_sale`) VALUES
-	(500, 0);
+	(0, 0);
 /*!40000 ALTER TABLE `gta_medic_stockage` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_metiers
@@ -135,41 +176,8 @@ CREATE TABLE IF NOT EXISTS `gta_metiers` (
 INSERT INTO `gta_metiers` (`metiers`, `salaire`, `emploi`) VALUES
 	('Chomeur', 150, 'public'),
 	('LSPD', 500, 'priver'),
-	('Medic', 500, 'priver');
+	('Medic', 500, 'public');
 /*!40000 ALTER TABLE `gta_metiers` ENABLE KEYS */;
-
--- Listage de la structure de la table gta_serveur. items
-DROP TABLE IF EXISTS `items`;
-CREATE TABLE IF NOT EXISTS `items` (
-  `libelle` varchar(255) DEFAULT NULL,
-  `isUsable` tinyint(1) DEFAULT 1,
-  `type` tinyint(3) NOT NULL DEFAULT 0,
-  `max_qty` bigint(20) DEFAULT 100
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Listage des données de la table gta_serveur.items : ~19 rows (environ)
-/*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` (`libelle`, `isUsable`, `type`, `max_qty`) VALUES
-	('Pistolet', 1, 3, 100),
-	('9mm', 1, 3, 100),
-	('Marteau', 1, 3, 100),
-	('Batte', 1, 3, 100),
-	('Pied-de-biche', 1, 3, 100),
-	('Couteau', 1, 3, 100),
-	('Menotte', 1, 0, 100),
-	('Hache', 1, 3, 100),
-	('Machette', 1, 3, 100),
-	('Poing-américain', 1, 3, 100),
-	('Tazer', 1, 3, 100),
-	('Matraque', 1, 3, 100),
-	('Seringe-Adrenaline', 1, 4, 100),
-	('Soda', 1, 1, 100),
-	('Téléphone', 1, 0, 100),
-	('Pain', 1, 2, 100),
-	('Eau', 1, 1, 100),
-	('Argent-Propre', 1, 0, 2147483647),
-	('Argent-Sale', 1, 0, 2147483647);
-/*!40000 ALTER TABLE `items` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. phone_app_chat
 DROP TABLE IF EXISTS `phone_app_chat`;
@@ -232,20 +240,19 @@ CREATE TABLE IF NOT EXISTS `phone_users_contacts` (
 /*!40000 ALTER TABLE `phone_users_contacts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `phone_users_contacts` ENABLE KEYS */;
 
--- Listage de la structure de la table gta_serveur. user_inventory
-DROP TABLE IF EXISTS `user_inventory`;
-CREATE TABLE IF NOT EXISTS `user_inventory` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `item_name` varchar(255) DEFAULT NULL,
-  `quantity` bigint(20) unsigned NOT NULL DEFAULT 0,
-  `license` varchar(50) NOT NULL DEFAULT '0',
-  UNIQUE KEY `item_id_license` (`item_name`,`license`) USING BTREE,
-  KEY `id` (`id`)
+-- Listage de la structure de la table gta_serveur. vehicle_inventory
+DROP TABLE IF EXISTS `vehicle_inventory`;
+CREATE TABLE IF NOT EXISTS `vehicle_inventory` (
+  `owned` tinyint(1) DEFAULT 0,
+  `quantity` int(11) DEFAULT NULL,
+  `plate` varchar(50) DEFAULT NULL,
+  `item_name` varchar(55) DEFAULT NULL,
+  `item_id` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Listage des données de la table gta_serveur.user_inventory : ~0 rows (environ)
-/*!40000 ALTER TABLE `user_inventory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_inventory` ENABLE KEYS */;
+-- Listage des données de la table gta_serveur.vehicle_inventory : ~0 rows (environ)
+/*!40000 ALTER TABLE `vehicle_inventory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vehicle_inventory` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

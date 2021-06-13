@@ -1,13 +1,24 @@
+RegisterServerEvent("GTA_Vetement:GetPlayerSexServer")
+AddEventHandler("GTA_Vetement:GetPlayerSexServer", function()
+	local source = source
+	local license = GetPlayerIdentifiers(source)[1]
+
+	TriggerEvent('GTA:GetUserSex', license, function(sexe)
+		TriggerClientEvent("GTA_Vetement:RefreshUserSex", source, sexe)
+	end)
+end)
+
+
 RegisterServerEvent("GTA_Vetement:NouveauTshirt")
 AddEventHandler("GTA_Vetement:NouveauTshirt", function(drawID, couleurID, prix, torsosID, undershirtID)
     prix = prix or 0
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-            TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET topsDraw=@drawID,topsCouleur=@couleurID, torsosDraw=@torsosDraw, undershirtsDraw=@undershirtsDraw WHERE license=@license", {
                 ['@license'] = license,
@@ -17,7 +28,7 @@ AddEventHandler("GTA_Vetement:NouveauTshirt", function(drawID, couleurID, prix, 
                 ['@undershirtsDraw'] = undershirtID
             })
         else
-            TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, {"Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end)
 end)
@@ -29,10 +40,10 @@ AddEventHandler("GTA_Vetement:NouveauPull", function(drawID, couleurID, prix, to
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-            TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET topsDraw=@drawID,topsCouleur=@couleurID, torsosDraw=@torsosDraw, undershirtsDraw=@undershirtsDraw WHERE license=@license", {
                 ['@license'] = license,
@@ -42,7 +53,7 @@ AddEventHandler("GTA_Vetement:NouveauPull", function(drawID, couleurID, prix, to
                 ['@undershirtsDraw'] = undershirtID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, {"Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end)
 end)
@@ -53,10 +64,10 @@ AddEventHandler("GTA_Vetement:NouvelVeste", function(drawID, couleurID, prix, to
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET topsDraw=@drawID,topsCouleur=@couleurID, torsosDraw=@torsosDraw, undershirtsDraw=@undershirtsDraw WHERE license=@license", {
                 ['@license'] = license,
@@ -66,7 +77,7 @@ AddEventHandler("GTA_Vetement:NouvelVeste", function(drawID, couleurID, prix, to
                 ['@undershirtsDraw'] = undershirtID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, {"Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end)
 end)
@@ -77,10 +88,10 @@ AddEventHandler("GTA_Vetement:NouveauPantalon", function(drawID, couleurID, prix
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET legsDraw=@drawID,legsCouleur=@couleurID WHERE license=@license", {
                 ['@license'] = license,
@@ -88,7 +99,7 @@ AddEventHandler("GTA_Vetement:NouveauPantalon", function(drawID, couleurID, prix
                 ['@couleurID'] = couleurID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, {"Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x"})
         end
     end)
 end)
@@ -98,10 +109,10 @@ AddEventHandler("GTA_Vetement:NouvelChaussure", function(drawID, couleurID, prix
     prix = prix or 0
     local source = source	
     local player = GetPlayerIdentifiers(source)[1]
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET shoesDraw=@drawID,shoesCouleur=@couleurID WHERE license=@license", {
                 ['@license'] = player,
@@ -109,7 +120,7 @@ AddEventHandler("GTA_Vetement:NouvelChaussure", function(drawID, couleurID, prix
                 ['@couleurID'] = couleurID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
         end
     end)
 end)
@@ -120,17 +131,17 @@ AddEventHandler("GTA_Vetement:NouveauBonnet", function(drawID, prix)
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !", "success", "fa fa-check fa-2x")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET HatsDraw=@drawID WHERE license=@license", {
                 ['@license'] = license,
                 ['@drawID'] = drawID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
         end
     end)
 end)
@@ -141,10 +152,9 @@ AddEventHandler("GTA_Vetement:NouveauAccessoire", function(drawID, prix)
     local source = source	
     local license = GetPlayerIdentifiers(source)[1]
 
-    TriggerEvent('GTA:GetUserQtyItem', source, "Argent-Propre", function(argentPropreQty)
-        if (argentPropreQty >= prix) then 
-            TriggerEvent('GTA:RetirerArgentPropre', source, tonumber(prix))
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement accepté !")
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
 
             MySQL.Async.execute(
                 "UPDATE gta_joueurs_vetement SET AccessoiresDraw=@drawID WHERE license=@license", {
@@ -152,7 +162,29 @@ AddEventHandler("GTA_Vetement:NouveauAccessoire", function(drawID, prix)
                 ['@drawID'] = drawID
             })
         else
-			TriggerClientEvent("GTA_NUI_ShowNotif_client", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+			TriggerClientEvent("NUI-Notification", source, "Paiement refusé !", "warning", "fa fa-exclamation-circle fa-2x")
+        end
+    end)
+end)
+
+
+RegisterServerEvent("GTA_Vetement:NouveauMask")
+AddEventHandler("GTA_Vetement:NouveauMask", function(drawID, prix)
+    prix = prix or 0
+    local source = source	
+    local license = GetPlayerIdentifiers(source)[1]
+
+    TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
+        if (qtyArgentPropre >= prix) then 
+            TriggerClientEvent("GTA_Vetement:PaiementAccepter", source, itemid, prix)
+
+            MySQL.Async.execute(
+                "UPDATE gta_joueurs_vetement SET MaskDraw=@MaskDraw WHERE license=@license", {
+                ['@license'] = license,
+                ['@MaskDraw'] = drawID
+            })
+        else
+			TriggerClientEvent("NUI-Notification", source, "Paiement refusé !", "warning")
         end
     end)
 end)

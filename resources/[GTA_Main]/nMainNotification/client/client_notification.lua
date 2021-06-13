@@ -21,7 +21,7 @@ function GTA_NUI_ShowNotification(setup)
     local text = setup.text or " "
     local config_alert = setup.type or t_alert[1]
     local typeAlert = t_alert[config_alert]
-    local icon = setup.icon or "fas fa-check fa-2x"
+    local icon = setup.icon or " "
     local position = setup.position or "row-reverse" --> by default left position for the icon.
     local sound = setup.sound or "blop"
 
@@ -48,5 +48,5 @@ end)
 
 --> CallBack Error from NUI : used to exit the nui + show the data error.
 RegisterNUICallback("error", function()
-    print("NUI WANTED ERROR : Text empty or type notif not valid.")
+    print("Text empty or type notif not valid.")
 end)

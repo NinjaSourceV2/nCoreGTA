@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-dependency 'nMenuPersonnel'
+dependency 'nCoreGTA'
 
 ui_page 'html/index.html'
 

@@ -2,12 +2,6 @@ local mainMenu = RageUI.CreateMenu("Emplois",  "Voici la liste des jobs disponib
 local Duree = 0
 local listEmploi = {}
 
-local Ninja_Core__DisplayHelpAlert = function(msg)
-	BeginTextCommandDisplayHelp("STRING");  
-    AddTextComponentSubstringPlayerName(msg);  
-    EndTextCommandDisplayHelp(0, 0, 1, -1);
-end
-
 RegisterNetEvent("GTA:ListEmploi")
 AddEventHandler("GTA:ListEmploi", function(jobsDispo)
 	for k in pairs(listEmploi) do
@@ -24,8 +18,7 @@ Citizen.CreateThread(function()
         RageUI.IsVisible(mainMenu, function()
             for _, v in pairs(listEmploi) do
                 RageUI.Button(v, "", {}, true, {onSelected = function()
-                    TriggerServerEvent("GTA:UpdateJob", v)
-                    TriggerServerEvent("GTA:LoadJobsJoueur")
+                    TriggerServerEvent("GTA_Metier:UpdateJob", v, "Stagiaire")
 	                TriggerEvent("NUI-Notification", {"Vous voici avec votre nouveau job "..v})
                     RageUI.CloseAll(true)
                 end});
@@ -44,9 +37,9 @@ Citizen.CreateThread(function()
             if dist <= 5.0 then
                 Duree = 0
                 if GetLastInputMethod(0) then
-                    Ninja_Core__DisplayHelpAlert("~INPUT_PICKUP~ pour ~b~intéragir")
+                    TriggerEvent("GTA-Notification:InfoInteraction", "~INPUT_PICKUP~ pour intéragir.")
                 else
-                    Ninja_Core__DisplayHelpAlert("~INPUT_CELLPHONE_EXTRA_OPTION~ pour ~b~intéragir")
+                    TriggerEvent("GTA-Notification:InfoInteraction", "~INPUT_CELLPHONE_EXTRA_OPTION~ pour intéragir.")
                 end
            
                if (IsControlJustReleased(0, 38) or IsControlJustReleased(0, 214)) then 

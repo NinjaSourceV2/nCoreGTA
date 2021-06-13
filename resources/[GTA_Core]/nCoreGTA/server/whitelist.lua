@@ -24,8 +24,6 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     local newInfo = ""
     local oldInfo = ""
 
-    TriggerEvent('GTA:CreationJoueur', source)
-
     deferrals.defer()
     deferrals.update("")
     Wait(0)

@@ -1,5 +1,15 @@
 let max_timer_notif = 8000 //This will let the notif display for like 5 seconds.
 
+
+/*
+<!-- <div id="id-notification">
+          <div class="notification success">
+            <div class="data_icon">
+              <i class="fas fa-check fa-2x fa-2x"></i>
+            </div>
+            This is a big notification using html/css/js
+          </div>
+      </div> -->*/
 function Notify(event) {
     (() => {
 
@@ -31,7 +41,6 @@ function Notify(event) {
         notification.appendChild(mainIcon);
         id_notification.appendChild(notification);
         notificationArea.appendChild(id_notification);
-
 
         //Sleep :
         setTimeout(() => {

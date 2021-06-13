@@ -6,7 +6,7 @@ local BleedoutTimer = 60000 * 10
 local cam = nil
 local angleY = 0.0
 local angleZ = 0.0
-local radius = 1.5
+local radius = 1.7
 
 local Keys = {
 	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
@@ -175,9 +175,9 @@ __RoundNumber = function(value, numDecimalPlaces)
 end
 
 __nSaveNewPosition = function()
-    local LastPosX, LastPosY, LastPosZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
-	TriggerServerEvent("GTA:SAVEPOS", LastPosX , LastPosY , LastPosZ)
-	TriggerEvent("NUI-Notification", {"Position Sauvegarder."})
+    local pPed = GetPlayerPed(-1)
+	local pCoords = GetEntityCoords(pPed)
+	TriggerServerEvent("GTA:SavePos", pCoords)
 end
 
 function BeginTimerDeath()

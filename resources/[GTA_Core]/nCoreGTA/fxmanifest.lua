@@ -1,35 +1,38 @@
 fx_version 'cerulean'
 game 'gta5'
 
-ui_page 'progressBar/progressbar.html'
-
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
     'config/config.lua',
-    'server/player.lua',
+    'server/server_main.lua',
     'server/whitelist.lua',
-    'server/admin_command.lua',
-    'server/player_pos.lua',
+    'server/server_inventory.lua',
     'synchronisation/server.lua',
-    'services/server.lua'
+    'services/server.lua',
+    'public_event/sPublic_event.lua'
 }
 
 client_scripts {
     'config/config.lua',
-    'utils/functionsExported.lua',
     'client_main/admin_main.lua',
-    'client_main/main.lua',
-    'client_main/spawn.lua',
-    'client_main/public_event.lua',
+    'client_main/item_armes.lua',
+    'client_main/client_main.lua',
+    'client_main/getter_player.lua',
     'client_main/coma.lua',
     'synchronisation/client.lua',
-    'services/client.lua'
+    'services/client.lua',
+    'public_event/cPublic_event.lua',
+    'public_event/items_event.lua'
 }
 
-files {
-    'progressBar/progressbar.html'
-}
 
-export 'progression'
+exports {
+    "GetPlayerJob",
+    "GetPlayerJobGrade",
+    "GetIsPlayerInService",
+    "GetPlayerInv",
+    "GetIsPlayerAdmin",
+    "GetIsFirstConnexion"
+}
 
 --@Super.Cool.Ninja

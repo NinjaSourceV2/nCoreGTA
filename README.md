@@ -1,9 +1,6 @@
-# nCoreGTA
-Cette source est plus basée pour du Serveur RP, mais peut être utilisée pour tout type de GameMode.
-Mon but derrière tout ça est simplement de partager mon savoir avec vous que ça soit pour des scripts complexes payants ou des scripts simples gratuits. 
-
-Je prévois d'ouvrir très prochainement un site internet dans lequel je partagerai une documentation ainsi que des ressource concernant la source.
-
+# nCoreGTA Version Legacy
+Cette source à plus exactement étais créer dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
+mais peut finalement être utilisée pour tout type de GameMode.
 
 ## Screen :
 
@@ -15,32 +12,39 @@ Je prévois d'ouvrir très prochainement un site internet dans lequel je partage
 --------------||by Super.Cool.Ninja||--------------
 
 **Information:**
-Hey, pour tout les nouveau qui souhaitent débuter avec la source, voici quelque conseils : 
+Hey, pour tout les nouveaux qui souhaitent débuter avec la source, voici quelque conseils : 
 
 - Lisez attentivement le code, essayez de comprendre leur fonctionnement, si vous avez une question, utilisez notre discord : https://discord.gg/NKHJTqn
 - Modifiez ce que vous pouvez tout en comprenant ce que vous faites, c'est très important ! 
 - Vérifiez souvent le github des mise a jours y sont souvent postées.
-- Avant de poser une question vérifiez le salon #𝙩𝙪𝙩𝙤𝙧𝙞𝙖𝙡-𝙨𝙤𝙪𝙧𝙘𝙚 que vous trouverez sur notre discord.
+- Hésitez pas à poser des question même bêtes, ça peut beaucoup vous faire avancer sur ce que vous faites.
 
 Bon Dev à vous, encore une fois je suis disponible à vos questions. :rocket:
 
 ## Features
 - Création de personnage.
 - Gestion du spawn du personnage automatique avec synchro de position.
-- Gestion d'argent "argent sale/argent propre/banque".
-- Synchro de la méteo.
+- Gestion d'argent "argent sale/argent propre/banque" en items.
+- System de coma joueur.
+- Synchronisation automatique.
 - Gestion des besoins "Faim/Soif".
-- System d'inventaire "Armes en items" compris.
+- System d'inventaire "Armes/munitions en items" compris.
 - Menu Personnel.
 - Un "pole emploi" pour vos métier (priver/public)
-- mysql-async pour ce qui est de requète sql.
-- connexion du joueur via license, plus besoin de steam.
-- system de service pour recevoir vos call d'urgence.
-- Magasin de vêtements.
-- gcphone Rewritten by @DmACKGL and rework by me.
-- System de coma joueur.
-- jobs urgence Medic
-- jobs urgence Police -> En création...
+- Mysql-async pour ce qui est de requète sql.
+- Connexion du joueur via license, plus besoin de steam.
+- System de service pour recevoir vos call d'urgence.
+- Boutique de vêtements.
+- Gcphone Rewritten by @DmACKGL and rework by me.
+- Jobs urgence Medic
+- Coffre véhicules avec quantité maximum pour chaque type de véhicule.
+- Carte identité.
+- Tenues possibilité de retirer votre capuche/bonnet/haut/pantalons/chaussures/mask.
+
+
+**Et le reste ?**
+Si vous voulez plus, je suis sur un nouveau projet création d'une version beaucoup plus complète plus d'info sur le discord.
+
 
 
 ## Discord SourceV2 :
@@ -51,6 +55,9 @@ https://discord.gg/NKHJTqn
 - Installez la dernière version recommandée des artefacts sur FiveM : https://runtime.fivem.net/artifacts/fivem/build_server_windows/master/
 - Installez puis configurez votre base de donnée, une vidéo est faite sur le discord.
 - Installez le fichier GTA_Serveur.sql dans votre base de donnée.
+
+## Event Publique
+Toute les event publique que vous pouvez re-utilisez se trouveront dans le fichier : NCoreGTA/public_event.
 
 ## License :
 @SuperCoolNinja
