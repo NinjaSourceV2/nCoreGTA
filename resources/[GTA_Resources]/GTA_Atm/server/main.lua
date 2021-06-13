@@ -10,12 +10,13 @@ end)
 
 
 --> Retirer de l'argent de votre compte en banque :
-RegisterServerEvent('nBanqueSolde:PermissionRABanque')
-AddEventHandler('nBanqueSolde:PermissionRABanque', function(somme)
+RegisterServerEvent('nBanqueSolde:RequestRetirerArgentBanque')
+AddEventHandler('nBanqueSolde:RequestRetirerArgentBanque', function(somme)
 	local source = source 
 	TriggerEvent("GTA:GetArgentBanque", source, function(qtyBank)
 		if(tonumber(qtyBank) >= tonumber(somme)) then 
 			TriggerClientEvent("GTA_Banque:ClientRetirerArgentBanque", source, somme)
+			TriggerClientEvent("GTA_Inventaire:AjouterItem", source, "cash", somme)
         else
 			TriggerClientEvent("NUI-Notification", source, {"Vous n'avez pas autant d'argent en banque !"})
         end
@@ -24,12 +25,13 @@ end)
 
 
 --> Deposer de l'argent dans votre compte en banque :
-RegisterServerEvent('nBanqueSolde:PermissionDABanque')
-AddEventHandler('nBanqueSolde:PermissionDABanque', function(somme)
+RegisterServerEvent('nBanqueSolde:RequestDeposerArgentBanque')
+AddEventHandler('nBanqueSolde:RequestDeposerArgentBanque', function(somme)
 	local source = source 
 	TriggerEvent("GTA_Inventaire:GetItemQty", source, "cash", function(qtyArgentPropre, itemid)
 		if(tonumber(qtyArgentPropre) >= tonumber(somme)) then 
-			TriggerClientEvent("GTA_Banque:ClientDeposerArgentBanque", source, "cash", itemid, somme)
+			TriggerClientEvent("GTA_Banque:ClientDeposerArgentBanque", source, somme)
+			TriggerClientEvent("GTA_Inventaire:RetirerItem", source, "cash", somme)
         else
 			TriggerClientEvent("NUI-Notification", source, {"Vous n'avez pas autant de cash sur vous !"})
         end

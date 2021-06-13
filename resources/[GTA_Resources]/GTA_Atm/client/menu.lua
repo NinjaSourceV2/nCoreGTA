@@ -11,7 +11,7 @@ Citizen.CreateThread(function()
 	                TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct. ", "warning"})
 					return nil
 				end
-				TriggerServerEvent("nBanqueSolde:PermissionRABanque", nb)
+				TriggerServerEvent("nBanqueSolde:RequestRetirerArgentBanque", nb)
 			end});
 			 
 			RageUI.Button('Deposer', "", {}, true, { onSelected = function()
@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
 	                TriggerEvent("NUI-Notification", {"Veuillez saisir un nombre correct. ", "warning"})
 					return nil
 				end
-				TriggerServerEvent("nBanqueSolde:PermissionDABanque", nb)
+				TriggerServerEvent("nBanqueSolde:RequestDeposerArgentBanque", nb)
 			 end});
 			 
 			RageUI.Button('Solde', "", {}, true, { onSelected = function()
