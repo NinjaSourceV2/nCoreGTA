@@ -107,15 +107,15 @@ function RemoveWater(water)
 end
 
 RegisterNetEvent("nAddFaim")
-AddEventHandler("nAddFaim", function(qty, item_name, itemid)
+AddEventHandler("nAddFaim", function(qty, item_name)
 	AddCalories(qty)
-	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, itemid, 1)
+	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, 1)
 end)
 
 RegisterNetEvent("nAddSoif")
-AddEventHandler("nAddSoif", function(qty, item_name, itemid)
+AddEventHandler("nAddSoif", function(qty, item_name)
 	AddWater(qty)
-	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, itemid, 1)
+	TriggerServerEvent("GTA_Inventaire:RemoveItem", item_name, 1)
 end)
 
 
