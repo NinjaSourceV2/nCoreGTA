@@ -1,5 +1,5 @@
 # nCoreGTA Version Legacy
-Cette source à plus exactement étais créer dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
+Cette source à plus exactement été créée dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
 mais peut finalement être utilisée pour tout type de GameMode.
 
 ## Screen :
@@ -63,7 +63,7 @@ https://discord.gg/NKHJTqn
 - Installez le fichier GTA_Serveur.sql dans votre base de donnée.
 
 ## Event Publique
-Toute les event publique que vous pouvez re-utilisez se trouveront dans le fichier : NCoreGTA/public_event.
+Toute les events publique que vous pouvez ré-utilisez se trouveront dans le fichier : NCoreGTA/public_event.
 
 ## License :
 @SuperCoolNinja
