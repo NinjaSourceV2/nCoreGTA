@@ -170,51 +170,6 @@ AddEventHandler("GTA:MettreMaskJoueur", function(args)
 	SetPedComponentVariation(GetPlayerPed(-1), args[1], args[2], 0, 0) --> Mask
 end)
 
-
-RegisterNetEvent("GTA:MettreCapucheTenue")
-AddEventHandler("GTA:MettreCapucheTenue", function()
-	for k,v in pairs(config.pull_capuche_retirer_hommme) do
-		if config.joueurs.sexe == "mp_m_freemode_01" and config.drawIDCapucheServer == k then
-			SetPedComponentVariation(GetPlayerPed(-1), 11, v, 0, 0)
-			config.drawIDCapucheServer = v
-			--print("Mettre capuche [drawIDCapuche was = 0] : ", config.drawIDCapuche)
-			break
-		end
-	end
-
-	for i, j in pairs(config.pull_capuche_retirer_femme) do 
-		if config.joueurs.sexe == "mp_f_freemode_01" and config.drawIDCapucheServer == i then
-			SetPedComponentVariation(GetPlayerPed(-1), 11, j, 0, 0)
-			config.drawIDCapucheServer = j
-			--print("Mettre capuche [drawIDCapuche was = 0] : ", config.drawIDCapuche)
-			break
-		end
-	end
-end)
-
-RegisterNetEvent("GTA:RetirerCapucheTenue")
-AddEventHandler("GTA:RetirerCapucheTenue", function()
-	for k,v in pairs(config.pull_capuche_retirer_hommme) do
-		if config.joueurs.sexe == "mp_m_freemode_01" and config.drawIDCapucheServer == k then
-			SetPedComponentVariation(GetPlayerPed(-1), 11, v, 0, 0)
-			config.drawIDCapucheServer = v
-			--print("Retirer capuche [drawIDCapuche was = 0] : ", config.drawIDCapuche)
-			break
-		end
-	end
-
-	for i, j in pairs(config.pull_capuche_retirer_femme) do 
-		if config.joueurs.sexe == "mp_f_freemode_01" and config.drawIDCapucheServer == j then
-			SetPedComponentVariation(GetPlayerPed(-1), 11, i, 0, 0)
-			config.drawIDCapucheServer = i
-			--print("Retirer capuche [drawIDCapuche was = 0] : ", config.drawIDCapuche)
-			break
-		end
-	end
-end)
-
-
-
 RegisterNetEvent("GTA:RetirerHautJoueur")
 AddEventHandler("GTA:RetirerHautJoueur", function()
 	local playerPed = GetPlayerPed(-1)
@@ -264,6 +219,44 @@ AddEventHandler("GTA:RetirerMaskJoueur", function()
 	SetPedComponentVariation(GetPlayerPed(-1), 1, 0, 0, 0)
 end)
 
+
+RegisterNetEvent("GTA:MettreCapucheTenue")
+AddEventHandler("GTA:MettreCapucheTenue", function()
+	for k,v in pairs(config.pull_capuche_retirer_hommme) do
+		if config.joueurs.sexe == "mp_m_freemode_01" and config.drawIDCapucheServer == k then
+			SetPedComponentVariation(GetPlayerPed(-1), 11, v, 0, 0)
+			config.drawIDCapucheServer = v
+			break
+		end
+	end
+
+	for i, j in pairs(config.pull_capuche_retirer_femme) do 
+		if config.joueurs.sexe == "mp_f_freemode_01" and config.drawIDCapucheServer == i then
+			SetPedComponentVariation(GetPlayerPed(-1), 11, j, 0, 0)
+			config.drawIDCapucheServer = j
+			break
+		end
+	end
+end)
+
+RegisterNetEvent("GTA:RetirerCapucheTenue")
+AddEventHandler("GTA:RetirerCapucheTenue", function()
+	for k,v in pairs(config.pull_capuche_retirer_hommme) do
+		if config.joueurs.sexe == "mp_m_freemode_01" and config.drawIDCapucheServer == k then
+			SetPedComponentVariation(GetPlayerPed(-1), 11, v, 0, 0)
+			config.drawIDCapucheServer = v
+			break
+		end
+	end
+
+	for i, j in pairs(config.pull_capuche_retirer_femme) do 
+		if config.joueurs.sexe == "mp_f_freemode_01" and config.drawIDCapucheServer == j then
+			SetPedComponentVariation(GetPlayerPed(-1), 11, i, 0, 0)
+			config.drawIDCapucheServer = i
+			break
+		end
+	end
+end)
 
 RegisterNetEvent("GTA_Inv:ReceiveItemAnim")
 AddEventHandler("GTA_Inv:ReceiveItemAnim", function()

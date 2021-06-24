@@ -140,11 +140,9 @@ Citizen.CreateThread(function()
         OnMenuCoffreVeh()
         OnMenuPlayerInventaire()
 
-
         local foundVehicle, vehicle = GetVehicleInRage()
 
-
-        if foundVehicle then
+        if foundVehicle and not IsPedInAnyVehicle(GetPlayerPed(-1), false) then
             TimerOpti = 0
             if GetLastInputMethod(0) then
                 TriggerEvent("GTA-Notification:InfoInteraction", "~INPUT_PICKUP~ pour ouvrir le coffre.")
@@ -152,7 +150,7 @@ Citizen.CreateThread(function()
                 TriggerEvent("GTA-Notification:InfoInteraction", "~INPUT_CELLPHONE_EXTRA_OPTION~ pour ouvrir le coffre.")
             end
 
-            if (IsControlJustReleased(0, 38) or IsControlJustReleased(0, 214)) then --> E
+            if IsControlJustReleased(0, 38) then --> E
                 SetVehicleDoorOpen(vehicle, 5, false, false)
                 TriggerServerEvent("GTA-Coffre:OnRefresh", GetVehicleClass(vehicle), GetVehicleNumberPlateText(vehicle))
             end

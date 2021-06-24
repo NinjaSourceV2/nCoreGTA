@@ -2,7 +2,7 @@
 config = {}
 config.Player = {}
 
-config.versionCore = "Version 1.7"
+config.versionCore = "Version 1.8"
 config.activerPoliceWanted = false
 config.activerPvp = true 
 config.salaireTime = 900000
@@ -16,8 +16,7 @@ config.argentSale = 150
 config.banque = 5000
 
 
---> List D'Item disponible :
-config.maxWeight = 100 --> Poids.
+config.maxWeight = 100 --> Max Slot.
 config.itemList = {
 
     --> Medical : 
@@ -102,6 +101,9 @@ config.itemList = {
     ["dirty"] = {label = "Argent Sale", weight = -1, type = "vide", prop = "xs_prop_arena_cash_pile_m"},
     ["menotte"] = {label = "Menotte", weight = 1, type = "vide"},
     ["phone"] = {label = "Téléphone", weight = 1, type = "vide", prop = "p_cs_cam_phone"},
+
+
+    --> Item Storage : 
     ["coffre"] = {label = "Coffre", weight = 1, type = "storage", prop = "prop_drop_crate_01"},
     ["grand_coffre"] = {label = "Grand Coffre", weight = 1, type = "storage", prop = "prop_box_wood05a"},
 }

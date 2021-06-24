@@ -29,13 +29,80 @@ config.Character = {
     hairIndex = 1,
     hairColors = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
     hairColorIndex = 1,
-    nom = "N/A",
-    prenom = "N/A",
+    eyesColor = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20},
+    eyesColorIndex = 21,
+    barbe = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, "sans"},
+    barbe_index = 29,
+    couleur_barbe = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+    couleur_barbe_index = 1,
+    sourcil = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33},
+    sourcil_index = 1,
+    sourcil_couleur = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+    sourcil_couleur_index = 1,
+    acnee = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, "sans"},
+    acnee_index = 24,
+    ride = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, "sans"},
+    ride_index = 15,
+    maquillage = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, "sans"},
+    maquillage_index = 72,
+    maquillage_levre = {0, 1, 2, 3, 4, 5, 6, 7, 8, "sans"},
+    maquillage_levre_index = 10,
+    couleur_maquillage_levre = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+    couleur_maquillage_levre_index = 1,
+    poil = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "sans"},
+    poil_index = 16,
+    couleur_poil = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+    couleur_poil_index = 1,
+    nom = "Sans Nom",
+    prenom = "Sans Prenom",
     age = 0,
     nationaliter = "N/A"
 }
 
 config.Outfit = {
+	{
+		label = 'Plage',
+		id = {
+			male = {
+				Tops = {componentId = 11, drawableId = 36, textureId = 0, paletteId = 0},
+                Undershirts = {componentId = 8, drawableId = 15, textureId= 0,paletteId = 0},
+                Shoes = {componentId = 6, drawableId = 5, textureId = 0, paletteId = 0},
+                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
+                Legs = {componentId = 4, drawableId = 15, textureId = 0,  paletteId = 0},
+                Torsos = {componentId = 3, drawableId = 5, textureId = 0, paletteId = 0}
+			},
+			female = {
+                Tops = {componentId = 11, drawableId = 17, textureId = 0, paletteId = 0},
+                Undershirts = {componentId = 8, drawableId = 15, textureId= 0,paletteId = 0},
+                Shoes = {componentId = 6, drawableId = 5, textureId = 0, paletteId = 0},
+                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
+                Legs = {componentId = 4, drawableId = 25, textureId = 0,  paletteId = 0},
+                Torsos = {componentId = 3, drawableId = 0, textureId = 0, paletteId = 0}
+			}
+		}
+	},
+	{
+		label = 'Tenue maison',
+		id = {
+			male = {
+                Tops = {componentId = 11, drawableId = 80, textureId = 0, paletteId = 0},
+                Undershirts = {componentId = 8, drawableId = 15, textureId= 0,paletteId = 0},
+                Shoes = {componentId = 6, drawableId = 6, textureId = 0, paletteId = 0},
+                Accessories = {componentId = 7, drawableId = 0, textureId = 2, paletteId = 0},
+                Legs = {componentId = 4, drawableId = 55, textureId = 0, paletteId = 0},
+                Torsos = {componentId = 3, drawableId = 11, textureId = 0,paletteId = 0}
+			},
+			female = {
+                Tops = {componentId = 11, drawableId = 76, textureId = 0, paletteId = 0},
+                Undershirts = {componentId = 8, drawableId = 10, textureId= 0,paletteId = 0},
+                Shoes = {componentId = 6, drawableId = 16, textureId = 0, paletteId = 0},
+                Accessories = {componentId = 7, drawableId = 0, textureId = 0, paletteId = 0},
+                Legs = {componentId = 4, drawableId = 58, textureId = 0, paletteId = 0},
+                Torsos = {componentId = 3, drawableId = 14, textureId = 0,paletteId = 0}
+			}
+		}
+	},
+
     {
 		label = "Tenue Tape-à-l'oeil",
 		id = {

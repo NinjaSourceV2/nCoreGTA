@@ -8,7 +8,6 @@ AddEventHandler("GTA:GetPlayerSexServer", function()
 	end)
 end)
 
-
 RegisterServerEvent("GTA:GetPlayerCapucheServer")
 AddEventHandler('GTA:GetPlayerCapucheServer', function()
 	local source = source
@@ -18,6 +17,7 @@ AddEventHandler('GTA:GetPlayerCapucheServer', function()
 		TriggerClientEvent("GTA:RefreshUserCapuche", source, res[1].topsDraw)
 	end)
 end)
+
 
 RegisterServerEvent("GTA:GetHautJoueur")
 AddEventHandler('GTA:GetHautJoueur', function()
@@ -69,19 +69,6 @@ AddEventHandler('GTA:GetMaskJoueur', function()
 	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_vetement WHERE license = @license", { ['@license'] = license}, function(res)
 		TriggerClientEvent("GTA:MettreMaskJoueur", source, {res[1].MaskID, res[1].MaskDraw})
 	end)
-end)
-
-RegisterServerEvent("GTA:GetPullCapucheTypeRetirer")
-AddEventHandler('GTA:GetPullCapucheTypeRetirer', function()
-	local source = source
-	TriggerClientEvent("GTA:RetirerCapucheTenue", source)
-end)
-
-
-RegisterServerEvent("GTA:GetPullCapucheTypeMettre")
-AddEventHandler('GTA:GetPullCapucheTypeMettre', function()
-	local source = source
-	TriggerClientEvent("GTA:MettreCapucheTenue", source)
 end)
 
 

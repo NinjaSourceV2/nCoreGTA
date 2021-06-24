@@ -15,6 +15,11 @@ end)
 --> C'est avec cette event que l'on charge le player au moment du spawn :
 RegisterNetEvent("GTA:FirstSpawnPlayer")
 AddEventHandler("GTA:FirstSpawnPlayer", function()
+    DestroyAllCams(true)
+    RenderScriptCams(false, false, 0, true, true)
+    
+    Wait(1000)
+
     GetDepartItemList()
     TriggerEvent("GTA:BeginCreation")
     for _, v in pairs(departItemList) do
@@ -25,7 +30,11 @@ end)
 
 RegisterNetEvent("GTA:SpawnPlayer")
 AddEventHandler("GTA:SpawnPlayer", function(posX, posY, posZ)
-    Wait(5000)
+    DestroyAllCams(true)
+    RenderScriptCams(false, false, 0, true, true)
+
+    Wait(1000)
+
 
     SetEntityCoords(PlayerPedId(), tonumber(posX), tonumber(posY), tonumber(posZ) + 0.5)
 
@@ -66,9 +75,6 @@ end
 
 --> Création/Load du player :
 Citizen.CreateThread(function()
-    DestroyAllCams(true)
-    RenderScriptCams(false, false, 0, true, true)
-
     TriggerServerEvent("GTA:InitJoueur")
 end)
 
@@ -192,4 +198,160 @@ AddEventHandler('onResourceStart', function(resourceName)
 	PlaySoundFrontend(-1, "Whistle", "DLC_TG_Running_Back_Sounds", 0)
     TriggerServerEvent("GTA:CreationJoueur")
 	exports.spawnmanager:setAutoSpawn(false)
+end)
+
+
+
+
+
+
+
+local pickups = {}
+local nearObjs = {}
+
+local function DrawText3d(coords, text)
+	local _, _x, _y = World3dToScreen2d(coords.x, coords.y, coords.z)
+	SetTextScale(0.4, 0.4)
+	SetTextFont(0)
+	SetTextProportional(true)
+	SetTextColour(201, 201, 201, 255)
+	SetTextDropShadow()
+	SetTextDropshadow(50, 0, 0, 0, 255)
+	SetTextEntry("STRING")
+	SetTextCentre(true)
+	AddTextComponentString(text)
+	DrawText(_x, _y)
+end
+
+local function LoadModel(model)
+	RequestModel(GetHashKey(model))
+	while not HasModelLoaded(GetHashKey(model)) do Wait(1) end
+end
+
+local function SpawnProp(model, coords)
+	LoadModel(model)
+	local entity = CreateObject(GetHashKey(model), coords, 0, 0, 0)
+	FreezeEntityPosition(entity, true)
+	PlaceObjectOnGroundProperly(entity)
+
+	return entity
+end
+
+local function KeyboardAmount()
+    local amount = nil
+    AddTextEntry("CUSTOM_AMOUNT", "Somme à récuperer :")
+    DisplayOnscreenKeyboard(1, "CUSTOM_AMOUNT", '', "", '', '', '', 15)
+
+    while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+        Citizen.Wait(0)
+    end
+
+    if UpdateOnscreenKeyboard() ~= 2 then
+        amount = GetOnscreenKeyboardResult()
+        Citizen.Wait(1)
+    else
+        Citizen.Wait(1)
+    end
+    return tonumber(amount)
+end
+
+RegisterNetEvent("GTA_Inventaire:SyncPropsItems")
+AddEventHandler("GTA_Inventaire:SyncPropsItems", function(pick, id, del, newCount)
+    for _,v in pairs(nearObjs) do
+        DeleteEntity(v.entity)
+    end
+    nearObjs = {}
+    pickups = pick
+    SyncPickups()
+end)
+
+function SyncPickups()
+    local pPed = GetPlayerPed(-1)
+    local pCoords = GetEntityCoords(pPed)
+    
+    for k,v in pairs(pickups) do
+        if #(v.coords - pCoords) < 15 then
+            if not v.added then
+                table.insert(nearObjs, {itemLabel = v.itemLabel, item = v.item, count = v.count, id = k, coords = v.coords, prop = false, entity = nil})
+                pickups[k].added = true
+            end
+        end
+    end
+end
+
+function GetItemProp(item)
+    for k,v in pairs(itemsList) do
+        if k == item then
+            if v.prop ~= nil then
+                return v.prop
+            else
+                return "v_med_latexgloveboxblue"
+            end
+        end
+    end
+    return "v_med_latexgloveboxblue"
+end
+
+
+Citizen.CreateThread(function()
+    while true do
+        SyncPickups()
+        Wait(500)
+    end
+end)
+
+
+Citizen.CreateThread(function()
+    while true do
+        local isNear = false
+        local pPed = GetPlayerPed(-1)
+        local pCoords = GetEntityCoords(pPed)
+
+        for k,v in pairs(nearObjs) do
+            if v.count == nil then 
+                nearObjs[k] = nil
+                break
+            end
+            if not v.prop then
+                if v.id == nil then break end
+                local prop = GetItemProp(nearObjs[k].item)
+                nearObjs[k].entity = SpawnProp(prop, v.coords)
+                nearObjs[k].prop = true
+            end
+            if #(v.coords - pCoords) < 2 then
+                isNear = true
+                DrawText3d(GetEntityCoords(nearObjs[k].entity), "[~b~E~s~] récuperer x~b~"..v.count.."~s~ ~g~"..v.itemLabel)
+                if IsControlJustReleased(0, 38) then
+                    local amount = KeyboardAmount()
+                    if amount <= v.count then
+                        TriggerServerEvent("GTA_Inventaire:RecupererPropsItem", v.id, v.item, amount, v.count)
+                        if amount == v.count then
+                            if v.id == nil then break end
+                            pickups[v.id].added = false
+                            DeleteEntity(v.entity)
+                            nearObjs[k] = nil
+                        end
+                    end
+                end
+                break
+            end
+
+            if #(v.coords - pCoords) > 15 then
+                if v.id == nil then break end
+                pickups[v.id].added = false
+                DeleteEntity(v.entity)
+                nearObjs[k] = nil
+            end
+        end
+
+        if isNear then
+            Wait(1)
+        else
+            if #nearObjs > 0 then
+                Wait(500)
+            else
+                Wait(1000)
+            end
+        end
+    end
 end)

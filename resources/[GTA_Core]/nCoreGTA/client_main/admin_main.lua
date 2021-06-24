@@ -172,7 +172,7 @@ local curLocation, curRotation, curHeading
 local target
 local waitEnableNC = 1000
 local rotationSpeed = 1.5
-local forwardPush = 0.3
+local forwardPush = 0.1
 local moveUpKey = 44      -- Q
 local moveDownKey = 46    -- E
 local moveForwardKey = 32 -- W
@@ -187,17 +187,22 @@ RegisterCommand("nc", function(source, args, rawCommand)
         in_noclip_mode = not in_noclip_mode
         
         if (in_noclip_mode == true) then
-            local playerPed = PlayerPedId()
-            local x, y, z = table.unpack( GetEntityCoords( playerPed, false ) )
-            curLocation = { x = x, y = y, z = z }
-            curRotation = GetEntityRotation( playerPed, false )
-            curHeading = GetEntityHeading( playerPed )
+            turnNoClipOn()
             TriggerEvent("NUI-Notification", {"No-Clip Activer", "success"})
         else
             TriggerEvent("NUI-Notification", {"No-Clip Désactiver", "success"})
         end
     end
 end, false)
+
+--> Function :
+function turnNoClipOn()
+    local playerPed = PlayerPedId()
+    local x, y, z = table.unpack( GetEntityCoords( playerPed, false ) )
+    curLocation = { x = x, y = y, z = z }
+    curRotation = GetEntityRotation( playerPed, false )
+    curHeading = GetEntityHeading( playerPed )
+end
 
 -- Credits to @Oui (Lambda Menu)
 function degToRad( degs )
@@ -235,7 +240,9 @@ Citizen.CreateThread( function()
         local playerPed = PlayerPedId()
 
         if ( IsEntityDead( playerPed ) ) then
-            in_noclip_mode = false
+            turnNoClipOff()
+
+            -- Ensure we get out of noclip mode
             waitEnableNC = 100
         else
             target = playerPed

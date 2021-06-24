@@ -13,13 +13,11 @@ end
 ]=====]
 RegisterNetEvent('GTA:GetUserSex')  --> cette event sert uniquement a get la quantité d'un item server-side.
 AddEventHandler('GTA:GetUserSex', function(license, callback)
-	MySQL.Async.fetchAll("SELECT data_personnage FROM gta_joueurs_humain WHERE license = @username", {['@username'] = license}, function(res)
-		if (res) then
-			local decodeData = json.decode(res[1].data_personnage)
-			if callback then
-				if decodeData ~= nil then
-					callback(decodeData["sex"])
-				end
+	MySQL.Async.fetchAll("SELECT * FROM gta_joueurs_humain WHERE license = @username", {['@username'] = license}, function(res)
+		local decodeData = json.decode(res[1].data_personnage)
+		if callback then
+			if decodeData ~= nil then
+				callback(decodeData["sex"])
 			end
 		end
 	end)

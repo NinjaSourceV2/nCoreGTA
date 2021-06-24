@@ -189,6 +189,11 @@ AddEventHandler("GTA:ChangerCouleurPeau",function(aCPeau)
 	config.Parents.SkinMixData = aCPeau
 end)
 
+RegisterNetEvent("GTA:ChangerCouleurYeux")
+AddEventHandler("GTA:ChangerCouleurYeux",function(yeux)
+	config.Character.eyesColorIndex = yeux
+end)
+
 RegisterNetEvent("GTA:ChangerDad")
 AddEventHandler("GTA:ChangerDad",function(dad)
 	config.Parents.dadIndex = dad
@@ -214,10 +219,21 @@ AddEventHandler("GTA:UpdatePersonnage",function(data)
 	config.Sex = data["sex"]
 	config.Parents.ShapeMixData = data["visage"]
 	config.Parents.SkinMixData =  data["couleurPeau"]
+	config.Character.eyesColorIndex = data["yeux"]
 	config.Parents.dadIndex = data["pere"]
 	config.Parents.momIndex = data["mere"]
     config.Character.hairIndex = data["cheveux"]
 	config.Character.hairColorIndex = data["couleur_cheveux"]
+	config.Character.barbe_index = data["barbe"]
+	config.Character.couleur_barbe_index = data["couleur_barbe"]
+	config.Character.sourcil_index = data["sourcil"]
+	config.Character.sourcil_couleur = data["couleur_sourcil"]
+	config.Character.acnee_index = data["acnee"]
+	config.Character.ride_index = data["ride"]
+	config.Character.maquillage_index = data["maquillage"]
+	config.Character.maquillage_levre_index = data["maquillage_levre"]
+	config.Character.poil_index = data["poil"]
+	config.Character.couleur_poil_index = data["couleur_poil"]
 
 	local modelhashed = GetHashKey(config.Sex)
 	RequestModel(modelhashed)
@@ -235,6 +251,35 @@ AddEventHandler("GTA:UpdatePersonnage",function(data)
 	--> Cheveux : 
 	SetPedComponentVariation(GetPlayerPed(-1), 2,config.Character.hairIndex,2,10)
 	SetPedHairColor(GetPlayerPed(-1),config.Character.hairColorIndex)
+
+	--> Yeux : 
+	SetPedEyeColor(GetPlayerPed(-1), config.Character.eyesColorIndex)
+
+	--> Barbe : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 1, config.Character.barbe_index, 1.0)
+    SetPedHeadOverlayColor(GetPlayerPed(-1), 1, 1, config.Character.couleur_barbe_index, 1)
+
+	--> Poil au torse : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 10, config.Character.poil_index, 1.0)
+    SetPedHeadOverlayColor(GetPlayerPed(-1), 10, 1, config.Character.couleur_poil_index, 1)
+
+	--> Sourcil : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 2, config.Character.sourcil_index, 1.0)
+    SetPedHeadOverlayColor(GetPlayerPed(-1), 2, 1, config.Character.sourcil_couleur_index, 1)
+
+	--> Acnée : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 0, config.Character.acnee_index, 1.0)
+
+	--> Peau ridé : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 3, config.Character.ride_index, 1.0)
+
+	--> Maquillage : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 4, config.Character.maquillage_index, 1.0)
+
+	--> Rouge a levre : 
+	SetPedHeadOverlay(GetPlayerPed(-1), 8, config.Character.maquillage_levre_index, 1.0)
+    SetPedHeadOverlayColor(GetPlayerPed(-1), 8, 1, config.Character.maquillage_levre_index, 1)
+
 
 	TriggerServerEvent("GTA:LoadVetement")
 

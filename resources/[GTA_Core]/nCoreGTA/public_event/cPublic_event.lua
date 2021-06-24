@@ -2,6 +2,8 @@
         Spawn du player :
 ]=====]
 AddEventHandler('playerSpawned', function()
+	Wait(5000)
+	
 	TriggerServerEvent("GTA:LoadJobsJoueur")
 	TriggerServerEvent("nGetStats")
     TriggerServerEvent('GTA:requestSync')
@@ -314,13 +316,18 @@ end)
 		Utilisation : TriggerClientEvent("GTA-Notification:InfoInteraction", source, "~INPUT_PICKUP~ pour ouvrir le coffre.") --> Server-side.
 		Utilisation : TriggerEvent("GTA-Notification:InfoInteraction", "~INPUT_PICKUP~ pour ouvrir le coffre.") --> Client-side.
 ]=====]
-RegisterNetEvent("GTA-Notification:InfoInteraction")
-AddEventHandler("GTA-Notification:InfoInteraction", function(msg)
-	Ninja_Core__DisplayHelpAlert(msg)
-end)
-
-Ninja_Core__DisplayHelpAlert = function(msg)
-	BeginTextCommandDisplayHelp("STRING");  
-    AddTextComponentSubstringPlayerName(msg);  
-    EndTextCommandDisplayHelp(0, 0, 0, -1);
+local function AddLongString(txt)
+    for i = 100, string.len(txt), 99 do
+        local sub = string.sub(txt, i, i + 99)
+        AddTextComponentSubstringPlayerName(sub)
+    end
 end
+RegisterNetEvent("GTA-Notification:InfoInteraction")
+AddEventHandler("GTA-Notification:InfoInteraction", function(text, sound, loop)
+	BeginTextCommandDisplayHelp("jamyfafi")
+    AddTextComponentSubstringPlayerName(text)
+    if string.len(text) > 99 then
+        AddLongString(text)
+    end
+    EndTextCommandDisplayHelp(0, loop or 0, sound or false, -1)
+end)

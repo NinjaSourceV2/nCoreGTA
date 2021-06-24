@@ -65,4 +65,3 @@ config.pull_capuche_retirer_femme = {
 }
 
 config.drawIDCapucheServer = 0
-config.drawIDCapuche = 0

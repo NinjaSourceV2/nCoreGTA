@@ -278,3 +278,29 @@ Citizen.CreateThread(function()
         TriggerEvent("RegisterNewItem", v.name, v.label, 1, v.prop)
     end
 end)
+
+local pickups = {}
+RegisterNetEvent("GTA_Inventaire:DropPropsItem")
+AddEventHandler("GTA_Inventaire:DropPropsItem", function(label, item, count, coords)
+    TriggerClientEvent("GTA_Inventaire:RetirerItem", source, item, count)
+    pickups[#pickups+1] = {itemLabel = label, item = item, count = count, coords = coords, added = false}
+    TriggerClientEvent("GTA_Inventaire:SyncPropsItems", -1, pickups)
+end)
+
+RegisterNetEvent("GTA_Inventaire:RecupererPropsItem")
+AddEventHandler("GTA_Inventaire:RecupererPropsItem", function(id, item, amount, count)
+    if pickups[id] ~= nil then
+        if pickups[id].count == count then
+            TriggerClientEvent("GTA_Inventaire:AjouterItem", source, item, amount)
+            if pickups[id].count - amount == 0 then
+                pickups[id] = nil
+                TriggerClientEvent("GTA_Inventaire:SyncPropsItems", -1, pickups, id, true, 0)
+            elseif pickups[id].count - amount > 0 then
+                pickups[id].count = pickups[id].count - amount
+                TriggerClientEvent("GTA_Inventaire:SyncPropsItems", -1, pickups, id, false, pickups[id].count)
+            elseif pickups[id].count - amount < 0 then
+                return
+            end
+        end
+    end
+end)

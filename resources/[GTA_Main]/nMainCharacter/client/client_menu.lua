@@ -98,6 +98,106 @@ Citizen.CreateThread(function()
             end,
             onSelected = function() CameraPosition('face') end
         })
+
+        RageUI.List('Couleur des yeux', config.Character.eyesColor, config.Character.eyesColorIndex, "Séléctionner une couleur pour vos cheveux.", {}, true, {
+            onListChange = function(Index)
+                config.Character.eyesColorIndex = Index
+                SetPedEyeColor(GetPlayerPed(-1), config.Character.eyesColorIndex)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        if config.Sex == "mp_m_freemode_01" then 
+            RageUI.List('Barbe', config.Character.barbe, config.Character.barbe_index, "Séléctionner une barbe.", {}, true, {
+                onListChange = function(Index)
+                    config.Character.barbe_index = Index
+                    SetPedHeadOverlay(GetPlayerPed(-1), 1, config.Character.barbe_index, 1.0)
+                    SetPedHeadOverlayColor(GetPlayerPed(-1), 1, 1, config.Character.couleur_barbe_index, 1)
+                end,
+                onSelected = function() CameraPosition('face') end
+            })
+
+            RageUI.List('Couleur Barbe', config.Character.couleur_barbe, config.Character.couleur_barbe_index, "Séléctionner une couleur pour votre barbe.", {}, true, {
+                onListChange = function(Index)
+                    config.Character.couleur_barbe_index = Index
+                    SetPedHeadOverlayColor(GetPlayerPed(-1), 1, 1, config.Character.couleur_barbe_index, 1)
+                end,
+                onSelected = function() CameraPosition('face') end
+            })
+
+            RageUI.List('Poil sur le torse', config.Character.poil, config.Character.poil_index, "Séléctionner un type de poil.", {}, true, {
+                onListChange = function(Index)
+                    config.Character.poil_index = Index
+                    SetPedHeadOverlay(GetPlayerPed(-1), 10, config.Character.poil_index, 1.0)
+                    SetPedHeadOverlayColor(GetPlayerPed(-1), 10, 1, config.Character.couleur_poil_index, 1)
+                end,
+                onSelected = function() CameraPosition('torso') end
+            })
+            RageUI.List('Couleur Poil', config.Character.couleur_poil, config.Character.couleur_poil_index, "Séléctionner une couleur de poil.", {}, true, {
+                onListChange = function(Index)
+                    config.Character.couleur_poil_index = Index
+                    SetPedHeadOverlayColor(GetPlayerPed(-1), 10, 1, config.Character.couleur_poil_index, 1)
+                end,
+                onSelected = function() CameraPosition('torso') end
+            })
+        end
+
+        RageUI.List('Sourcil', config.Character.sourcil, config.Character.sourcil_index, "Séléctionner un type de sourcil.", {}, true, {
+            onListChange = function(Index)
+                config.Character.sourcil_index = Index
+                SetPedHeadOverlay(GetPlayerPed(-1), 2, config.Character.sourcil_index, 1.0)
+                SetPedHeadOverlayColor(GetPlayerPed(-1), 2, 1, config.Character.sourcil_couleur_index, 1)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        RageUI.List('Couleur Sourcil', config.Character.sourcil_couleur, config.Character.sourcil_couleur_index, "Séléctionner une couleur de sourcil.", {}, true, {
+            onListChange = function(Index)
+                config.Character.sourcil_couleur_index = Index
+                SetPedHeadOverlayColor(GetPlayerPed(-1), 2, 1, config.Character.sourcil_couleur_index, 1)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        RageUI.List('Acnée', config.Character.acnee, config.Character.acnee_index, "Séléctionner une peau avec de l'acnée.", {}, true, {
+            onListChange = function(Index)
+                config.Character.acnee_index = Index
+                SetPedHeadOverlay(GetPlayerPed(-1), 0, config.Character.acnee_index, 1.0)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        RageUI.List('Peau ridée', config.Character.ride, config.Character.ride_index, "Séléctionner une peu avec des rides.", {}, true, {
+            onListChange = function(Index)
+                config.Character.ride_index = Index
+                SetPedHeadOverlay(GetPlayerPed(-1), 3, config.Character.ride_index, 1.0)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        RageUI.List('Maquillage', config.Character.maquillage, config.Character.maquillage_index, "Séléctionner un maquillage.", {}, true, {
+            onListChange = function(Index)
+                config.Character.maquillage_index = Index
+                SetPedHeadOverlay(GetPlayerPed(-1), 4, config.Character.maquillage_index, 1.0)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+
+        RageUI.List('Rouge à lèvre', config.Character.maquillage_levre, config.Character.maquillage_levre_index, "Séléctionner un rouge à lèvre.", {}, true, {
+            onListChange = function(Index)
+                config.Character.maquillage_levre_index = Index
+                SetPedHeadOverlay(GetPlayerPed(-1), 8, config.Character.maquillage_levre_index, 1.0)
+                SetPedHeadOverlayColor(GetPlayerPed(-1), 8, 1, config.Character.maquillage_levre_index, 1)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
+        RageUI.List('Couleur Rouge à lèvre', config.Character.couleur_maquillage_levre, config.Character.couleur_maquillage_levre_index, "Séléctionner une couleur de rouge à lèvre.", {}, true, {
+            onListChange = function(Index)
+                config.Character.couleur_maquillage_levre_index = Index
+                SetPedHeadOverlayColor(GetPlayerPed(-1), 8, 1, config.Character.couleur_maquillage_levre_index, 1)
+            end,
+            onSelected = function() CameraPosition('face') end
+        })
         end, function() end)
 
         --> MENU VÊTEMENTS :
@@ -214,10 +314,21 @@ function ValiderPersonnage()
         sex = config.Sex,
         visage = config.Parents.ShapeMixData,
         couleurPeau = config.Parents.SkinMixData,
+        yeux = config.Character.eyesColorIndex,
         pere = config.Parents.dadIndex,
         mere = config.Parents.momIndex,
         cheveux = config.Character.hairIndex,
-        couleur_cheveux = config.Character.hairColorIndex
+        couleur_cheveux = config.Character.hairColorIndex,
+        barbe = config.Character.barbe_index,
+        couleur_barbe = config.Character.couleur_barbe_index,
+        sourcil = config.Character.sourcil_index,
+        couleur_sourcil = config.Character.sourcil_couleur_index,
+        acnee = config.Character.acnee_index,
+        ride = config.Character.ride_index,
+        maquillage = config.Character.maquillage_index,
+        maquillage_levre = config.Character.maquillage_levre_index,
+        poil = config.Character.poil_index,
+        couleur_poil = config.Character.couleur_poil_index
     }
 
     Wait(5)
