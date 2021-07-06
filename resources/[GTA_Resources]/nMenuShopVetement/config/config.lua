@@ -3,10 +3,10 @@
 --[[
     EXEMPLE ICI : https://wiki.rage.mp/index.php?title=Male_Tops
     ["T-Shirt Blanc"] = {1, 0, 5, 0}, 
-    Le premier chiffre représente le draw id[Torsos]
+    Le premier chiffre représente le draw id
     Le deuxieme représente la couleur
-    Le troisieme reprèsente le prix.
-    Le quatrième reprèsente les bras[Torsos].
+    Le troisieme représente le prix.
+    Le quatrième représente les bras[Torsos].
     Le 5ieme reprèsente le sous tshirt [Undershirts].
 ]]
 

@@ -25,12 +25,12 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
 
     Menu.InstructionalButtons = {}
 
-    Menu.Display.Header = true;
+    Menu.Display.Header = false;
     Menu.Display.Glare = true;
     Menu.Display.Subtitle = true;
     Menu.Display.Background = true;
     Menu.Display.Navigation = true;
-    Menu.Display.InstructionalButton = true;
+    Menu.Display.InstructionalButton = false;
     Menu.Display.PageCounter = true;
 
     Menu.Title = Title or ""
@@ -52,7 +52,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Pagination = { Minimum = 1, Maximum = 10, Total = 10 }
     Menu.Safezone = true
     Menu.SafeZoneSize = nil
-    Menu.EnableMouse = false
+    Menu.EnableMouse = true
     Menu.Options = 0
     Menu.Closable = true
     Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")

@@ -42,10 +42,8 @@ CREATE TABLE IF NOT EXISTS `gta_appartements` (
   `data_garage` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table gta_serveur.gta_appartements : ~1 rows (environ)
+-- Listage des données de la table gta_serveur.gta_appartements : ~0 rows (environ)
 /*!40000 ALTER TABLE `gta_appartements` DISABLE KEYS */;
-INSERT INTO `gta_appartements` (`license`, `zone`, `data_appartement`, `data_garage`) VALUES
-	('license:3f200ce0f1988f700dcff93d9070e35100f6e9c4', 'Appartement 1', '{"proprietaire":"Ninja Cool","zone":"Appartement 1","license":"license:3f200ce0f1988f700dcff93d9070e35100f6e9c4","prix":250000}', NULL);
 /*!40000 ALTER TABLE `gta_appartements` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_coffres
@@ -63,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `gta_coffres` (
 -- Listage de la structure de la table gta_serveur. gta_joueurs
 DROP TABLE IF EXISTS `gta_joueurs`;
 CREATE TABLE IF NOT EXISTS `gta_joueurs` (
-  `license` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `license` varchar(55) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `banque` int(11) DEFAULT 0,
   `job` varchar(255) COLLATE utf8mb4_bin DEFAULT 'Chomeur',
   `faim` int(11) DEFAULT 100,
@@ -79,10 +77,12 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs` (
   KEY `KEY` (`license`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table gta_serveur.gta_joueurs : ~1 rows (environ)
+-- Listage des données de la table gta_serveur.gta_joueurs : ~3 rows (environ)
 /*!40000 ALTER TABLE `gta_joueurs` DISABLE KEYS */;
 INSERT INTO `gta_joueurs` (`license`, `banque`, `job`, `faim`, `soif`, `isAdmin`, `enService`, `lastpos`, `grade`, `phone_number`, `inventaire`, `identiter`, `isFirstConnexion`) VALUES
-	('license:3f200ce0f1988f700dcff93d9070e35100f6e9c4', 5750, 'Chomeur', 85, 82, 1, 0, '{372.83853149414, 406.92294311523,  145.52774047852}', 'Aucun', '839-004', '{"375907-814047-371586":{"itemId":"375907-814047-371586","label":"Argent Propre","args":[],"count":750499,"item":"cash"},"384672-877036-229616":{"itemId":"384672-877036-229616","label":"Téléphone","args":[],"count":1,"item":"phone"},"766976-124805-375223":{"itemId":"766976-124805-375223","label":"Argent Sale","args":[],"count":150,"item":"dirty"}}', '{"prenom":"Cool","nationaliter":"Français","age":22,"nom":"Ninja"}', 0);
+	('license:3f200ce0f1988f700dcff93d9070e35100f6e9c4', 5450, 'Chomeur', 92, 90, 1, 0, '{375.38934326172, 418.61367797852,  145.8999786377}', 'Aucun', '487-300', '{"654645-531890-653815":{"count":150,"item":"dirty","itemId":"654645-531890-653815","label":"Argent Sale","args":[]},"318997-555108-577789":{"count":1,"item":"phone","itemId":"318997-555108-577789","label":"Téléphone","args":[]},"404374-781209-219387":{"count":500,"item":"cash","itemId":"404374-781209-219387","label":"Argent Propre","args":[]}}', '{"age":27,"nationaliter":"FR","nom":"Lee Cooper","prenom":"John"}', 0),
+	('license:aa9bcb1437d19fdb188ef6f3cb998604863692dd', 5300, 'Chomeur', 96, 94, 1, 0, '{375.3098449707, 418.73284912109,  145.90000915527}', 'Aucun', '276-248', '{"654645-531890-653815":{"item":"dirty","count":150,"args":[],"itemId":"654645-531890-653815","label":"Argent Sale"},"404374-781209-219387":{"item":"cash","count":500,"args":[],"itemId":"404374-781209-219387","label":"Argent Propre"},"318997-555108-577789":{"item":"phone","count":1,"args":[],"itemId":"318997-555108-577789","label":"Téléphone"}}', '{"nationaliter":"FR","age":27,"nom":"Lee Cooper","prenom":"John"}', 0),
+	('ip:192.168.1.68', 9950, 'Chomeur', 77, 66, 1, 0, '{479.47286987305, 6438.9443359375,  31.873132705688}', 'Aucun', '255-431', '{"254665-883774-663874":{"count":488,"args":[],"item":"cash","label":"Argent Propre","itemId":"254665-883774-663874"},"443242-372416-461699":{"count":46,"args":[],"item":"eau","label":"Eau","itemId":"443242-372416-461699"},"520367-788387-546734":{"count":1,"args":[],"item":"pistol","label":"Pistolet","itemId":"520367-788387-546734"},"327029-709602-698469":{"count":142,"args":[],"item":"dirty","label":"argent sale","itemId":"327029-709602-698469"},"792757-164747-167433":{"count":18,"args":[],"item":"pistol_ammo","label":"9mm","itemId":"792757-164747-167433"},"861581-364505-830404":{"count":46,"args":[],"item":"pain","label":"Pain","itemId":"861581-364505-830404"},"763948-145851-641266":{"count":0,"args":[],"item":"phone","label":"Phone","itemId":"763948-145851-641266"}}', '{"nationaliter":"N/A","nom":"Sans Nom","age":0,"prenom":"Sans Prenom"}', 0);
 /*!40000 ALTER TABLE `gta_joueurs` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_joueurs_banni
@@ -108,10 +108,8 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs_humain` (
   PRIMARY KEY (`license`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table gta_serveur.gta_joueurs_humain : ~1 rows (environ)
+-- Listage des données de la table gta_serveur.gta_joueurs_humain : ~0 rows (environ)
 /*!40000 ALTER TABLE `gta_joueurs_humain` DISABLE KEYS */;
-INSERT INTO `gta_joueurs_humain` (`license`, `data_personnage`) VALUES
-	('license:3f200ce0f1988f700dcff93d9070e35100f6e9c4', '{"visage":1.0,"maquillage":72,"barbe":29,"couleur_cheveux":3,"yeux":1,"couleur_poil":1,"couleur_barbe":1,"pere":8,"couleur_sourcil":1,"acnee":24,"poil":16,"sex":"mp_m_freemode_01","ride":15,"sourcil":1,"maquillage_levre":10,"cheveux":3,"mere":13,"couleurPeau":0.79}');
 /*!40000 ALTER TABLE `gta_joueurs_humain` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_joueurs_vehicle
@@ -166,10 +164,8 @@ CREATE TABLE IF NOT EXISTS `gta_joueurs_vetement` (
   PRIMARY KEY (`license`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table gta_serveur.gta_joueurs_vetement : ~1 rows (environ)
+-- Listage des données de la table gta_serveur.gta_joueurs_vetement : ~0 rows (environ)
 /*!40000 ALTER TABLE `gta_joueurs_vetement` DISABLE KEYS */;
-INSERT INTO `gta_joueurs_vetement` (`license`, `topsID`, `topsDraw`, `topsCouleur`, `undershirtsID`, `undershirtsDraw`, `undershirtsCouleur`, `shoesID`, `shoesDraw`, `shoesCouleur`, `legsID`, `legsDraw`, `legsCouleur`, `torsosID`, `torsosDraw`, `AccessoiresID`, `AccessoiresDraw`, `AccessoiresCouleur`, `HatsID`, `HatsDraw`, `HatsCouleurs`, `MaskID`, `MaskDraw`) VALUES
-	('license:3f200ce0f1988f700dcff93d9070e35100f6e9c4', 11, 80, 0, 8, 15, 0, 6, 6, 0, 4, 55, 0, 3, 11, 7, 0, 2, 0, 8, 0, 1, 0);
 /*!40000 ALTER TABLE `gta_joueurs_vetement` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. gta_medic_stockage
@@ -200,6 +196,18 @@ INSERT INTO `gta_metiers` (`metiers`, `salaire`, `emploi`) VALUES
 	('LSPD', 500, 'priver'),
 	('Medic', 500, 'public');
 /*!40000 ALTER TABLE `gta_metiers` ENABLE KEYS */;
+
+-- Listage de la structure de la table gta_serveur. gta_tenue_sauvegarder
+DROP TABLE IF EXISTS `gta_tenue_sauvegarder`;
+CREATE TABLE IF NOT EXISTS `gta_tenue_sauvegarder` (
+  `license` varchar(55) COLLATE utf8mb4_bin DEFAULT '',
+  `label` varchar(55) COLLATE utf8mb4_bin DEFAULT '',
+  `tenue` text COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Listage des données de la table gta_serveur.gta_tenue_sauvegarder : ~0 rows (environ)
+/*!40000 ALTER TABLE `gta_tenue_sauvegarder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gta_tenue_sauvegarder` ENABLE KEYS */;
 
 -- Listage de la structure de la table gta_serveur. phone_app_chat
 DROP TABLE IF EXISTS `phone_app_chat`;
