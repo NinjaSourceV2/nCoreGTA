@@ -24,17 +24,17 @@ RegisterNetEvent("GTA_Armes:Init")
 AddEventHandler("GTA_Armes:Init", function() 
     local playerPed = GetPlayerPed(-1)
     local inv = exports.nCoreGTA:GetPlayerInv()
-    local inv = inv.inventaire
+    local inventory = inv.inventaire
 
     for weaponHash, v in pairs(Weapons) do
-        local found, id, count = InfoArmeItem(inv, v.name)
+        local found, id, count = InfoArmeItem(inventory, v.name)
         
         if found and count > 0 then
             local ammo = 0
             local ammoType = GetPedAmmoTypeFromWeapon(playerPed, weaponHash)
             
             if ammoType and AmmoTypes[ammoType] then
-                local found_ammo, qty, id_mun, name = InfoMunitionItem(inv, AmmoTypes[ammoType].name)
+                local found_ammo, qty, id_mun, name = InfoMunitionItem(inventory, AmmoTypes[ammoType].name)
                 if found_ammo then
                     ammo = qty
                 end

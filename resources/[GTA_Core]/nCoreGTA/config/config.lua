@@ -2,13 +2,13 @@
 config = {}
 config.Player = {}
 
-config.versionCore = "Version 1.8"
+config.versionCore = "Version 1.9"
 config.activerPoliceWanted = false
 config.activerPvp = true 
 config.salaireTime = 900000
 config.timerSignalEMS = 60000 --> Definis le temps d'attente entre chaque envoi de signal pour les ems si le joueur est dans le coma.
 config.timerPlayerSyncPos = 60000 --> Toute les 60 secondes une synchronisation de la position du player est effectuer.
-config.timerPlayerSynchronisation = 300000 --> Toute les 5 Minutes une synchronisation du player est effectuer.
+config.timerPlayerSynchronisation = 3 * 60 * 1000 --> Toute les 3 Minutes une synchronisation du player est effectuer.
 
 --> Valeur de départ Joueur : 
 config.argentPropre = 500

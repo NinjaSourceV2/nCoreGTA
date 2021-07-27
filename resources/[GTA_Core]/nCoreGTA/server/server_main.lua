@@ -13,25 +13,29 @@ AddEventHandler('playerDropped', function(reason)
     for _,p in pairs(PlayersSource) do
         local inventaire = json.encode(p.inventaire)
         local lastPosition = "{" .. p.pos.x .. ", " .. p.pos.y .. ",  " .. p.pos.z.. "}"
-        local identity = json.encode(p.identiter)
+        local ident = json.encode(p.identiter)
 
-        MySQL.Sync.execute("UPDATE `gta_joueurs` SET inventaire = @inventaire, faim = @newFaim, soif = @newSoif, identiter = @identity, banque = @banque, lastpos = @lastpos, isAdmin = @isAdmin, enService = @service, grade = @grade, job = @job WHERE gta_joueurs.license = @license", {
-            ["@inventaire"] = inventaire,
-            ["@newFaim"] = p.faim,
-            ["@newSoif"] = p.soif,
-            ["@identity"] = identity,
-            ["@banque"] = p.banque,
-            ["@lastpos"] = lastPosition,
-            ["@isAdmin"] = p.isAdmin,
-            ["@service"] = p.enService,
-            ["@grade"] = p.grade,
-            ["@job"] = p.job,
-            ["@license"] = license,
-        })
-
-        PlayersSource[source] = nil
-        PlayerLicense[source] = nil
+        --> check if the server source id is equal to the player source id :
+        if p.source == source then
+            MySQL.Sync.execute("UPDATE `gta_joueurs` SET inventaire = @inventaire, faim = @newFaim, soif = @newSoif, identiter = @identity, banque = @banque, lastpos = @lastpos, isAdmin = @isAdmin, enService = @service, grade = @grade, job = @job WHERE license = @license", {
+                ["@inventaire"] = inventaire,
+                ["@newFaim"] = p.faim,
+                ["@newSoif"] = p.soif,
+                ["@identity"] = ident,
+                ["@banque"] = p.banque,
+                ["@lastpos"] = lastPosition,
+                ["@isAdmin"] = p.isAdmin,
+                ["@service"] = p.enService,
+                ["@grade"] = p.grade,
+                ["@job"] = p.job,
+                ["@license"] = license
+            })
+            print("ID : ".. p.source .."synchro.")
+        end
     end
+
+    PlayersSource[source] = nil
+    PlayerLicense[source] = nil
 end)
 
 --[=====[
@@ -41,27 +45,31 @@ RegisterNetEvent("GTA:SyncPlayer")
 AddEventHandler("GTA:SyncPlayer", function() 
     local source = source
     local license = GetPlayerIdentifiers(source)[1]
-    for _,p in pairs(PlayersSource) do
+
+    for _, p in pairs(PlayersSource) do
         local inventaire = json.encode(p.inventaire)
         local lastPosition = "{" .. p.pos.x .. ", " .. p.pos.y .. ",  " .. p.pos.z.. "}"
-        local identity = json.encode(p.identiter)
+        local identiterP = json.encode(p.identiter)
 
-        MySQL.Sync.execute("UPDATE `gta_joueurs` SET inventaire = @inventaire, faim = @newFaim, soif = @newSoif, identiter = @identity, banque = @banque, lastpos = @lastpos, isAdmin = @isAdmin, enService = @service, grade = @grade, job = @job WHERE gta_joueurs.license = @license", {
-            ["@inventaire"] = inventaire,
-            ["@newFaim"] = p.faim,
-            ["@newSoif"] = p.soif,
-            ["@identity"] = identity,
-            ["@banque"] = p.banque,
-            ["@lastpos"] = lastPosition,
-            ["@isAdmin"] = p.isAdmin,
-            ["@service"] = p.enService,
-            ["@grade"] = p.grade,
-            ["@job"] = p.job,
-            ["@license"] = license,
-        })
+        --> check if the server source id is equal to the player source id :
+        if p.source == source then
+            MySQL.Sync.execute("UPDATE `gta_joueurs` SET inventaire = @inventaire, faim = @newFaim, soif = @newSoif, identiter = @identity, banque = @banque, lastpos = @lastpos, isAdmin = @isAdmin, enService = @service, grade = @grade, job = @job WHERE license = @license", {
+                ["@inventaire"] = inventaire,
+                ["@newFaim"] = p.faim,
+                ["@newSoif"] = p.soif,
+                ["@identity"] = identiterP,
+                ["@banque"] = p.banque,
+                ["@lastpos"] = lastPosition,
+                ["@isAdmin"] = p.isAdmin,
+                ["@service"] = p.enService,
+                ["@grade"] = p.grade,
+                ["@job"] = p.job,
+                ["@license"] = license
+            })
+            print("ID : ".. p.source .."synchro.")
+            print("INFORMATION \n:".. license.. " "..p.job)
+        end
     end
-
-    print("^2ID : ^7"..license.." joueur synchroniser.")
 end)
 
 --[=====[
@@ -85,7 +93,6 @@ AddEventHandler('GTA:InitJoueur', function()
     local license = GetPlayerIdentifiers(source)[1]
     local randomPhoneNumber = getPhoneRandomNumber() 
     local getActualNumber = randomPhoneNumber
-
 
 	local result = MySQL.Sync.fetchAll("SELECT * FROM gta_joueurs WHERE license = @identifier", {
         ['@identifier'] = license
@@ -113,7 +120,7 @@ AddEventHandler('GTA:InitJoueur', function()
         PlayersSource[source].enService = 0
         PlayersSource[source].isAdmin = true
         PlayersSource[source].isFirstConnexion = 1
-
+        PlayersSource[source].source = source
 
 		MySQL.Async.execute('INSERT INTO gta_joueurs_humain (`license`) VALUES (@license)',{ ['@license'] = license})
 		MySQL.Async.execute('INSERT INTO gta_joueurs_vetement (`license`) VALUES (@license)',{ ['@license'] = license})
@@ -135,6 +142,8 @@ AddEventHandler('GTA:InitJoueur', function()
 		PlayersSource[source].enService = result[1].enService
         PlayersSource[source].phone_number = result[1].phone_number
         PlayersSource[source].isFirstConnexion = result[1].isFirstConnexion
+        PlayersSource[source].source = source
+
 
 		TriggerClientEvent("GTA:UpdatePersonnage", source, dataCharacter)
         TriggerClientEvent("GTA:UpdateHungerStat", source, PlayersSource[source].faim, PlayersSource[source].soif)

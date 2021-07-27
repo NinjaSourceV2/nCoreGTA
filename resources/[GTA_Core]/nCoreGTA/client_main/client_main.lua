@@ -33,8 +33,7 @@ AddEventHandler("GTA:SpawnPlayer", function(posX, posY, posZ)
     DestroyAllCams(true)
     RenderScriptCams(false, false, 0, true, true)
 
-    Wait(1000)
-
+    Wait(3500)
 
     SetEntityCoords(PlayerPedId(), tonumber(posX), tonumber(posY), tonumber(posZ) + 0.5)
 
