@@ -1,3 +1,5 @@
+# CETTE SOURCE N'EST PLUS A JOUR EST NE LE SERA PLUS.
+
 # nCoreGTA Version Legacy
 Cette source à plus exactement été créée dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
 mais peut finalement être utilisée pour tout type de GameMode.
