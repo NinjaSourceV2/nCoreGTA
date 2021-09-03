@@ -1,4 +1,4 @@
-# CETTE SOURCE N'EST PLUS A JOUR EST NE LE SERA PLUS.
+# CETTE SOURCE N'EST PLUS A JOUR EST NE LE SERA PLUS EN ATTENTE D'UN NOUVEAU MP (LSMP).
 
 # nCoreGTA Version Legacy
 Cette source à plus exactement été créée dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
