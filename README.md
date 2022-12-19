@@ -1,8 +1,4 @@
-# CETTE SOURCE N'EST PLUS A JOUR PUIS JE NE VOUS RECOMMANDE ABSOLUMENT PAS FIVEM DU MOINS EVITER LE STAFF IL SONT TROP ORGUEILLEUX.
-
-# nCoreGTA Version Legacy
-Cette source à plus exactement été créée dans le but de vous faire gagner du temps sur votre création de votre Serveur RP,
-mais peut finalement être utilisée pour tout type de GameMode.
+# SOURCE ARCHIVED (NE L'UTILISEZ PAS, CETTE SOURCE EST CASSÉ.), UNE V3 PEUT ÊTRE EN ROUTE. (A VOIR)
 
 ## Screen :
 
